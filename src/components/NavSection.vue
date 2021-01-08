@@ -19,7 +19,7 @@
 export default {
   props: {
     header: String,
-    items: [],
+    items: Array,
   },
 };
 </script>
