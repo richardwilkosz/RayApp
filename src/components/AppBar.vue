@@ -8,7 +8,7 @@
           flat
           placeholder="Search movies"
           prepend-inner-icon="mdi-magnify"
-          class="pt-1"
+          class="pt-1 pt-md-2"
         ></v-autocomplete>
       </v-toolbar-items>
     </v-app-bar>
@@ -35,8 +35,8 @@
             </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
-          <NavSection header="Browse by runtime" v-bind:items="runtimeItems" />
-          <NavSection header="Browse by genre" v-bind:items="genreItems" />
+          <NavSection header="Browse by runtime" :items="runtimeItems" />
+          <NavSection header="Browse by genre" :items="genreItems" />
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>

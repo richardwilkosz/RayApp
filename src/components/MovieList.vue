@@ -2,35 +2,49 @@
   <v-container fluid>
     <v-row dense>
       <v-col
-        v-for="card in cards"
-        :key="card.title"
+        v-for="movie in ownedMovies"
+        :key="movie.title"
         cols="6"
         sm="4"
         md="3"
         lg="2"
         xl="1"
       >
-        <MovieCard
-          v-bind:title="card.title"
-          v-bind:src="card.src"
-          v-bind:runtime="card.runtime"
-          v-bind:releaseYear="card.releaseYear"
+        <OwnedMovie
+          :title="movie.title"
+          :src="movie.src"
+          :runtime="movie.runtime"
+          :releaseYear="movie.releaseYear"
         />
       </v-col>
     </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <h3 class="font-weight-regular py-2">Unowned Movies</h3>
+    <v-card class="mx-auto" tile>
+      <v-list dense flat class="py-0">
+        <v-list-item-group>
+          <div v-for="(movie, index) in unownedMovies" :key="movie.title">
+            <v-divider v-if="index > 0"></v-divider>
+            <UnownedMovieRow :title="movie.title" :src="movie.src" />
+          </div>
+        </v-list-item-group>
+      </v-list>
+    </v-card>
   </v-container>
 </template>
 
 <script>
-import MovieCard from "./MovieCard";
+import OwnedMovie from "./OwnedMovie";
+import UnownedMovieRow from "./UnownedMovieRow";
 
 export default {
   components: {
-    MovieCard,
+    OwnedMovie,
+    UnownedMovieRow,
   },
 
   data: () => ({
-    cards: [
+    ownedMovies: [
       {
         title: "Portrait of a Lady on Fire",
         src:
@@ -79,6 +93,24 @@ export default {
           "https://www.themoviedb.org/t/p/w1280/iYypPT4bhqXfq1b6EnmxvRt6b2Y.jpg",
         runtime: "1h 39m",
         releaseYear: "2000",
+      },
+    ],
+
+    unownedMovies: [
+      {
+        title: "The Favourite",
+        src:
+          "https://www.themoviedb.org/t/p/w1280/cwBq0onfmeilU5xgqNNjJAMPfpw.jpg",
+      },
+      {
+        title: "Thor: Ragnarok",
+        src:
+          "https://www.themoviedb.org/t/p/w1280/8hnNdUFlUkjPWxKDyiE4Kn8h7Q5.jpg",
+      },
+      {
+        title: "Nightcrawler",
+        src:
+          "https://www.themoviedb.org/t/p/w1280/gYPIRu0jX2CGYdeO422cq3N78ju.jpg",
       },
     ],
   }),

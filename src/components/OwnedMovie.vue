@@ -5,11 +5,11 @@
       <v-row dense>
         <v-col cols="12" sm="6" class="d-none d-sm-flex">
           <v-icon small>mdi-calendar</v-icon>
-          <span class="pl-2">{{ releaseYear }}</span>
+          <span v-text="releaseYear" class="pl-2" />
         </v-col>
         <v-col cols="12" xs="12" sm="6" class="text-sm-right">
           <v-icon small>mdi-clock</v-icon>
-          <span class="pl-2">{{ runtime }}</span>
+          <span v-text="runtime" class="pl-2" />
         </v-col>
       </v-row>
     </v-card-text>
