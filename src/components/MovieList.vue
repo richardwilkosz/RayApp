@@ -19,28 +19,32 @@
       </v-col>
     </v-row>
     <v-divider class="mt-3"></v-divider>
-    <h3 class="font-weight-regular py-2">Unowned Movies</h3>
-    <v-card class="mx-auto" tile>
-      <v-list dense flat class="py-0">
-        <v-list-item-group>
-          <div v-for="(movie, index) in unownedMovies" :key="movie.title">
-            <v-divider v-if="index > 0"></v-divider>
-            <UnownedMovieRow :title="movie.title" :src="movie.src" />
-          </div>
-        </v-list-item-group>
-      </v-list>
-    </v-card>
+    <h3 class="font-weight-regular py-2">Movies I Don't Own (Yet)</h3>
+    <v-row dense class="mt-1">
+      <v-col
+        v-for="movie in unownedMovies"
+        :key="movie.title"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="3"
+        xl="2"
+        class="pr-0 pb-0"
+      >
+        <UnownedMovie :title="movie.title" :src="movie.src" class="pa-0"/>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import OwnedMovie from "./OwnedMovie";
-import UnownedMovieRow from "./UnownedMovieRow";
+import UnownedMovie from "./UnownedMovie";
 
 export default {
   components: {
     OwnedMovie,
-    UnownedMovieRow,
+    UnownedMovie,
   },
 
   data: () => ({
