@@ -18,22 +18,24 @@
         />
       </v-col>
     </v-row>
-    <v-divider class="mt-3"></v-divider>
-    <h3 class="font-weight-regular py-2">Movies I Don't Own (Yet)</h3>
-    <v-row dense class="mt-1">
-      <v-col
-        v-for="movie in unownedMovies"
-        :key="movie.title"
-        cols="12"
-        sm="6"
-        md="4"
-        lg="3"
-        xl="2"
-        class="pr-0 pb-0"
-      >
-        <UnownedMovie :title="movie.title" :src="movie.src" class="pa-0"/>
-      </v-col>
-    </v-row>
+    <template v-if="showUnownedMovies">
+      <v-divider class="mt-3" />
+      <h3 class="font-weight-regular py-2">Movies I Don't Own (Yet)</h3>
+      <v-row dense class="mt-1">
+        <v-col
+          v-for="movie in unownedMovies"
+          :key="movie.title"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
+          xl="2"
+          class="pr-0 pb-0"
+        >
+          <UnownedMovie :title="movie.title" :src="movie.src" class="pa-0" />
+        </v-col>
+      </v-row>
+    </template>
   </v-container>
 </template>
 
@@ -48,6 +50,7 @@ export default {
   },
 
   data: () => ({
+    showUnownedMovies: true,
     ownedMovies: [
       {
         title: "Portrait of a Lady on Fire",

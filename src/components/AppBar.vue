@@ -3,13 +3,9 @@
     <v-app-bar app>
       <v-toolbar-items>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-autocomplete
-          solo
-          flat
-          placeholder="Search movies"
-          prepend-inner-icon="mdi-magnify"
-          class="pt-1 pt-md-2"
-        ></v-autocomplete>
+        <SearchBar />
+        <SortMenu />
+        <FilterMenu />
       </v-toolbar-items>
     </v-app-bar>
 
@@ -21,7 +17,9 @@
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-icon @click.stop="drawer = !drawer" class="mt-1"> mdi-close </v-icon>
+            <v-icon @click.stop="drawer = !drawer" class="mt-1">
+              mdi-close
+            </v-icon>
           </v-col>
         </v-row>
       </v-list-item>
@@ -41,7 +39,17 @@
 </template>
 
 <script>
+import SearchBar from "./SearchBar";
+import SortMenu from "./SortMenu";
+import FilterMenu from "./FilterMenu";
+
 export default {
+  components: {
+    SearchBar,
+    SortMenu,
+    FilterMenu,
+  },
+
   data: () => ({
     drawer: false,
     group: null,

@@ -6,7 +6,7 @@
           <v-img :src="src" max-height="75" max-width="50"></v-img>
         </v-col>
         <v-col cols="auto" class="pa-0">
-          <span v-text="title" class="ml-3" />
+          <span v-text="title" class="ml-5" />
         </v-col>
       </v-row>
     </v-sheet>

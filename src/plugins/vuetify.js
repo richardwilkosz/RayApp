@@ -11,7 +11,7 @@ export default new Vuetify({
     dark: true,
     themes: {
       dark: {
-        primary: colors.blue.lighten3,
+        primary: colors.lightBlue.lighten3,
         error: colors.red.lighten3,
       }
     }
