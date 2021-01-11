@@ -31,7 +31,7 @@
     <template v-if="showUnownedMovies">
       <v-divider class="mt-3" />
       <h3 class="font-weight-regular py-2">Movies I Don't Own (Yet)</h3>
-      <v-row dense class="mt-1">
+      <v-row dense class="my-1">
         <v-col
           v-for="movie in unownedMovies"
           :key="movie.title"
