@@ -2,6 +2,12 @@
   <v-container fluid>
     <!-- Owned Movie Results -->
     <v-row dense>
+      <v-col cols="12" class="d-flex d-sm-none mb-1">
+        <v-spacer />
+        <SortMenu />
+        <FilterMenu class="ml-3" />
+        <v-spacer />
+      </v-col>
       <v-col
         v-for="movie in ownedMovies"
         :key="movie.title"
@@ -9,7 +15,6 @@
         sm="4"
         md="3"
         lg="2"
-        xl="1"
         @click.stop="dialogOpen = true"
       >
         <OwnedMovie
@@ -56,12 +61,16 @@
 import OwnedMovie from "./OwnedMovie";
 import UnownedMovie from "./UnownedMovie";
 import MovieDetails from "./MovieDetails";
+import SortMenu from "./SortMenu";
+import FilterMenu from "./FilterMenu";
 
 export default {
   components: {
     OwnedMovie,
     UnownedMovie,
     MovieDetails,
+    SortMenu,
+    FilterMenu,
   },
 
   data: () => ({

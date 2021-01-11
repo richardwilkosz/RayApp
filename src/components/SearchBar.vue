@@ -2,8 +2,9 @@
   <v-autocomplete
     solo
     flat
+    dense
     placeholder="Search movies"
     prepend-inner-icon="mdi-magnify"
-    class="pt-1 pt-md-2"
+    class="mt-6"
   ></v-autocomplete>
 </template>
