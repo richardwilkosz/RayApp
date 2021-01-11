@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <!-- Owned Movie Results -->
     <v-row dense>
       <v-col
         v-for="movie in ownedMovies"
@@ -9,15 +10,19 @@
         md="3"
         lg="2"
         xl="1"
+        @click.stop="dialogOpen = true"
       >
         <OwnedMovie
           :title="movie.title"
           :src="movie.src"
           :runtime="movie.runtime"
           :releaseYear="movie.releaseYear"
+          v-ripple="{ class: 'primary--text' }"
         />
       </v-col>
     </v-row>
+
+    <!-- Unowned Movie Results -->
     <template v-if="showUnownedMovies">
       <v-divider class="mt-3" />
       <h3 class="font-weight-regular py-2">Movies I Don't Own (Yet)</h3>
@@ -31,25 +36,36 @@
           lg="3"
           xl="2"
           class="pr-0 pb-0"
+          @click.stop="dialogOpen = true"
         >
-          <UnownedMovie :title="movie.title" :src="movie.src" class="pa-0" />
+          <UnownedMovie
+            :title="movie.title"
+            :src="movie.src"
+            class="pa-0"
+            v-ripple="{ class: 'primary--text' }"
+          />
         </v-col>
       </v-row>
     </template>
+
+    <MovieDetails :dialogOpen="dialogOpen" @close-dialog="dialogOpen = false" />
   </v-container>
 </template>
 
 <script>
 import OwnedMovie from "./OwnedMovie";
 import UnownedMovie from "./UnownedMovie";
+import MovieDetails from "./MovieDetails";
 
 export default {
   components: {
     OwnedMovie,
     UnownedMovie,
+    MovieDetails,
   },
 
   data: () => ({
+    dialogOpen: false,
     showUnownedMovies: true,
     ownedMovies: [
       {
@@ -74,11 +90,11 @@ export default {
         releaseYear: "2012",
       },
       {
-        title: "Howl's Moving Castle",
+        title: "Spider-Man 3",
         src:
-          "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/TkTPELv4kC3u1lkloush8skOjE.jpg",
-        runtime: "1h 59m",
-        releaseYear: "2004",
+          "https://www.themoviedb.org/t/p/w1280/sqZKCRYGovZ8aN99VVJSdL8Ja9k.jpg",
+        runtime: "2h 19m",
+        releaseYear: "2007",
       },
       {
         title: "Manchester by the Sea",
