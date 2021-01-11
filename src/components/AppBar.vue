@@ -1,12 +1,14 @@
 <template>
   <div>
     <v-app-bar app>
-      <v-toolbar-items>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-spacer />
         <SearchBar />
-        <SortMenu />
-        <FilterMenu />
-      </v-toolbar-items>
+        <v-spacer />
+        <div class="d-none d-sm-flex">
+          <SortMenu />
+          <FilterMenu class="ml-3" />
+        </div>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary app>
@@ -17,7 +19,7 @@
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-icon @click.stop="drawer = !drawer" class="mt-1">
+            <v-icon @click.stop="drawer = !drawer" class="mt-1" v-hover>
               mdi-close
             </v-icon>
           </v-col>
