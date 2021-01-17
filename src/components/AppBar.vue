@@ -3,7 +3,7 @@
     <v-app-bar app>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-spacer />
-        <SearchBar />
+        <SearchBar @update-results="updateResults" />
         <v-spacer />
         <div class="d-none d-sm-flex">
           <SortMenu />
@@ -19,7 +19,7 @@
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-icon @click.stop="drawer = !drawer" class="mt-1" v-hover>
+            <v-icon @click.stop="drawer = !drawer" class="mt-1">
               mdi-close
             </v-icon>
           </v-col>
@@ -76,5 +76,11 @@ export default {
       this.drawer = false;
     },
   },
+
+  methods: {
+    updateResults: function(e) {
+      this.$emit('update-results', e)
+    }
+  }
 };
 </script>
