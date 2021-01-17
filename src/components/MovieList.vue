@@ -15,7 +15,7 @@
         sm="4"
         md="3"
         lg="2"
-        @click.stop="dialogOpen = true"
+        @click.stop="openDialog(movie.id)"
       >
         <OwnedMovie
           :title="movie.title"
@@ -39,7 +39,7 @@
           lg="3"
           xl="2"
           class="pr-0 pb-0"
-          @click.stop="dialogOpen = true"
+          @click.stop="openDialog(movie.id)"
         >
           <UnownedMovie
             :title="movie.title"
@@ -51,12 +51,18 @@
       </v-row>
     </template>
 
-    <MovieDetails :dialogOpen="dialogOpen" @close-dialog="dialogOpen = false" />
+    <MovieDetails
+      :movie="openedMovie"
+      :imagePath="openedMovieImagePath"
+      :dialogOpen="dialogOpen"
+      @close-dialog="dialogOpen = false"
+    />
   </v-container>
 </template>
 
 <script>
-import IMAGE_QUERY from '../assets/constants.js';
+import IMAGE_QUERY from "../assets/constants.js";
+import axios from "axios";
 
 import OwnedMovie from "./OwnedMovie";
 import UnownedMovie from "./UnownedMovie";
@@ -81,6 +87,8 @@ export default {
 
   data: () => ({
     dialogOpen: false,
+    openedMovie: new Object(),
+    openedMovieImagePath: "",
     imageQuery: IMAGE_QUERY.IMAGE_QUERY,
     // ownedMovies: [
     //   {
@@ -152,5 +160,22 @@ export default {
     //   },
     // ],
   }),
+
+  methods: {
+    openDialog: function (id) {
+      let apiKey = "c273df1bacfdd9e48630cddba6ef4d18";
+      let detailsQuery =
+        "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + apiKey;
+
+      axios.get(detailsQuery).then((response) => {
+        console.log(response.data);
+        this.openedMovie = response.data;
+        this.openedMovieImagePath =
+          "https://image.tmdb.org/t/p/w500" + this.openedMovie.backdrop_path;
+          console.log(this.openedMovieImagePath);
+        this.dialogOpen = true;
+      });
+    },
+  },
 };
 </script>

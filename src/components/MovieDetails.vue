@@ -2,28 +2,24 @@
   <v-dialog
     v-model="dialogOpen"
     @click:outside="closeDialog()"
-    max-width="600"
+    max-width="500"
     overlay-opacity="0.75"
   >
     <v-card>
       <v-img
-        src="https://www.themoviedb.org/t/p/w1000_and_h450_multi_faces/vwBa7djy1oxfxUjc7YtVgGNsjrT.jpg"
+        :src="imagePath"
       ></v-img>
       <v-card-title class="pb-0">
-        Howl's Moving Castle
+        {{ movie.title ? movie.title : "" }}
         <span class="body-2 text--secondary ml-5 mt-1 d-none d-sm-flex">
-          2004, 1h 59m
+          {{ movie.release_date ? movie.release_date.substring(0, 4) : "" }}, {{ movie.runtime ? movie.runtime : "" }}m
         </span>
       </v-card-title>
       <v-card-text>
-        <p class="d-sm-none">2004, 1h 59m</p>
-        <p class="mt-sm-4">dir. Hayao Miyazaki</p>
-        <div>
-          When Sophie, a shy young woman, is cursed with an old body by a
-          spiteful witch, her only chance of breaking the spell lies with a
-          self-indulgent yet insecure young wizard and his companions in his
-          legged, walking castle.
-        </div>
+        <p class="d-sm-none">{{ movie.release_date ? movie.release_date.substring(0, 4) : "" }}, {{ movie.runtime ? movie.runtime : "" }}m</p>
+        <!-- <p class="mt-sm-4">dir. Hayao Miyazaki</p> -->
+        <br>
+        <div>{{ movie.overview ? movie.overview : "" }} </div>
       </v-card-text>
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
@@ -36,7 +32,9 @@
 <script>
 export default {
   props: {
+    movie: Object,
     dialogOpen: Boolean,
+    imagePath: String,
   },
 
   methods: {

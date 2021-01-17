@@ -19,20 +19,18 @@ const SEARCH_QUERY =
   "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=";
 
 export default {
-  data() {
-    return {
+  data: () => ({
       query: "",
       results: "",
       input: "",
-    };
-  },
+  }),
   methods: {
     getResult: function (input) {
       if (input.length > 3) {
         axios.get(SEARCH_QUERY + input).then((response) => {
           this.results = response.data.results;
         });
-        console.log(this.results);
+        //console.log(this.results);
         this.$emit('update-results', this.results);
       }
     },

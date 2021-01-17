@@ -14,7 +14,7 @@
 
 <script>
 import OWNED_MOVIES from "./assets/ownedMovieList.ts";
-import IMAGE_QUERY from './assets/constants.js';
+//import IMAGE_QUERY from './assets/constants.js';
 
 import AppBar from "./components/AppBar";
 import MovieList from "./components/MovieList";
@@ -47,7 +47,7 @@ export default {
 
         e.forEach(function (result) {
           if (OWNED_MOVIES.OWNED_MOVIES.includes(result.id)) {
-            console.log(IMAGE_QUERY.IMAGE_QUERY + result.poster_path);
+            //console.log(IMAGE_QUERY.IMAGE_QUERY + result.poster_path);
             vm.ownedResults.push(result);
           } else {
             //console.log("Unowned: " + result.title);
