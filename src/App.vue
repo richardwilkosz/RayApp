@@ -4,19 +4,28 @@
     <v-main>
       <MovieList />
     </v-main>
+    <Footer />
   </v-app>
 </template>
 
 <script>
-import MovieList from "./components/MovieList";
 import AppBar from "./components/AppBar";
+import MovieList from "./components/MovieList";
+import Footer from './components/Footer';
 
 export default {
   name: "Ray",
 
   components: {
-    MovieList,
     AppBar,
+    MovieList,
+    Footer,
   },
 };
 </script>
+
+<style>
+  html {
+    background-color: #272727;
+  }
+</style>
