@@ -3,7 +3,7 @@
     <v-sheet>
       <v-row dense align="center">
         <v-col cols="auto" class="pa-0 mr-5">
-          <v-img :src="src" max-height="75" max-width="50"></v-img>
+          <v-img :src="src" height="75" max-width="50"></v-img>
         </v-col>
         <v-col class="pa-0">
           <span v-text="title" />
