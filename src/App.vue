@@ -14,7 +14,6 @@
 
 <script>
 import axios from "axios";
-// import OWNED_MOVIES from "./assets/ownedMovieList.ts";
 import OWNED_LIST_QUERY from "./assets/constants.js";
 import SEARCH_QUERY from "./assets/constants.js";
 
