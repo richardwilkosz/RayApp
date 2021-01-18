@@ -7,17 +7,17 @@
   >
     <v-card>
       <v-img
+        v-if="imagePath"
         :src="imagePath"
       ></v-img>
       <v-card-title class="pb-0">
         {{ movie.title ? movie.title : "" }}
         <span class="body-2 text--secondary ml-5 mt-1 d-none d-sm-flex">
-          {{ movie.release_date ? movie.release_date.substring(0, 4) : "" }}, {{ movie.runtime ? Math.floor(movie.runtime / 60) + "h " + movie.runtime % 60 + "m" : "" }}
+          {{ movie.release_date ? movie.release_date.substring(0, 4) : "" }}{{ movie.runtime ? ", " + Math.floor(movie.runtime / 60) + "h " + movie.runtime % 60 + "m" : "" }}
         </span>
       </v-card-title>
       <v-card-text>
-        <p class="d-sm-none">{{ movie.release_date ? movie.release_date.substring(0, 4) : "" }}, {{ movie.runtime ? Math.floor(movie.runtime / 60) + "h " + movie.runtime % 60 + "m" : "" }}</p>
-        <!-- <p class="mt-sm-4">dir. Hayao Miyazaki</p> -->
+        <p class="d-sm-none">{{ movie.release_date ? movie.release_date.substring(0, 4) : "" }}{{ movie.runtime ? ", " + Math.floor(movie.runtime / 60) + "h " + movie.runtime % 60 + "m" : "" }}</p>
         <br>
         <div>{{ movie.overview ? movie.overview : "" }} </div>
       </v-card-text>

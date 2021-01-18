@@ -13,8 +13,9 @@
 </template>
 
 <script>
+import axios from 'axios';
 import OWNED_MOVIES from "./assets/ownedMovieList.ts";
-//import IMAGE_QUERY from './assets/constants.js';
+import OWNED_LIST_QUERY from './assets/constants.js';
 
 import AppBar from "./components/AppBar";
 import MovieList from "./components/MovieList";
@@ -24,7 +25,8 @@ export default {
   name: "Ray",
 
   data: () => ({
-    searchResults: [],
+    ownedIds: [],
+    ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
     showUnownedMovies: false,
@@ -34,6 +36,18 @@ export default {
     AppBar,
     MovieList,
     Footer,
+  },
+
+  // Get list of owned movies to categorize between owned/unowned
+  created() {
+    let vm = this;
+    axios.get(OWNED_LIST_QUERY.OWNED_LIST_QUERY).then((response) => {
+      let ownedResults = response.data.items;
+      ownedResults.forEach(function (result) {
+        vm.ownedMovies.push(result);
+        vm.ownedIds.push(result.id);
+      });
+    });
   },
 
   methods: {
@@ -47,10 +61,8 @@ export default {
 
         e.forEach(function (result) {
           if (OWNED_MOVIES.OWNED_MOVIES.includes(result.id)) {
-            //console.log(IMAGE_QUERY.IMAGE_QUERY + result.poster_path);
             vm.ownedResults.push(result);
           } else {
-            //console.log("Unowned: " + result.title);
             vm.unownedResults.push(result);
           }
         });
@@ -59,8 +71,6 @@ export default {
       if (this.unownedMovies && this.unownedMovies.length > 0) {
         this.showUnownedMovies = true;
       }
-
-      //this.searchResults = e;
     },
   },
 };

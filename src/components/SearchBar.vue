@@ -30,7 +30,6 @@ export default {
         axios.get(SEARCH_QUERY + input).then((response) => {
           this.results = response.data.results;
         });
-        //console.log(this.results);
         this.$emit('update-results', this.results);
       }
     },
