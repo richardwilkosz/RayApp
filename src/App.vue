@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <AppBar @update-results="updateResults" />
+    <AppBar @update-search="search" />
     <v-main>
       <MovieList
         :ownedMovies="ownedResults"
@@ -13,9 +13,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-import OWNED_MOVIES from "./assets/ownedMovieList.ts";
-import OWNED_LIST_QUERY from './assets/constants.js';
+import axios from "axios";
+// import OWNED_MOVIES from "./assets/ownedMovieList.ts";
+import OWNED_LIST_QUERY from "./assets/constants.js";
+import SEARCH_QUERY from "./assets/constants.js";
 
 import AppBar from "./components/AppBar";
 import MovieList from "./components/MovieList";
@@ -51,20 +52,25 @@ export default {
   },
 
   methods: {
-    updateResults(e) {
+    search(e) {
       if (e) {
-        // TODO: Apply sorts/filters
-
-        this.ownedResults = new Array();
-        this.unownedResults = new Array();
         let vm = this;
 
-        e.forEach(function (result) {
-          if (OWNED_MOVIES.OWNED_MOVIES.includes(result.id)) {
-            vm.ownedResults.push(result);
-          } else {
-            vm.unownedResults.push(result);
-          }
+        axios.get(SEARCH_QUERY.SEARCH_QUERY + e).then((response) => {
+          let allResults = response.data.results;
+
+          // TODO: Apply sorts/filters
+
+          this.ownedResults = new Array();
+          this.unownedResults = new Array();
+
+          allResults.forEach(function (result) {
+            if (vm.ownedIds.includes(result.id)) {
+              vm.ownedResults.push(result);
+            } else {
+              vm.unownedResults.push(result);
+            }
+          });
         });
       }
 

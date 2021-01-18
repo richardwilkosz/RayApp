@@ -3,7 +3,7 @@
     <v-app-bar app>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-spacer />
-        <SearchBar @update-results="updateResults" />
+        <SearchBar @update-search="updateSearch" />
         <v-spacer />
         <div class="d-none d-sm-flex">
           <SortMenu />
@@ -78,8 +78,8 @@ export default {
   },
 
   methods: {
-    updateResults: function(e) {
-      this.$emit('update-results', e)
+    updateSearch: function(e) {
+      this.$emit('update-search', e)
     }
   }
 };
