@@ -14,8 +14,7 @@
 
 <script>
 import axios from "axios";
-import OWNED_LIST_QUERY from "./assets/constants.js";
-import SEARCH_QUERY from "./assets/constants.js";
+import Constants from "./assets/Constants.js";
 
 import AppBar from "./components/AppBar";
 import MovieList from "./components/MovieList";
@@ -41,7 +40,7 @@ export default {
   // Get list of owned movies to categorize between owned/unowned
   created() {
     let vm = this;
-    axios.get(OWNED_LIST_QUERY.OWNED_LIST_QUERY).then((response) => {
+    axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
       let ownedResults = response.data.items;
       ownedResults.forEach(function (result) {
         vm.ownedMovies.push(result);
@@ -55,7 +54,7 @@ export default {
       if (e) {
         let vm = this;
 
-        axios.get(SEARCH_QUERY.SEARCH_QUERY + e).then((response) => {
+        axios.get(Constants.SEARCH_QUERY + e).then((response) => {
           let allResults = response.data.results;
 
           // TODO: Apply sorts/filters
@@ -82,6 +81,7 @@ export default {
 </script>
 
 <style>
+/* Used for mobile browsers' scroll bouncing */
 html {
   background-color: #272727;
 }

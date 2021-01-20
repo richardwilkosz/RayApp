@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import IMAGE_QUERY from "../assets/constants.js";
+import Constants from "../assets/Constants.js";
 import axios from "axios";
 
 import OwnedMovie from "./OwnedMovie";
@@ -89,23 +89,20 @@ export default {
     dialogOpen: false,
     openedMovie: new Object(),
     openedMovieImagePath: "",
-    imageQuery: IMAGE_QUERY.IMAGE_QUERY,
+    imageQuery: Constants.IMAGE_QUERY,
   }),
 
   methods: {
     openDialog: function (id) {
-      let apiKey = "c273df1bacfdd9e48630cddba6ef4d18";
-      let detailsQuery =
-        "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + apiKey;
+      let detailsQuery = Constants.DETAILS_QUERY(id);
 
       axios.get(detailsQuery).then((response) => {
         this.openedMovie = response.data;
 
         if (this.openedMovie.backdrop_path) {
           this.openedMovieImagePath =
-            "https://image.tmdb.org/t/p/w500" + this.openedMovie.backdrop_path;
-        }
-        else {
+            Constants.BACKDROP_PATH + this.openedMovie.backdrop_path;
+        } else {
           this.openedMovieImagePath = "";
         }
 
