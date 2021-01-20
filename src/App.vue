@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <AppBar @update-search="search" />
+    <AppBar @update-search="search" @menu-view-all="queryAllOwned" />
     <v-main>
       <MovieList
         :ownedMovies="ownedResults"
@@ -13,18 +13,18 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Constants from './assets/Constants.js';
+import axios from "axios";
+import Constants from "./assets/Constants.js";
 
-import AppBar from './components/AppBar';
-import MovieList from './components/MovieList';
-import AppFooter from './components/AppFooter';
+import AppBar from "./components/AppBar";
+import MovieList from "./components/MovieList";
+import AppFooter from "./components/AppFooter";
 
 export default {
-  name: 'Ray',
+  name: "Ray",
 
   data: () => ({
-    input: '',
+    input: "",
     ownedIds: [],
     ownedMovies: [],
     ownedResults: [],
@@ -59,15 +59,14 @@ export default {
       if (e !== this.input) {
         this.input = e;
 
-          // Clear previous results
-          this.ownedResults = new Array();
-          this.unownedResults = new Array();
+        // Clear previous results
+        this.ownedResults = new Array();
+        this.unownedResults = new Array();
 
-        if (e === '*') {
+        if (e === "*") {
           this.queryAllOwned();
           this.showUnownedMovies = false;
-        }
-        else {
+        } else {
           this.queryFromString(e);
         }
       }
@@ -82,18 +81,18 @@ export default {
       let vm = this;
 
       axios.get(Constants.SEARCH_QUERY + query).then((response) => {
-          let allResults = response.data.results;
+        let allResults = response.data.results;
 
-          // TODO: Apply sorts/filters
+        // TODO: Apply sorts/filters
 
-          allResults.forEach(function (result) {
-            if (vm.ownedIds.includes(result.id)) {
-              vm.ownedResults.push(result);
-            } else {
-              vm.unownedResults.push(result);
-            }
-          });
+        allResults.forEach(function (result) {
+          if (vm.ownedIds.includes(result.id)) {
+            vm.ownedResults.push(result);
+          } else {
+            vm.unownedResults.push(result);
+          }
         });
+      });
 
       if (vm.unownedMovies && vm.unownedMovies.length > 0) {
         vm.showUnownedMovies = true;

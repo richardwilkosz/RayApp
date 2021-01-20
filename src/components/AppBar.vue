@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-app-bar app>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-spacer />
-        <SearchBar @update-search="updateSearch" />
-        <v-spacer />
-        <div class="d-none d-sm-flex">
-          <SortMenu />
-          <FilterMenu class="ml-3" />
-        </div>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-spacer />
+      <SearchBar @update-search="updateSearch" />
+      <v-spacer />
+      <div class="d-none d-sm-flex">
+        <SortMenu />
+        <FilterMenu class="ml-3" />
+      </div>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary app>
@@ -27,7 +27,12 @@
       </v-list-item>
       <v-divider></v-divider>
       <v-list nav dense>
-        <v-list-item v-for="item in navItems" :key="item.title" link>
+        <v-list-item
+          v-for="item in navItems"
+          :key="item.title"
+          @click="performItemAction(item.emission)"
+          link
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -41,9 +46,9 @@
 </template>
 
 <script>
-import SearchBar from './SearchBar';
-import SortMenu from './SortMenu';
-import FilterMenu from './FilterMenu';
+import SearchBar from "./SearchBar";
+import SortMenu from "./SortMenu";
+import FilterMenu from "./FilterMenu";
 
 export default {
   components: {
@@ -57,16 +62,19 @@ export default {
     group: null,
     navItems: [
       {
-        icon: 'mdi-home',
-        title: 'Home',
+        icon: "mdi-home",
+        title: "Home",
+        emission: "menu-home",
       },
       {
-        icon: 'mdi-format-list-bulleted',
-        title: 'View All Owned Movies',
+        icon: "mdi-format-list-bulleted",
+        title: "View All Owned Movies",
+        emission: "menu-view-all",
       },
       {
-        icon: 'mdi-help',
-        title: 'Surprise Me',
+        icon: "mdi-help",
+        title: "Surprise Me",
+        emission: "surprise",
       },
     ],
   }),
@@ -78,9 +86,13 @@ export default {
   },
 
   methods: {
-    updateSearch: function(e) {
-      this.$emit('update-search', e)
-    }
-  }
+    updateSearch: function (e) {
+      this.$emit("update-search", e);
+    },
+    performItemAction: function (emission) {
+      this.$emit(emission);
+      this.drawer = false;
+    },
+  },
 };
 </script>
