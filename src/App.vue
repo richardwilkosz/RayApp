@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <AppBar @update-results="updateResults" />
+    <AppBar @update-search="search" @menu-view-all="queryAllOwned" />
     <v-main>
       <MovieList
         :ownedMovies="ownedResults"
@@ -8,23 +8,25 @@
         :showUnownedMovies="unownedResults.length > 0"
       />
     </v-main>
-    <Footer />
+    <AppFooter />
   </v-app>
 </template>
 
 <script>
-import OWNED_MOVIES from "./assets/ownedMovieList.ts";
-//import IMAGE_QUERY from './assets/constants.js';
+import axios from "axios";
+import Constants from "./assets/Constants.js";
 
 import AppBar from "./components/AppBar";
 import MovieList from "./components/MovieList";
-import Footer from "./components/Footer";
+import AppFooter from "./components/AppFooter";
 
 export default {
   name: "Ray",
 
   data: () => ({
-    searchResults: [],
+    input: "",
+    ownedIds: [],
+    ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
     showUnownedMovies: false,
@@ -33,40 +35,75 @@ export default {
   components: {
     AppBar,
     MovieList,
-    Footer,
+    AppFooter,
+  },
+
+  // Get list of owned movies to categorize between owned/unowned
+  created() {
+    let vm = this;
+    axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
+      let ownedResults = response.data.items;
+      ownedResults.forEach(function (result) {
+        vm.ownedMovies.push(result);
+        vm.ownedIds.push(result.id);
+      });
+    });
+
+    // Default to all owned movies
+    this.queryAllOwned();
   },
 
   methods: {
-    updateResults(e) {
-      if (e) {
-        // TODO: Apply sorts/filters
+    search(e) {
+      // Prevent duplicate searches
+      if (e !== this.input) {
+        this.input = e;
 
+        // Clear previous results
         this.ownedResults = new Array();
         this.unownedResults = new Array();
-        let vm = this;
 
-        e.forEach(function (result) {
-          if (OWNED_MOVIES.OWNED_MOVIES.includes(result.id)) {
-            //console.log(IMAGE_QUERY.IMAGE_QUERY + result.poster_path);
+        if (e === "*") {
+          this.queryAllOwned();
+          this.showUnownedMovies = false;
+        } else {
+          this.queryFromString(e);
+        }
+      }
+    },
+
+    queryAllOwned() {
+      this.ownedResults = this.ownedMovies;
+      return this.ownedMovies;
+    },
+
+    queryFromString(query) {
+      let vm = this;
+
+      axios.get(Constants.SEARCH_QUERY + query).then((response) => {
+        let allResults = response.data.results;
+
+        // TODO: Apply sorts/filters
+
+        allResults.forEach(function (result) {
+          if (vm.ownedIds.includes(result.id)) {
             vm.ownedResults.push(result);
           } else {
-            //console.log("Unowned: " + result.title);
             vm.unownedResults.push(result);
           }
         });
-      }
+      });
 
-      if (this.unownedMovies && this.unownedMovies.length > 0) {
-        this.showUnownedMovies = true;
+      if (vm.unownedMovies && vm.unownedMovies.length > 0) {
+        vm.showUnownedMovies = true;
       }
-
-      //this.searchResults = e;
     },
   },
 };
 </script>
 
 <style>
+/* Used for mobile browsers' scroll bouncing */
 html {
   background-color: #272727;
 }

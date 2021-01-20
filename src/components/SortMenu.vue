@@ -28,9 +28,9 @@ export default {
   data: () => ({
     selectedItem: 0,
     sortItems: [
-      [{ title: "Alphabetical", index: 0 }],
-      [{ title: "Shortest", index: 1 }, { title: "Longest", index: 2 }],
-      [{ title: "Newest" , index: 3}, { title: "Oldest", index: 4 }],
+      [{ title: 'Alphabetical', index: 0 }],
+      [{ title: 'Shortest', index: 1 }, { title: 'Longest', index: 2 }],
+      [{ title: 'Newest' , index: 3}, { title: 'Oldest', index: 4 }],
     ],
   }),
 };

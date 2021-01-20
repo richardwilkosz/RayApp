@@ -61,14 +61,14 @@
 </template>
 
 <script>
-import IMAGE_QUERY from "../assets/constants.js";
-import axios from "axios";
+import axios from 'axios';
 
-import OwnedMovie from "./OwnedMovie";
-import UnownedMovie from "./UnownedMovie";
-import MovieDetails from "./MovieDetails";
-import SortMenu from "./SortMenu";
-import FilterMenu from "./FilterMenu";
+import Constants from '../assets/Constants.js';
+import OwnedMovie from './OwnedMovie';
+import UnownedMovie from './UnownedMovie';
+import MovieDetails from './MovieDetails';
+import SortMenu from './SortMenu';
+import FilterMenu from './FilterMenu';
 
 export default {
   components: {
@@ -88,91 +88,24 @@ export default {
   data: () => ({
     dialogOpen: false,
     openedMovie: new Object(),
-    openedMovieImagePath: "",
-    imageQuery: IMAGE_QUERY.IMAGE_QUERY,
-    // ownedMovies: [
-    //   {
-    //     title: "Portrait of a Lady on Fire",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/3NTEMlG5mQdIAlKDl3AJG0rX29Z.jpg",
-    //     runtime: "1h 59m",
-    //     releaseYear: "2019",
-    //   },
-    //   {
-    //     title: "Eternal Sunshine of the Spotless Mind",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/6at9dM9tg1TTE5DDWWKzGDINQJj.jpg",
-    //     runtime: "1h 48m",
-    //     releaseYear: "2004",
-    //   },
-    //   {
-    //     title: "Frances Ha",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/jrq1NoKvsxWCcffVOjegiYwloFN.jpg",
-    //     runtime: "1h 26m",
-    //     releaseYear: "2012",
-    //   },
-    //   {
-    //     title: "Spider-Man 3",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/sqZKCRYGovZ8aN99VVJSdL8Ja9k.jpg",
-    //     runtime: "2h 19m",
-    //     releaseYear: "2007",
-    //   },
-    //   {
-    //     title: "Manchester by the Sea",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/e8daDzP0vFOnGyKmve95Yv0D0io.jpg",
-    //     runtime: "2h 18m",
-    //     releaseYear: "2016",
-    //   },
-    //   {
-    //     title: "Hereditary",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/lHV8HHlhwNup2VbpiACtlKzaGIQ.jpg",
-    //     runtime: "2h 7m",
-    //     releaseYear: "2018",
-    //   },
-    //   {
-    //     title: "In the Mood for Love",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/iYypPT4bhqXfq1b6EnmxvRt6b2Y.jpg",
-    //     runtime: "1h 39m",
-    //     releaseYear: "2000",
-    //   },
-    // ],
-
-    // unownedMovies: [
-    //   {
-    //     title: "The Favourite",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/cwBq0onfmeilU5xgqNNjJAMPfpw.jpg",
-    //   },
-    //   {
-    //     title: "Thor: Ragnarok",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/8hnNdUFlUkjPWxKDyiE4Kn8h7Q5.jpg",
-    //   },
-    //   {
-    //     title: "Nightcrawler",
-    //     src:
-    //       "https://www.themoviedb.org/t/p/w1280/gYPIRu0jX2CGYdeO422cq3N78ju.jpg",
-    //   },
-    // ],
+    openedMovieImagePath: '',
+    imageQuery: Constants.IMAGE_QUERY,
   }),
 
   methods: {
     openDialog: function (id) {
-      let apiKey = "c273df1bacfdd9e48630cddba6ef4d18";
-      let detailsQuery =
-        "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + apiKey;
+      let detailsQuery = Constants.DETAILS_QUERY(id);
 
       axios.get(detailsQuery).then((response) => {
-        console.log(response.data);
         this.openedMovie = response.data;
-        this.openedMovieImagePath =
-          "https://image.tmdb.org/t/p/w500" + this.openedMovie.backdrop_path;
-          console.log(this.openedMovieImagePath);
+
+        if (this.openedMovie.backdrop_path) {
+          this.openedMovieImagePath =
+            Constants.BACKDROP_PATH + this.openedMovie.backdrop_path;
+        } else {
+          this.openedMovieImagePath = '';
+        }
+
         this.dialogOpen = true;
       });
     },
