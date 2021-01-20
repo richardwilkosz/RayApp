@@ -48,6 +48,9 @@ export default {
         vm.ownedIds.push(result.id);
       });
     });
+
+    // Default to all owned movies
+    this.queryAllOwned();
   },
 
   methods: {
