@@ -8,7 +8,7 @@
         :showUnownedMovies="unownedResults.length > 0"
       />
     </v-main>
-    <Footer />
+    <AppFooter />
   </v-app>
 </template>
 
@@ -18,7 +18,7 @@ import Constants from "./assets/Constants.js";
 
 import AppBar from "./components/AppBar";
 import MovieList from "./components/MovieList";
-import Footer from "./components/Footer";
+import AppFooter from "./components/AppFooter";
 
 export default {
   name: "Ray",
@@ -34,7 +34,7 @@ export default {
   components: {
     AppBar,
     MovieList,
-    Footer,
+    AppFooter,
   },
 
   // Get list of owned movies to categorize between owned/unowned
