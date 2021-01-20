@@ -21,6 +21,9 @@ export default {
       if (input.length > 3) {
         this.$emit('update-search', input);
       }
+      else {
+        this.$emit('update-search', '*');
+      }
     },
   },
 };

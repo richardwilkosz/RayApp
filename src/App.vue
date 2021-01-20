@@ -13,17 +13,18 @@
 </template>
 
 <script>
-import axios from "axios";
-import Constants from "./assets/Constants.js";
+import axios from 'axios';
+import Constants from './assets/Constants.js';
 
-import AppBar from "./components/AppBar";
-import MovieList from "./components/MovieList";
-import AppFooter from "./components/AppFooter";
+import AppBar from './components/AppBar';
+import MovieList from './components/MovieList';
+import AppFooter from './components/AppFooter';
 
 export default {
-  name: "Ray",
+  name: 'Ray',
 
   data: () => ({
+    input: '',
     ownedIds: [],
     ownedMovies: [],
     ownedResults: [],
@@ -51,16 +52,36 @@ export default {
 
   methods: {
     search(e) {
-      if (e) {
-        let vm = this;
+      // Prevent duplicate searches
+      if (e !== this.input) {
+        this.input = e;
 
-        axios.get(Constants.SEARCH_QUERY + e).then((response) => {
+          // Clear previous results
+          this.ownedResults = new Array();
+          this.unownedResults = new Array();
+
+        if (e === '*') {
+          this.queryAllOwned();
+          this.showUnownedMovies = false;
+        }
+        else {
+          this.queryFromString(e);
+        }
+      }
+    },
+
+    queryAllOwned() {
+      this.ownedResults = this.ownedMovies;
+      return this.ownedMovies;
+    },
+
+    queryFromString(query) {
+      let vm = this;
+
+      axios.get(Constants.SEARCH_QUERY + query).then((response) => {
           let allResults = response.data.results;
 
           // TODO: Apply sorts/filters
-
-          this.ownedResults = new Array();
-          this.unownedResults = new Array();
 
           allResults.forEach(function (result) {
             if (vm.ownedIds.includes(result.id)) {
@@ -70,10 +91,9 @@ export default {
             }
           });
         });
-      }
 
-      if (this.unownedMovies && this.unownedMovies.length > 0) {
-        this.showUnownedMovies = true;
+      if (vm.unownedMovies && vm.unownedMovies.length > 0) {
+        vm.showUnownedMovies = true;
       }
     },
   },
