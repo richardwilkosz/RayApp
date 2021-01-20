@@ -14,7 +14,7 @@
 <script>
 export default {
   data: () => ({
-      input: "",
+      input: '',
   }),
   methods: {
     updateSearch: function (input) {

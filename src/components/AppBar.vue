@@ -41,9 +41,9 @@
 </template>
 
 <script>
-import SearchBar from "./SearchBar";
-import SortMenu from "./SortMenu";
-import FilterMenu from "./FilterMenu";
+import SearchBar from './SearchBar';
+import SortMenu from './SortMenu';
+import FilterMenu from './FilterMenu';
 
 export default {
   components: {
@@ -57,16 +57,16 @@ export default {
     group: null,
     navItems: [
       {
-        icon: "mdi-home",
-        title: "Home",
+        icon: 'mdi-home',
+        title: 'Home',
       },
       {
-        icon: "mdi-format-list-bulleted",
-        title: "View All Owned Movies",
+        icon: 'mdi-format-list-bulleted',
+        title: 'View All Owned Movies',
       },
       {
-        icon: "mdi-help",
-        title: "Surprise Me",
+        icon: 'mdi-help',
+        title: 'Surprise Me',
       },
     ],
   }),

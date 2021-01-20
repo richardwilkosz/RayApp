@@ -61,14 +61,14 @@
 </template>
 
 <script>
-import Constants from "../assets/Constants.js";
-import axios from "axios";
+import axios from 'axios';
 
-import OwnedMovie from "./OwnedMovie";
-import UnownedMovie from "./UnownedMovie";
-import MovieDetails from "./MovieDetails";
-import SortMenu from "./SortMenu";
-import FilterMenu from "./FilterMenu";
+import Constants from '../assets/Constants.js';
+import OwnedMovie from './OwnedMovie';
+import UnownedMovie from './UnownedMovie';
+import MovieDetails from './MovieDetails';
+import SortMenu from './SortMenu';
+import FilterMenu from './FilterMenu';
 
 export default {
   components: {
@@ -88,7 +88,7 @@ export default {
   data: () => ({
     dialogOpen: false,
     openedMovie: new Object(),
-    openedMovieImagePath: "",
+    openedMovieImagePath: '',
     imageQuery: Constants.IMAGE_QUERY,
   }),
 
@@ -103,7 +103,7 @@ export default {
           this.openedMovieImagePath =
             Constants.BACKDROP_PATH + this.openedMovie.backdrop_path;
         } else {
-          this.openedMovieImagePath = "";
+          this.openedMovieImagePath = '';
         }
 
         this.dialogOpen = true;
