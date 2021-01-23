@@ -1,34 +1,36 @@
 <template>
   <v-container fluid>
     <!-- Owned Movie Results -->
-    <v-row dense>
-      <v-col cols="12" class="d-flex d-sm-none">
-        <v-spacer />
-        <SortMenu />
-        <FilterMenu class="ml-3" />
-        <v-spacer />
-      </v-col>
-      <v-col cols="12" class="py-0">
-        <v-subheader>OWNED ({{ getOwnedMoviesCount() }})</v-subheader>
-      </v-col>
-      <v-col
-        v-for="movie in ownedMovies"
-        :key="movie.id"
-        cols="6"
-        sm="4"
-        md="3"
-        lg="2"
-        @click.stop="openDialog(movie.id)"
-      >
-        <OwnedMovie
-          :title="movie.title"
-          :src="imageQuery + movie.poster_path"
-          :releaseYear="getReleaseYear(movie)"
-          :runtime="getRuntimeInHours(movie)"
-          v-ripple="{ class: 'primary--text' }"
-        />
-      </v-col>
-    </v-row>
+    <template v-if="getOwnedMoviesCount() > 0">
+      <v-row dense>
+        <v-col cols="12" class="d-flex d-sm-none">
+          <v-spacer />
+          <SortMenu />
+          <FilterMenu class="ml-3" />
+          <v-spacer />
+        </v-col>
+        <v-col cols="12" class="py-0">
+          <v-subheader>OWNED ({{ getOwnedMoviesCount() }})</v-subheader>
+        </v-col>
+        <v-col
+          v-for="movie in ownedMovies"
+          :key="movie.id"
+          cols="6"
+          sm="4"
+          md="3"
+          lg="2"
+          @click.stop="openDialog(movie.id)"
+        >
+          <OwnedMovie
+            :title="movie.title"
+            :src="imageQuery + movie.poster_path"
+            :releaseYear="getReleaseYear(movie)"
+            :runtime="getRuntimeInHours(movie)"
+            v-ripple="{ class: 'primary--text' }"
+          />
+        </v-col>
+      </v-row>
+    </template>
 
     <!-- Unowned Movie Results -->
     <template v-if="getUnownedMoviesCount() > 0">
@@ -55,6 +57,18 @@
           />
         </v-col>
       </v-row>
+    </template>
+
+    <!-- No Results -->
+    <template
+      v-if="getOwnedMoviesCount() === 0 && getUnownedMoviesCount() === 0"
+    >
+      <v-container>
+        <v-alert
+          >No results found. Try searching or filtering
+          differently.</v-alert
+        >
+      </v-container>
     </template>
 
     <MovieDetails

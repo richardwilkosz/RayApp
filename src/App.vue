@@ -95,13 +95,11 @@ export default {
           let ownedMovieDetails = vm.getOwnedMovie(result.id);
           if (ownedMovieDetails && !vm.ownedResults.includes(ownedMovieDetails)) {
             vm.ownedResults.push(ownedMovieDetails);
-          } else {
+          } else if (!vm.unownedResults.includes(result)) {
             vm.unownedResults.push(result);
           }
         });
       });
-
-      console.log(vm.unownedResults);
     },
   },
 };
