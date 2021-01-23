@@ -7,11 +7,19 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item-group v-model="selectedItem" color="primary" mandatory>
+        <v-list-item-group
+          v-model="selectedItem"
+          color="primary"
+          mandatory
+          @click="selectSort(selectedItem)"
+        >
           <div v-for="(item, index) in sortItems" :key="item.index">
             <v-divider v-if="index > 0"></v-divider>
             <v-list-item v-for="child in item" :key="child.index">
-              <v-list-item-icon :class="{ hidden: child.index !== selectedItem }" class="mr-4">
+              <v-list-item-icon
+                :class="{ hidden: child.index !== selectedItem }"
+                class="mr-4"
+              >
                 <v-icon>mdi-check</v-icon>
               </v-list-item-icon>
               <v-list-item-title>{{ child.title }}</v-list-item-title>
@@ -29,15 +37,29 @@ export default {
     selectedItem: 0,
     sortItems: [
       [{ title: 'Alphabetical', index: 0 }],
-      [{ title: 'Shortest', index: 1 }, { title: 'Longest', index: 2 }],
-      [{ title: 'Newest' , index: 3}, { title: 'Oldest', index: 4 }],
+      [
+        { title: 'Shortest', index: 1 },
+        { title: 'Longest', index: 2 },
+      ],
+      [
+        { title: 'Newest', index: 3 },
+        { title: 'Oldest', index: 4 },
+      ],
     ],
   }),
+
+  methods: {
+    selectSort: function (selectedItem) {
+      console.log(selectedItem);
+      console.log('hi');
+      this.$emit('update-sort', selectedItem);
+    },
+  },
 };
 </script>
 
 <style>
-  .hidden {
-    visibility: hidden;
-  }
+.hidden {
+  visibility: hidden;
+}
 </style>

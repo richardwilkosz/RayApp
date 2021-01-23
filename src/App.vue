@@ -5,7 +5,6 @@
       <MovieList
         :ownedMovies="ownedResults"
         :unownedMovies="unownedResults"
-        :showUnownedMovies="unownedResults.length > 0"
       />
     </v-main>
     <AppFooter />
@@ -29,7 +28,6 @@ export default {
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
-    showUnownedMovies: false,
   }),
 
   components: {
@@ -65,7 +63,6 @@ export default {
 
         if (e === "*") {
           this.queryAllOwned();
-          this.showUnownedMovies = false;
         } else {
           this.queryFromString(e);
         }
@@ -93,10 +90,6 @@ export default {
           }
         });
       });
-
-      if (vm.unownedMovies && vm.unownedMovies.length > 0) {
-        vm.showUnownedMovies = true;
-      }
     },
   },
 };

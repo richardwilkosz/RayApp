@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import SearchBar from "./SearchBar";
-import SortMenu from "./SortMenu";
-import FilterMenu from "./FilterMenu";
+import SearchBar from './SearchBar';
+import SortMenu from './SortMenu';
+import FilterMenu from './FilterMenu';
 
 export default {
   components: {
@@ -62,19 +62,19 @@ export default {
     group: null,
     navItems: [
       {
-        icon: "mdi-home",
-        title: "Home",
-        emission: "menu-home",
+        icon: 'mdi-home',
+        title: 'Home',
+        emission: 'menu-home',
       },
       {
-        icon: "mdi-format-list-bulleted",
-        title: "View All Owned Movies",
-        emission: "menu-view-all",
+        icon: 'mdi-format-list-bulleted',
+        title: 'View All Owned Movies',
+        emission: 'menu-view-all',
       },
       {
-        icon: "mdi-help",
-        title: "Surprise Me",
-        emission: "surprise",
+        icon: 'mdi-help',
+        title: 'Surprise Me',
+        emission: 'surprise',
       },
     ],
   }),
@@ -87,7 +87,7 @@ export default {
 
   methods: {
     updateSearch: function (e) {
-      this.$emit("update-search", e);
+      this.$emit('update-search', e);
     },
     performItemAction: function (emission) {
       this.$emit(emission);

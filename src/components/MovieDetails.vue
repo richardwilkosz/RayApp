@@ -39,13 +39,13 @@ export default {
 
   methods: {
     closeDialog: function () {
-      this.$emit("close-dialog");
+      this.$emit('close-dialog');
     },
     getReleaseYear: function(movie) {
-      return movie.release_date ? movie.release_date.substring(0, 4) : "";
+      return movie.release_date ? movie.release_date.substring(0, 4) : '';
     },
     getRuntimeInHours: function(movie) {
-      return movie.runtime ? ", " + Math.floor(movie.runtime / 60) + "h " + movie.runtime % 60 + "m" : "";
+      return movie.runtime ? ', ' + Math.floor(movie.runtime / 60) + 'h ' + movie.runtime % 60 + 'm' : '';
     },
   },
 };
