@@ -14,15 +14,14 @@
 <script>
 export default {
   data: () => ({
-      input: '',
+    input: "",
   }),
   methods: {
     updateSearch: function (input) {
       if (input.length > 3) {
-        this.$emit('update-search', input);
-      }
-      else {
-        this.$emit('update-search', '*');
+        this.$emit("update-search", input);
+      } else {
+        this.$emit("update-search", "*");
       }
     },
   },

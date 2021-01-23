@@ -2,11 +2,7 @@
   <v-app dark>
     <AppBar @update-search="search" @menu-view-all="queryAllOwned" />
     <v-main>
-      <MovieList
-        :ownedMovies="ownedResults"
-        :unownedMovies="unownedResults"
-        :showUnownedMovies="unownedResults.length > 0"
-      />
+      <MovieList :ownedMovies="ownedResults" :unownedMovies="unownedResults" />
     </v-main>
     <AppFooter />
   </v-app>
@@ -25,11 +21,12 @@ export default {
 
   data: () => ({
     input: "",
-    ownedIds: [],
+    sort: "Alphabetical",
+    filter: [],
+
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
-    showUnownedMovies: false,
   }),
 
   components: {
@@ -43,13 +40,15 @@ export default {
     let vm = this;
     axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
       let ownedResults = response.data.items;
+      // Get extra details of each owned movie, e.g. runtime
       ownedResults.forEach(function (result) {
-        vm.ownedMovies.push(result);
-        vm.ownedIds.push(result.id);
+        axios.get(Constants.DETAILS_QUERY(result.id)).then((response) => {
+          vm.ownedMovies.push(response.data);
+        });
       });
     });
 
-    // Default to all owned movies
+    // Default search to all owned movies
     this.queryAllOwned();
   },
 
@@ -65,7 +64,6 @@ export default {
 
         if (e === "*") {
           this.queryAllOwned();
-          this.showUnownedMovies = false;
         } else {
           this.queryFromString(e);
         }
@@ -74,6 +72,7 @@ export default {
 
     queryAllOwned() {
       this.ownedResults = this.ownedMovies;
+      this.sortAndFilter(this.ownedResults);
       return this.ownedMovies;
     },
 
@@ -82,20 +81,44 @@ export default {
 
       axios.get(Constants.SEARCH_QUERY + query).then((response) => {
         let allResults = response.data.results;
-
-        // TODO: Apply sorts/filters
+        vm.sortAndFilter(allResults);
 
         allResults.forEach(function (result) {
-          if (vm.ownedIds.includes(result.id)) {
-            vm.ownedResults.push(result);
-          } else {
+          let ownedMovieDetails = vm.getOwnedMovie(result.id);
+          if (
+            ownedMovieDetails &&
+            !vm.ownedResults.includes(ownedMovieDetails)
+          ) {
+            vm.ownedResults.push(ownedMovieDetails);
+          } else if (!vm.unownedResults.includes(result)) {
             vm.unownedResults.push(result);
           }
         });
       });
+    },
 
-      if (vm.unownedMovies && vm.unownedMovies.length > 0) {
-        vm.showUnownedMovies = true;
+    // Checks if movie is owned; if so, returns its full details
+    getOwnedMovie(id) {
+      let movie = null;
+      this.ownedMovies.forEach(function (ownedMovie) {
+        if (id === ownedMovie.id) {
+          movie = ownedMovie;
+        }
+      });
+      return movie;
+    },
+
+    // TODO: Implement fully
+    sortAndFilter(movieArray) {
+      if (this.sort === "Alphabetical") {
+        console.log("alpha sort")
+        movieArray.sort((a, b) =>
+          a.title.toUpperCase() > b.title.toUpperCase()
+            ? 1
+            : b.title.toUpperCase() > a.title.toUpperCase()
+            ? -1
+            : 0
+        );
       }
     },
   },

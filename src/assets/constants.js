@@ -3,7 +3,7 @@ const API_READ_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMjczZGYxYmFjZmRk
 const SEARCH_QUERY = 'https://api.themoviedb.org/3/search/movie?api_key=' + API_KEY + '&query=';
 const IMAGE_QUERY = 'https://image.tmdb.org/t/p/w500';
 const OWNED_LIST_QUERY = 'https://api.themoviedb.org/3/list/7072653?api_key=' + API_KEY;
-const DETAILS_QUERY = "https://api.themoviedb.org/3/movie/";
+const DETAILS_QUERY = 'https://api.themoviedb.org/3/movie/';
 const BACKDROP_PATH = 'https://image.tmdb.org/t/p/w500';
 
 export default {
