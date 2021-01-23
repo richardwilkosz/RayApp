@@ -2,11 +2,14 @@
   <v-container fluid>
     <!-- Owned Movie Results -->
     <v-row dense>
-      <v-col cols="12" class="d-flex d-sm-none mb-1">
+      <v-col cols="12" class="d-flex d-sm-none">
         <v-spacer />
         <SortMenu />
         <FilterMenu class="ml-3" />
         <v-spacer />
+      </v-col>
+      <v-col cols="12" class="py-0">
+        <v-subheader>OWNED ({{ getOwnedMoviesCount() }})</v-subheader>
       </v-col>
       <v-col
         v-for="movie in ownedMovies"
@@ -20,16 +23,19 @@
         <OwnedMovie
           :title="movie.title"
           :src="imageQuery + movie.poster_path"
+          :releaseYear="getReleaseYear(movie)"
+          :runtime="getRuntimeInHours(movie)"
           v-ripple="{ class: 'primary--text' }"
         />
       </v-col>
     </v-row>
 
     <!-- Unowned Movie Results -->
-    <template v-if="showUnownedMovies">
-      <v-divider class="mt-3" />
-      <h3 class="font-weight-regular py-2">Movies I Don't Own (Yet)</h3>
+    <template v-if="getUnownedMoviesCount() > 0">
       <v-row dense class="my-1">
+        <v-col cols="12" class="py-0">
+          <v-subheader>NOT OWNED... YET</v-subheader>
+        </v-col>
         <v-col
           v-for="movie in unownedMovies"
           :key="movie.id"
@@ -61,14 +67,14 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
-import Constants from '../assets/Constants.js';
-import OwnedMovie from './OwnedMovie';
-import UnownedMovie from './UnownedMovie';
-import MovieDetails from './MovieDetails';
-import SortMenu from './SortMenu';
-import FilterMenu from './FilterMenu';
+import Constants from "../assets/Constants.js";
+import OwnedMovie from "./OwnedMovie";
+import UnownedMovie from "./UnownedMovie";
+import MovieDetails from "./MovieDetails";
+import SortMenu from "./SortMenu";
+import FilterMenu from "./FilterMenu";
 
 export default {
   components: {
@@ -82,17 +88,32 @@ export default {
   props: {
     ownedMovies: Array,
     unownedMovies: Array,
-    showUnownedMovies: Boolean,
   },
 
   data: () => ({
     dialogOpen: false,
     openedMovie: new Object(),
-    openedMovieImagePath: '',
+    openedMovieImagePath: "",
     imageQuery: Constants.IMAGE_QUERY,
   }),
 
   methods: {
+    getReleaseYear: function (movie) {
+      return movie.release_date ? movie.release_date.substring(0, 4) : "";
+    },
+    getRuntimeInHours: function (movie) {
+      return movie.runtime
+        ? Math.floor(movie.runtime / 60) + "h " + (movie.runtime % 60) + "m"
+        : "";
+    },
+
+    getOwnedMoviesCount: function () {
+      return this.ownedMovies.length;
+    },
+    getUnownedMoviesCount: function () {
+      return this.unownedMovies.length;
+    },
+
     openDialog: function (id) {
       let detailsQuery = Constants.DETAILS_QUERY(id);
 
@@ -103,7 +124,7 @@ export default {
           this.openedMovieImagePath =
             Constants.BACKDROP_PATH + this.openedMovie.backdrop_path;
         } else {
-          this.openedMovieImagePath = '';
+          this.openedMovieImagePath = "";
         }
 
         this.dialogOpen = true;

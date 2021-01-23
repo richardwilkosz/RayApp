@@ -41,12 +41,15 @@ export default {
     closeDialog: function () {
       this.$emit('close-dialog');
     },
-    getReleaseYear: function(movie) {
-      return movie.release_date ? movie.release_date.substring(0, 4) : '';
+
+    // As long as $parent is referenced, MovieDetails must be a child of MovieList
+    getReleaseYear: function (movie) {
+      return this.$parent.getReleaseYear(movie);
     },
-    getRuntimeInHours: function(movie) {
-      return movie.runtime ? ', ' + Math.floor(movie.runtime / 60) + 'h ' + movie.runtime % 60 + 'm' : '';
-    },
+    getRuntimeInHours: function (movie) {
+      let runtime = this.$parent.getRuntimeInHours(movie);
+      return runtime ? ', ' + runtime : '';
+    }
   },
 };
 </script>

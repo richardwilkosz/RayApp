@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-img :src="src"></v-img>
-    <!-- <v-card-text class="text-center py-2">
+    <v-card-text class="text-center py-2">
       <v-row dense>
         <v-col cols="12" sm="6" class="d-none d-sm-flex">
           <v-icon small>mdi-calendar</v-icon>
@@ -12,7 +12,7 @@
           <span v-text="runtime" class="pl-2" />
         </v-col>
       </v-row>
-    </v-card-text> -->
+    </v-card-text>
   </v-card>
 </template>
 

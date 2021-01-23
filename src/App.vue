@@ -2,10 +2,7 @@
   <v-app dark>
     <AppBar @update-search="search" @menu-view-all="queryAllOwned" />
     <v-main>
-      <MovieList
-        :ownedMovies="ownedResults"
-        :unownedMovies="unownedResults"
-      />
+      <MovieList :ownedMovies="ownedResults" :unownedMovies="unownedResults" />
     </v-main>
     <AppFooter />
   </v-app>
@@ -24,7 +21,6 @@ export default {
 
   data: () => ({
     input: "",
-    ownedIds: [],
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
@@ -41,13 +37,15 @@ export default {
     let vm = this;
     axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
       let ownedResults = response.data.items;
+      // Get extra details of each owned movie, e.g. runtime
       ownedResults.forEach(function (result) {
-        vm.ownedMovies.push(result);
-        vm.ownedIds.push(result.id);
+        axios.get(Constants.DETAILS_QUERY(result.id)).then((response) => {
+          vm.ownedMovies.push(response.data);
+        });
       });
     });
 
-    // Default to all owned movies
+    // Default search to all owned movies
     this.queryAllOwned();
   },
 
@@ -74,6 +72,17 @@ export default {
       return this.ownedMovies;
     },
 
+    // Checks if movie is owned; if so, returns its full details
+    getOwnedMovie(id) {
+      let movie = null;
+      this.ownedMovies.forEach(function (ownedMovie) {
+        if (id === ownedMovie.id) {
+          movie = ownedMovie;
+        }
+      });
+      return movie;
+    },
+
     queryFromString(query) {
       let vm = this;
 
@@ -83,13 +92,16 @@ export default {
         // TODO: Apply sorts/filters
 
         allResults.forEach(function (result) {
-          if (vm.ownedIds.includes(result.id)) {
-            vm.ownedResults.push(result);
+          let ownedMovieDetails = vm.getOwnedMovie(result.id);
+          if (ownedMovieDetails && !vm.ownedResults.includes(ownedMovieDetails)) {
+            vm.ownedResults.push(ownedMovieDetails);
           } else {
             vm.unownedResults.push(result);
           }
         });
       });
+
+      console.log(vm.unownedResults);
     },
   },
 };
