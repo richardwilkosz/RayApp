@@ -36,14 +36,14 @@ export default {
   data: () => ({
     selectedItem: 0,
     sortItems: [
-      [{ title: 'Alphabetical', index: 0 }],
+      [{ title: "Alphabetical", index: 0 }],
       [
-        { title: 'Shortest', index: 1 },
-        { title: 'Longest', index: 2 },
+        { title: "Shortest", index: 1 },
+        { title: "Longest", index: 2 },
       ],
       [
-        { title: 'Newest', index: 3 },
-        { title: 'Oldest', index: 4 },
+        { title: "Newest", index: 3 },
+        { title: "Oldest", index: 4 },
       ],
     ],
   }),
@@ -51,8 +51,8 @@ export default {
   methods: {
     selectSort: function (selectedItem) {
       console.log(selectedItem);
-      console.log('hi');
-      this.$emit('update-sort', selectedItem);
+      console.log("hi");
+      this.$emit("update-sort", selectedItem);
     },
   },
 };

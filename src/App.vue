@@ -93,7 +93,10 @@ export default {
 
         allResults.forEach(function (result) {
           let ownedMovieDetails = vm.getOwnedMovie(result.id);
-          if (ownedMovieDetails && !vm.ownedResults.includes(ownedMovieDetails)) {
+          if (
+            ownedMovieDetails &&
+            !vm.ownedResults.includes(ownedMovieDetails)
+          ) {
             vm.ownedResults.push(ownedMovieDetails);
           } else if (!vm.unownedResults.includes(result)) {
             vm.unownedResults.push(result);

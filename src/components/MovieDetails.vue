@@ -6,10 +6,7 @@
     overlay-opacity="0.75"
   >
     <v-card>
-      <v-img
-        v-if="imagePath"
-        :src="imagePath"
-      ></v-img>
+      <v-img v-if="imagePath" :src="imagePath"></v-img>
       <v-card-title class="pb-0">
         {{ movie.title ? movie.title : "" }}
         <span class="body-2 text--secondary ml-5 mt-1 d-none d-sm-flex">
@@ -17,9 +14,11 @@
         </span>
       </v-card-title>
       <v-card-text>
-        <p class="d-sm-none">{{ getReleaseYear(movie) }}{{ getRuntimeInHours(movie) }}</p>
-        <br>
-        <div>{{ movie.overview ? movie.overview : "" }} </div>
+        <p class="d-sm-none">
+          {{ getReleaseYear(movie) }}{{ getRuntimeInHours(movie) }}
+        </p>
+        <br />
+        <div>{{ movie.overview ? movie.overview : "" }}</div>
       </v-card-text>
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
@@ -39,7 +38,7 @@ export default {
 
   methods: {
     closeDialog: function () {
-      this.$emit('close-dialog');
+      this.$emit("close-dialog");
     },
 
     // As long as $parent is referenced, MovieDetails must be a child of MovieList
@@ -48,8 +47,8 @@ export default {
     },
     getRuntimeInHours: function (movie) {
       let runtime = this.$parent.getRuntimeInHours(movie);
-      return runtime ? ', ' + runtime : '';
-    }
+      return runtime ? ", " + runtime : "";
+    },
   },
 };
 </script>
