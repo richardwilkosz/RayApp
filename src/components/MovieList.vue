@@ -23,7 +23,7 @@
         >
           <OwnedMovie
             :title="movie.title"
-            :src="imageQuery + movie.poster_path"
+            :src="getPosterImage(movie)"
             :releaseYear="getReleaseYear(movie)"
             :runtime="getRuntimeInHours(movie)"
             v-ripple="{ class: 'primary--text' }"
@@ -51,7 +51,7 @@
         >
           <UnownedMovie
             :title="movie.title"
-            :src="imageQuery + movie.poster_path"
+            :src="getPosterImage(movie)"
             class="pa-0"
             v-ripple="{ class: 'primary--text' }"
           />
@@ -108,10 +108,12 @@ export default {
     dialogOpen: false,
     openedMovie: new Object(),
     openedMovieImagePath: "",
-    imageQuery: Constants.IMAGE_QUERY,
   }),
 
   methods: {
+    getPosterImage: function (movie) {
+      return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "";
+    },
     getReleaseYear: function (movie) {
       return movie.release_date ? movie.release_date.substring(0, 4) : "";
     },
