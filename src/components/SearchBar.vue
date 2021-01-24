@@ -12,18 +12,20 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 export default {
   data: () => ({
     input: "",
   }),
   methods: {
-    updateSearch: function (input) {
-      if (input.length > 3) {
-        this.$emit("update-search", input);
-      } else {
-        this.$emit("update-search", "*");
-      }
-    },
+    updateSearch: _.debounce(function(input) {
+        if (input.length > 2) {
+          this.$emit("update-search", input);
+        } else {
+          this.$emit("update-search", "*");
+        }
+    }, 500),
   },
 };
 </script>
