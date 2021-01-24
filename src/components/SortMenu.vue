@@ -11,7 +11,7 @@
           v-model="selectedItem"
           color="primary"
           mandatory
-          @click="selectSort(selectedItem)"
+          @change="selectSort(selectedItem)"
         >
           <div v-for="(item, index) in sortItems" :key="item.index">
             <v-divider v-if="index > 0"></v-divider>
@@ -51,7 +51,6 @@ export default {
   methods: {
     selectSort: function (selectedItem) {
       console.log(selectedItem);
-      console.log("hi");
       this.$emit("update-sort", selectedItem);
     },
   },

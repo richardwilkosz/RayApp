@@ -6,7 +6,7 @@
       <SearchBar @update-search="updateSearch" />
       <v-spacer />
       <div class="d-none d-sm-flex">
-        <SortMenu />
+        <SortMenu @update-sort="updateSort" />
         <FilterMenu class="ml-3" />
       </div>
     </v-app-bar>
@@ -89,6 +89,11 @@ export default {
     updateSearch: function (e) {
       this.$emit("update-search", e);
     },
+    updateSort: function (e) {
+      console.log(e);
+      this.$emit("update-sort", e);
+    },
+
     performItemAction: function (emission) {
       this.$emit(emission);
       this.drawer = false;

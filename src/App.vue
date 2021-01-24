@@ -1,6 +1,10 @@
 <template>
   <v-app dark>
-    <AppBar @update-search="search" @menu-view-all="queryAllOwned" />
+    <AppBar
+      @update-search="search"
+      @update-sort="sort"
+      @menu-view-all="queryAllOwned"
+    />
     <v-main>
       <MovieList :ownedMovies="ownedResults" :unownedMovies="unownedResults" />
     </v-main>
@@ -21,7 +25,7 @@ export default {
 
   data: () => ({
     input: "",
-    sort: "Alphabetical",
+    sortBy: "Alphabetical",
     filter: [],
 
     ownedMovies: [],
@@ -76,6 +80,10 @@ export default {
       }
     },
 
+    sort(e) {
+      console.log(e);
+    },
+
     getOwnedDetails(id) {
       return axios.get(Constants.DETAILS_QUERY(id));
     },
@@ -95,9 +103,9 @@ export default {
         allResults.forEach(function (result) {
           let ownedMovieDetails = vm.getOwnedMovie(result.id);
           if (ownedMovieDetails) {
-              vm.ownedResults.push(ownedMovieDetails);
+            vm.ownedResults.push(ownedMovieDetails);
           } else {
-              vm.unownedResults.push(result);
+            vm.unownedResults.push(result);
           }
         });
       });
@@ -116,7 +124,7 @@ export default {
 
     // TODO: Implement fully
     sortAndFilter(movieArray) {
-      if (this.sort === "Alphabetical") {
+      if (this.sortBy === "Alphabetical") {
         movieArray.sort((a, b) =>
           a.title.toUpperCase() > b.title.toUpperCase()
             ? 1
