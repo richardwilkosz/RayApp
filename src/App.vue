@@ -38,18 +38,24 @@ export default {
   // Get list of owned movies to categorize between owned/unowned
   created() {
     let vm = this;
+
     axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
       let ownedResults = response.data.items;
+      let ownedDetailPromises = [];
+
       // Get extra details of each owned movie, e.g. runtime
       ownedResults.forEach(function (result) {
-        axios.get(Constants.DETAILS_QUERY(result.id)).then((response) => {
-          vm.ownedMovies.push(response.data);
+        ownedDetailPromises.push(vm.getOwnedDetails(result.id));
+      });
+
+      // Finalize list after API calls are complete
+      Promise.all(ownedDetailPromises).then(function (results) {
+        results.forEach(function (result) {
+          vm.ownedMovies.push(result.data);
         });
+        vm.queryAllOwned();
       });
     });
-
-    // Default search to all owned movies
-    this.queryAllOwned();
   },
 
   methods: {
@@ -70,10 +76,13 @@ export default {
       }
     },
 
+    getOwnedDetails(id) {
+      return axios.get(Constants.DETAILS_QUERY(id));
+    },
+
     queryAllOwned() {
+      this.sortAndFilter(this.ownedMovies);
       this.ownedResults = this.ownedMovies;
-      this.sortAndFilter(this.ownedResults);
-      return this.ownedMovies;
     },
 
     queryFromString(query) {
@@ -111,7 +120,6 @@ export default {
     // TODO: Implement fully
     sortAndFilter(movieArray) {
       if (this.sort === "Alphabetical") {
-        console.log("alpha sort")
         movieArray.sort((a, b) =>
           a.title.toUpperCase() > b.title.toUpperCase()
             ? 1
