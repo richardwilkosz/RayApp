@@ -14,8 +14,8 @@
           multiple
           column
         >
-          <v-chip v-for="(genre, index) in genres" :key="index" filter>
-            {{ genre }}
+          <v-chip v-for="genre in genres" :key="genre.id" filter>
+            {{ genre.name }}
           </v-chip>
         </v-chip-group>
       </v-sheet>
@@ -25,35 +25,29 @@
 
 <script>
 export default {
+  props: {
+    genres: Array,
+  },
+
   data: () => ({
     allGenreIndex: 0,
     allGenreName: "Include All Genres",
     genresSelected: [0],
-    genres: [
-      "Include All Genres",
-      "Action",
-      "Adventure",
-      "Animation",
-      "Comedy",
-      "Crime",
-      "Documentary",
-      "Drama",
-      "Family",
-      "Fantasy",
-      "History",
-      "Horror",
-      "Music",
-      "Mystery",
-      "Romance",
-      "Sci-Fi",
-      "TV Movie",
-      "Thriller",
-      "War",
-      "Western",
-    ],
   }),
+
   methods: {
     selectGenre: function () {
+      let vm = this;
+      let filters = new Array();
+      this.setIncludeAll();
+      this.genresSelected.forEach(function (index) {
+        filters.push(vm.genres[index].id);
+      });
+      vm.$emit("update-filter", filters);
+    },
+
+    setIncludeAll: function () {
+      // Either "Include All" is selected, or some subset of genres
       let lastSelectedIndex = this.genresSelected[
         this.genresSelected.length - 1
       ];
@@ -68,7 +62,7 @@ export default {
       }
       // In the case of no filters, default back to All
       if (!this.genresSelected.length) {
-        this.genresSelected.push(0);
+        this.genresSelected.push(this.allGenreIndex);
       }
     },
   },

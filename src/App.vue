@@ -3,10 +3,18 @@
     <AppBar
       @update-search="search"
       @update-sort="sort"
+      @update-filter="filter"
       @menu-view-all="queryAllOwned"
+      :genres="genres"
     />
     <v-main>
-      <MovieList :ownedMovies="ownedResults" :unownedMovies="unownedResults" />
+      <MovieList
+        :ownedMovies="ownedResults"
+        :unownedMovies="unownedResults"
+        :genres="genres"
+        @update-sort="sort"
+        @update-filter="filter"
+      />
     </v-main>
     <AppFooter />
   </v-app>
@@ -26,11 +34,13 @@ export default {
   data: () => ({
     input: "",
     sortBy: "Alphabetical",
-    filter: [],
+    filterOn: [],
 
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
+
+    genres: [],
   }),
 
   components: {
@@ -39,10 +49,10 @@ export default {
     AppFooter,
   },
 
-  // Get list of owned movies to categorize between owned/unowned
   created() {
     let vm = this;
 
+    // Get list of owned movies
     axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
       let ownedResults = response.data.items;
       let ownedDetailPromises = [];
@@ -58,6 +68,15 @@ export default {
           vm.ownedMovies.push(result.data);
         });
         vm.queryAllOwned();
+      });
+    });
+
+    // Get list of genres
+    axios.get(Constants.GENRES_QUERY).then((response) => {
+      vm.genres = response.data.genres;
+      vm.genres.unshift({
+        id: 0,
+        name: "Include All Genres",
       });
     });
   },
@@ -81,7 +100,13 @@ export default {
     },
 
     sort(e) {
-      console.log(e);
+      this.sortBy = e;
+      console.log(this.sortBy);
+    },
+
+    filter(e) {
+      this.filterOn = e;
+      console.log(this.filterOn);
     },
 
     getOwnedDetails(id) {

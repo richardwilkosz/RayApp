@@ -5,8 +5,8 @@
       <v-row dense>
         <v-col cols="12" class="d-flex d-sm-none">
           <v-spacer />
-          <SortMenu />
-          <FilterMenu class="ml-3" />
+          <SortMenu @update-sort="updateSort" />
+          <FilterMenu :genres="genres" @update-filter="updateFilter" class="ml-3" />
           <v-spacer />
         </v-col>
         <v-col cols="12" class="py-0">
@@ -102,6 +102,7 @@ export default {
   props: {
     ownedMovies: Array,
     unownedMovies: Array,
+    genres: Array,
   },
 
   data: () => ({
@@ -111,6 +112,13 @@ export default {
   }),
 
   methods: {
+    updateSort: function (e) {
+      this.$emit("update-sort", e);
+    },
+    updateFilter: function (e) {
+      this.$emit("update-filter", e);
+    },
+
     getPosterImage: function (movie) {
       return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "";
     },

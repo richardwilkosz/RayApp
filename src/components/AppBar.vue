@@ -7,7 +7,7 @@
       <v-spacer />
       <div class="d-none d-sm-flex">
         <SortMenu @update-sort="updateSort" />
-        <FilterMenu class="ml-3" />
+        <FilterMenu :genres="genres" @update-filter="updateFilter" class="ml-3" />
       </div>
     </v-app-bar>
 
@@ -57,6 +57,10 @@ export default {
     FilterMenu,
   },
 
+  props: {
+    genres: Array,
+  },
+
   data: () => ({
     drawer: false,
     group: null,
@@ -90,8 +94,10 @@ export default {
       this.$emit("update-search", e);
     },
     updateSort: function (e) {
-      console.log(e);
       this.$emit("update-sort", e);
+    },
+    updateFilter: function (e) {
+      this.$emit("update-filter", e);
     },
 
     performItemAction: function (emission) {
