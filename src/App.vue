@@ -33,7 +33,6 @@ export default {
 
   data: () => ({
     input: "",
-    sortBy: "Alphabetical",
     filterOn: [],
 
     ownedMovies: [],
@@ -99,9 +98,101 @@ export default {
       }
     },
 
-    sort(e) {
-      this.sortBy = e;
-      console.log(this.sortBy);
+    sort(sortBy) {
+      switch (sortBy) {
+        case 0: // Alphabetical
+          this.sortAlphabetical([
+            this.ownedResults,
+            this.unownedResults,
+            this.ownedMovies,
+          ]);
+          break;
+        case 1: // Shortest
+          this.sortByRuntime(
+            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            "desc"
+          );
+          break;
+        case 2: // Longest
+          this.sortByRuntime(
+            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            "asc"
+          );
+          break;
+        case 3: // Newest
+          this.sortByReleaseYear(
+            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            "asc"
+          );
+          break;
+        case 4: // Oldest
+          this.sortByReleaseYear(
+            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            "desc"
+          );
+          break;
+        default:
+          this.sortAlphabetical([
+            this.ownedResults,
+            this.unownedResults,
+            this.ownedMovies,
+          ]);
+      }
+    },
+
+    sortAlphabetical(movieArrays) {
+      movieArrays.forEach(function (array) {
+        array.sort((a, b) =>
+          a.title.toUpperCase() > b.title.toUpperCase()
+            ? 1
+            : b.title.toUpperCase() > a.title.toUpperCase()
+            ? -1
+            : 0
+        );
+      });
+    },
+
+    sortByRuntime(movieArrays, ascOrDesc) {
+      let sortMethod;
+
+      if (ascOrDesc === "asc") {
+        sortMethod = function (arr) {
+          arr.sort((a, b) => b.runtime - a.runtime);
+        };
+      } else {
+        sortMethod = function (arr) {
+          arr.sort((a, b) => a.runtime - b.runtime);
+        };
+      }
+
+      movieArrays.forEach(function (array) {
+        sortMethod(array);
+      });
+    },
+
+    sortByReleaseYear(movieArrays, ascOrDesc) {
+      let sortMethod;
+      console.log(movieArrays);
+
+      if (ascOrDesc === "asc") {
+        sortMethod = function (arr) {
+          console.log("hello");
+          arr.sort(
+            (a, b) => new Date(b.release_year) - new Date(a.release_year)
+          );
+        };
+      } else {
+        sortMethod = function (arr) {
+          console.log("hello");
+          arr.sort(
+            (a, b) => new Date(a.release_year) - new Date(b.release_year)
+          );
+        };
+      }
+
+      movieArrays.forEach(function (array) {
+        sortMethod(array);
+      });
     },
 
     filter(e) {
@@ -114,7 +205,7 @@ export default {
     },
 
     queryAllOwned() {
-      this.sortAndFilter(this.ownedMovies);
+      this.sortAndFilter();
       this.ownedResults = this.ownedMovies;
     },
 
@@ -123,7 +214,6 @@ export default {
 
       axios.get(Constants.SEARCH_QUERY + query).then((response) => {
         let allResults = response.data.results;
-        vm.sortAndFilter(allResults);
 
         allResults.forEach(function (result) {
           let ownedMovieDetails = vm.getOwnedMovie(result.id);
@@ -133,6 +223,8 @@ export default {
             vm.unownedResults.push(result);
           }
         });
+
+        vm.sortAndFilter();
       });
     },
 
@@ -148,16 +240,8 @@ export default {
     },
 
     // TODO: Implement fully
-    sortAndFilter(movieArray) {
-      if (this.sortBy === "Alphabetical") {
-        movieArray.sort((a, b) =>
-          a.title.toUpperCase() > b.title.toUpperCase()
-            ? 1
-            : b.title.toUpperCase() > a.title.toUpperCase()
-            ? -1
-            : 0
-        );
-      }
+    sortAndFilter() {
+      this.sort();
     },
   },
 };
