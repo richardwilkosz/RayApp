@@ -2,28 +2,21 @@
   <v-dialog
     v-model="dialogOpen"
     @click:outside="closeDialog()"
-    max-width="500"
+    max-width="720"
     overlay-opacity="0.75"
   >
     <v-card>
+      <v-btn top right absolute id="btn-close" class="px-0" @click.stop="closeDialog()">
+        <v-icon class="text--primary">mdi-close</v-icon>
+      </v-btn>
       <v-img v-if="imagePath" :src="imagePath"></v-img>
-      <v-card-title class="pb-0">
+      <v-card-title class="mb-2">
         {{ movie.title ? movie.title : "" }}
-        <span class="body-2 text--secondary ml-5 mt-1 d-none d-sm-flex">
-          {{ getReleaseYear(movie) }}{{ getRuntimeInHours(movie) }}
-        </span>
       </v-card-title>
-      <v-card-text>
-        <p class="d-sm-none">
-          {{ getReleaseYear(movie) }}{{ getRuntimeInHours(movie) }}
-        </p>
-        <br />
-        <div>{{ movie.overview ? movie.overview : "" }}</div>
-      </v-card-text>
-      <v-card-actions class="pt-0">
-        <v-spacer></v-spacer>
-        <v-btn color="primary" text @click.stop="closeDialog()"> Close </v-btn>
-      </v-card-actions>
+      <v-card-subtitle>
+        {{ getReleaseYear(movie) }}{{ getRuntimeInHours(movie) }}
+      </v-card-subtitle>
+      <v-card-text>{{ movie.overview ? movie.overview : "" }}</v-card-text>
     </v-card>
   </v-dialog>
 </template>
@@ -58,5 +51,10 @@ export default {
 .v-card__title span {
   word-break: normal !important;
   line-height: normal !important;
+}
+
+#btn-close {
+  margin: -1rem -1rem 0 0;
+  z-index: 1;
 }
 </style>
