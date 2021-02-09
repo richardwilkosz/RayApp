@@ -6,9 +6,9 @@
     overlay-opacity="0.75"
   >
     <v-card>
-      <v-btn top right absolute id="btn-close" class="px-0" @click.stop="closeDialog()">
+      <!-- <v-btn top right absolute id="btn-close" class="px-0" @click.stop="closeDialog()">
         <v-icon class="text--primary">mdi-close</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-img v-if="imagePath" :src="imagePath"></v-img>
       <v-card-title class="mb-2">
         {{ movie.title ? movie.title : "" }}

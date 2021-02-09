@@ -12,6 +12,7 @@
         :ownedMovies="ownedResults"
         :unownedMovies="unownedResults"
         :genres="genres"
+        :isLoading="isLoading"
         @update-sort="sort"
         @update-filter="filter"
       />
@@ -40,6 +41,8 @@ export default {
     unownedResults: [],
 
     genres: [],
+
+    isLoading: true,
   }),
 
   components: {
@@ -61,21 +64,22 @@ export default {
         ownedDetailPromises.push(vm.getOwnedDetails(result.id));
       });
 
+      // Get list of genres
+      axios.get(Constants.GENRES_QUERY).then((response) => {
+        vm.genres = response.data.genres;
+        vm.genres.unshift({
+          id: 0,
+          name: "Include All Genres",
+        });
+      });
+
       // Finalize list after API calls are complete
       Promise.all(ownedDetailPromises).then(function (results) {
         results.forEach(function (result) {
           vm.ownedMovies.push(result.data);
         });
         vm.queryAllOwned();
-      });
-    });
-
-    // Get list of genres
-    axios.get(Constants.GENRES_QUERY).then((response) => {
-      vm.genres = response.data.genres;
-      vm.genres.unshift({
-        id: 0,
-        name: "Include All Genres",
+        vm.isLoading = false;
       });
     });
   },
@@ -211,6 +215,7 @@ export default {
 
     queryFromString(query) {
       let vm = this;
+      vm.isLoading = true;
 
       axios.get(Constants.SEARCH_QUERY + query).then((response) => {
         let allResults = response.data.results;
@@ -225,6 +230,7 @@ export default {
         });
 
         vm.sortAndFilter();
+        vm.isLoading = false;
       });
     },
 
