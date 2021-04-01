@@ -8,16 +8,16 @@
       </template>
       <v-list>
         <v-list-item-group
-          v-model="selectedItem"
+          v-model="input"
           color="primary"
           mandatory
-          @click="selectSort(selectedItem)"
+          @change="selectSort(input)"
         >
           <div v-for="(item, index) in sortItems" :key="item.index">
             <v-divider v-if="index > 0"></v-divider>
             <v-list-item v-for="child in item" :key="child.index">
               <v-list-item-icon
-                :class="{ hidden: child.index !== selectedItem }"
+                :class="{ hidden: child.index !== input }"
                 class="mr-4"
               >
                 <v-icon>mdi-check</v-icon>
@@ -34,7 +34,7 @@
 <script>
 export default {
   data: () => ({
-    selectedItem: 0,
+    input: 0,
     sortItems: [
       [{ title: "Alphabetical", index: 0 }],
       [
@@ -49,10 +49,8 @@ export default {
   }),
 
   methods: {
-    selectSort: function (selectedItem) {
-      console.log(selectedItem);
-      console.log("hi");
-      this.$emit("update-sort", selectedItem);
+    selectSort: function (input) {
+      this.$emit("update-sort", input);
     },
   },
 };

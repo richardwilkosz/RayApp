@@ -1,8 +1,21 @@
 <template>
   <v-app dark>
-    <AppBar @update-search="search" @menu-view-all="queryAllOwned" />
+    <AppBar
+      @update-search="search"
+      @update-sort="sort"
+      @update-filter="filter"
+      @menu-view-all="queryAllOwned"
+      :genres="genres"
+    />
     <v-main>
-      <MovieList :ownedMovies="ownedResults" :unownedMovies="unownedResults" />
+      <MovieList
+        :ownedMovies="ownedResults"
+        :unownedMovies="unownedResults"
+        :genres="genres"
+        :isLoading="isLoading"
+        @update-sort="sort"
+        @update-filter="filter"
+      />
     </v-main>
     <AppFooter />
   </v-app>
@@ -21,12 +34,15 @@ export default {
 
   data: () => ({
     input: "",
-    sort: "Alphabetical",
-    filter: [],
+    filterOn: [],
 
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
+
+    genres: [],
+
+    isLoading: true,
   }),
 
   components: {
@@ -35,21 +51,37 @@ export default {
     AppFooter,
   },
 
-  // Get list of owned movies to categorize between owned/unowned
   created() {
     let vm = this;
+
+    // Get list of owned movies
     axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
       let ownedResults = response.data.items;
+      let ownedDetailPromises = [];
+
       // Get extra details of each owned movie, e.g. runtime
       ownedResults.forEach(function (result) {
-        axios.get(Constants.DETAILS_QUERY(result.id)).then((response) => {
-          vm.ownedMovies.push(response.data);
+        ownedDetailPromises.push(vm.getOwnedDetails(result.id));
+      });
+
+      // Get list of genres
+      axios.get(Constants.GENRES_QUERY).then((response) => {
+        vm.genres = response.data.genres;
+        vm.genres.unshift({
+          id: 0,
+          name: "Include All Genres",
         });
       });
-    });
 
-    // Default search to all owned movies
-    this.queryAllOwned();
+      // Finalize list after API calls are complete
+      Promise.all(ownedDetailPromises).then(function (results) {
+        results.forEach(function (result) {
+          vm.ownedMovies.push(result.data);
+        });
+        vm.queryAllOwned();
+        vm.isLoading = false;
+      });
+    });
   },
 
   methods: {
@@ -70,30 +102,135 @@ export default {
       }
     },
 
+    sort(sortBy) {
+      switch (sortBy) {
+        case 0: // Alphabetical
+          this.sortAlphabetical([
+            this.ownedResults,
+            this.unownedResults,
+            this.ownedMovies,
+          ]);
+          break;
+        case 1: // Shortest
+          this.sortByRuntime(
+            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            "desc"
+          );
+          break;
+        case 2: // Longest
+          this.sortByRuntime(
+            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            "asc"
+          );
+          break;
+        case 3: // Newest
+          this.sortByReleaseYear(
+            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            "asc"
+          );
+          break;
+        case 4: // Oldest
+          this.sortByReleaseYear(
+            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            "desc"
+          );
+          break;
+        default:
+          this.sortAlphabetical([
+            this.ownedResults,
+            this.unownedResults,
+            this.ownedMovies,
+          ]);
+      }
+    },
+
+    sortAlphabetical(movieArrays) {
+      movieArrays.forEach(function (array) {
+        array.sort((a, b) =>
+          a.title.toUpperCase() > b.title.toUpperCase()
+            ? 1
+            : b.title.toUpperCase() > a.title.toUpperCase()
+            ? -1
+            : 0
+        );
+      });
+    },
+
+    sortByRuntime(movieArrays, ascOrDesc) {
+      let sortMethod;
+
+      if (ascOrDesc === "asc") {
+        sortMethod = function (arr) {
+          arr.sort((a, b) => b.runtime - a.runtime);
+        };
+      } else {
+        sortMethod = function (arr) {
+          arr.sort((a, b) => a.runtime - b.runtime);
+        };
+      }
+
+      movieArrays.forEach(function (array) {
+        sortMethod(array);
+      });
+    },
+
+    sortByReleaseYear(movieArrays, ascOrDesc) {
+      let sortMethod;
+      console.log(movieArrays);
+
+      if (ascOrDesc === "asc") {
+        sortMethod = function (arr) {
+          console.log("hello");
+          arr.sort(
+            (a, b) => new Date(b.release_year) - new Date(a.release_year)
+          );
+        };
+      } else {
+        sortMethod = function (arr) {
+          console.log("hello");
+          arr.sort(
+            (a, b) => new Date(a.release_year) - new Date(b.release_year)
+          );
+        };
+      }
+
+      movieArrays.forEach(function (array) {
+        sortMethod(array);
+      });
+    },
+
+    filter(e) {
+      this.filterOn = e;
+      console.log(this.filterOn);
+    },
+
+    getOwnedDetails(id) {
+      return axios.get(Constants.DETAILS_QUERY(id));
+    },
+
     queryAllOwned() {
+      this.sortAndFilter();
       this.ownedResults = this.ownedMovies;
-      this.sortAndFilter(this.ownedResults);
-      return this.ownedMovies;
     },
 
     queryFromString(query) {
       let vm = this;
+      vm.isLoading = true;
 
       axios.get(Constants.SEARCH_QUERY + query).then((response) => {
         let allResults = response.data.results;
-        vm.sortAndFilter(allResults);
 
         allResults.forEach(function (result) {
           let ownedMovieDetails = vm.getOwnedMovie(result.id);
-          if (
-            ownedMovieDetails &&
-            !vm.ownedResults.includes(ownedMovieDetails)
-          ) {
+          if (ownedMovieDetails) {
             vm.ownedResults.push(ownedMovieDetails);
-          } else if (!vm.unownedResults.includes(result)) {
+          } else {
             vm.unownedResults.push(result);
           }
         });
+
+        vm.sortAndFilter();
+        vm.isLoading = false;
       });
     },
 
@@ -109,17 +246,8 @@ export default {
     },
 
     // TODO: Implement fully
-    sortAndFilter(movieArray) {
-      if (this.sort === "Alphabetical") {
-        console.log("alpha sort")
-        movieArray.sort((a, b) =>
-          a.title.toUpperCase() > b.title.toUpperCase()
-            ? 1
-            : b.title.toUpperCase() > a.title.toUpperCase()
-            ? -1
-            : 0
-        );
-      }
+    sortAndFilter() {
+      this.sort();
     },
   },
 };

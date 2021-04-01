@@ -5,6 +5,7 @@ const IMAGE_QUERY = 'https://image.tmdb.org/t/p/w500';
 const OWNED_LIST_QUERY = 'https://api.themoviedb.org/3/list/7072653?api_key=' + API_KEY;
 const DETAILS_QUERY = 'https://api.themoviedb.org/3/movie/';
 const BACKDROP_PATH = 'https://image.tmdb.org/t/p/w500';
+const GENRES_QUERY = 'https://api.themoviedb.org/3/genre/movie/list?api_key=' + API_KEY + '&language=en-US'
 
 export default {
     API_KEY: API_KEY,
@@ -14,4 +15,5 @@ export default {
     OWNED_LIST_QUERY: OWNED_LIST_QUERY,
     DETAILS_QUERY: function (id) { return DETAILS_QUERY.concat(id).concat('?api_key=').concat(API_KEY); },
     BACKDROP_PATH: BACKDROP_PATH,
+    GENRES_QUERY: GENRES_QUERY,
 }
