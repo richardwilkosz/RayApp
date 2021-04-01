@@ -242,19 +242,6 @@ export default {
       });
     },
 
-    // Checks if movie is owned; if so, returns its full details
-    getOwnedMovie(id) {
-      let movie = null;
-
-      this.ownedMovies.forEach(function (ownedMovie) {
-        if (id === ownedMovie.id) {
-          movie = ownedMovie;
-        }
-      });
-
-      return movie;
-    },
-
     // TODO: Implement fully
     sortAndFilter() {
       this.sort();
