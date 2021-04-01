@@ -3,11 +3,13 @@
     solo
     flat
     dense
+    clearable
     placeholder="Search movies"
     prepend-inner-icon="mdi-magnify"
     class="mt-6"
     v-model="input"
     @keyup="updateSearch(input)"
+    @click:clear="clearSearch"
   ></v-text-field>
 </template>
 
@@ -26,6 +28,10 @@ export default {
           this.$emit("update-search", "*");
         }
     }, 500),
+    clearSearch: function() {
+      this.input = "";
+      this.$emit("update-search", "*");
+    }
   },
 };
 </script>
