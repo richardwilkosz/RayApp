@@ -146,13 +146,11 @@ export default {
 
     sortAlphabetical(movieArrays) {
       movieArrays.forEach(function (array) {
-        array.sort((a, b) =>
-          a.title.toUpperCase() > b.title.toUpperCase()
-            ? 1
-            : b.title.toUpperCase() > a.title.toUpperCase()
-            ? -1
-            : 0
-        );
+        array.sort(function (a, b) {
+          a.title = a.title.replace("The ", "").toUpperCase();
+          b.title = b.title.replace("The ", "").toUpperCase();
+          return a.title > b.title ? 1 : b.title > a.title ? -1 : 0;
+        });
       });
     },
 
