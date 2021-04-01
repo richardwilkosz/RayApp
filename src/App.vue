@@ -212,14 +212,28 @@ export default {
       let vm = this;
       vm.isLoading = true;
 
+      // Query list of owned movies created at init
+      vm.ownedMovies.forEach(function (ownedMovie) {
+        if (ownedMovie.title.includes(query.toUpperCase())) {
+          // TODO: Figure out why duplicates sometimes get added
+          vm.ownedResults.push(ownedMovie);
+        }
+      });
+
+      // Query API for unowned movies that match too
       axios.get(Constants.SEARCH_QUERY + query).then((response) => {
         let allResults = response.data.results;
 
         allResults.forEach(function (result) {
-          let ownedMovieDetails = vm.getOwnedMovie(result.id);
-          if (ownedMovieDetails) {
-            vm.ownedResults.push(ownedMovieDetails);
-          } else {
+          let isOwned = false;
+
+          vm.ownedMovies.forEach(function (ownedMovie) {
+            if (ownedMovie.id === result.id) {
+              isOwned = true;
+            }
+          });
+
+          if (!isOwned) {
             vm.unownedResults.push(result);
           }
         });
@@ -232,11 +246,13 @@ export default {
     // Checks if movie is owned; if so, returns its full details
     getOwnedMovie(id) {
       let movie = null;
+
       this.ownedMovies.forEach(function (ownedMovie) {
         if (id === ownedMovie.id) {
           movie = ownedMovie;
         }
       });
+      
       return movie;
     },
 
