@@ -174,20 +174,17 @@ export default {
 
     sortByReleaseYear(movieArrays, ascOrDesc) {
       let sortMethod;
-      console.log(movieArrays);
 
       if (ascOrDesc === "asc") {
         sortMethod = function (arr) {
-          console.log("hello");
           arr.sort(
-            (a, b) => new Date(b.release_year) - new Date(a.release_year)
+            (a, b) => new Date(b.release_date) - new Date(a.release_date)
           );
         };
       } else {
         sortMethod = function (arr) {
-          console.log("hello");
           arr.sort(
-            (a, b) => new Date(a.release_year) - new Date(b.release_year)
+            (a, b) => new Date(a.release_date) - new Date(b.release_date)
           );
         };
       }
