@@ -196,7 +196,6 @@ export default {
 
     filter(e) {
       this.filterOn = e;
-      console.log(this.filterOn);
     },
 
     getOwnedDetails(id) {
@@ -252,7 +251,7 @@ export default {
           movie = ownedMovie;
         }
       });
-      
+
       return movie;
     },
 
