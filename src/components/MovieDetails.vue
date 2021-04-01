@@ -6,17 +6,28 @@
     overlay-opacity="0.75"
   >
     <v-card>
-      <!-- <v-btn top right absolute id="btn-close" class="px-0" @click.stop="closeDialog()">
-        <v-icon class="text--primary">mdi-close</v-icon>
-      </v-btn> -->
-      <v-img v-if="imagePath" :src="imagePath"></v-img>
       <v-card-title class="mb-2">
         {{ movie.title ? movie.title : "" }}
+        <v-spacer></v-spacer>
+        <v-icon class="text--primary" @click.stop="closeDialog()"
+          >mdi-close</v-icon
+        >
       </v-card-title>
       <v-card-subtitle>
         {{ getReleaseYear(movie) }}{{ getRuntimeInHours(movie) }}
       </v-card-subtitle>
-      <v-card-text>{{ movie.overview ? movie.overview : "" }}</v-card-text>
+      <!-- <v-btn top right absolute id="btn-close" class="px-0" @click.stop="closeDialog()">
+        <v-icon class="text--primary">mdi-close</v-icon>
+      </v-btn> -->
+
+      <v-img v-if="imagePath" :src="imagePath"></v-img>
+      <v-card-text class="mt-5">
+        <v-chip v-for="genre in movie.genres" :key="genre.id" class="mr-2 mb-2">
+          {{ genre.name }}
+        </v-chip>
+        <br />
+        <div class="mt-3">{{ movie.overview ? movie.overview : "" }}</div>
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
