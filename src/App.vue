@@ -104,32 +104,32 @@ export default {
 
     sort(sortBy) {
       switch (sortBy) {
-        case 0: // Alphabetical
+        case Constants.FILTER_ALPHA:
           this.sortAlphabetical([
             this.ownedResults,
             this.unownedResults,
             this.ownedMovies,
           ]);
           break;
-        case 1: // Shortest
+        case Constants.FILTER_SHORT:
           this.sortByRuntime(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "desc"
           );
           break;
-        case 2: // Longest
+        case Constants.FILTER_LONG:
           this.sortByRuntime(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "asc"
           );
           break;
-        case 3: // Newest
+        case Constants.FILTER_NEW:
           this.sortByReleaseYear(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "asc"
           );
           break;
-        case 4: // Oldest
+        case Constants.FILTER_OLD:
           this.sortByReleaseYear(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "desc"
@@ -146,13 +146,11 @@ export default {
 
     sortAlphabetical(movieArrays) {
       movieArrays.forEach(function (array) {
-        array.sort((a, b) =>
-          a.title.toUpperCase() > b.title.toUpperCase()
-            ? 1
-            : b.title.toUpperCase() > a.title.toUpperCase()
-            ? -1
-            : 0
-        );
+        array.sort(function (a, b) {
+          a.title = a.title.replace("The ", "").toUpperCase();
+          b.title = b.title.replace("The ", "").toUpperCase();
+          return a.title > b.title ? 1 : b.title > a.title ? -1 : 0;
+        });
       });
     },
 
@@ -176,20 +174,17 @@ export default {
 
     sortByReleaseYear(movieArrays, ascOrDesc) {
       let sortMethod;
-      console.log(movieArrays);
 
       if (ascOrDesc === "asc") {
         sortMethod = function (arr) {
-          console.log("hello");
           arr.sort(
-            (a, b) => new Date(b.release_year) - new Date(a.release_year)
+            (a, b) => new Date(b.release_date) - new Date(a.release_date)
           );
         };
       } else {
         sortMethod = function (arr) {
-          console.log("hello");
           arr.sort(
-            (a, b) => new Date(a.release_year) - new Date(b.release_year)
+            (a, b) => new Date(a.release_date) - new Date(b.release_date)
           );
         };
       }
@@ -201,7 +196,6 @@ export default {
 
     filter(e) {
       this.filterOn = e;
-      console.log(this.filterOn);
     },
 
     getOwnedDetails(id) {
@@ -217,14 +211,28 @@ export default {
       let vm = this;
       vm.isLoading = true;
 
+      // Query list of owned movies created at init
+      vm.ownedMovies.forEach(function (ownedMovie) {
+        if (ownedMovie.title.includes(query.toUpperCase())) {
+          // TODO: Figure out why duplicates sometimes get added
+          vm.ownedResults.push(ownedMovie);
+        }
+      });
+
+      // Query API for unowned movies that match too
       axios.get(Constants.SEARCH_QUERY + query).then((response) => {
         let allResults = response.data.results;
 
         allResults.forEach(function (result) {
-          let ownedMovieDetails = vm.getOwnedMovie(result.id);
-          if (ownedMovieDetails) {
-            vm.ownedResults.push(ownedMovieDetails);
-          } else {
+          let isOwned = false;
+
+          vm.ownedMovies.forEach(function (ownedMovie) {
+            if (ownedMovie.id === result.id) {
+              isOwned = true;
+            }
+          });
+
+          if (!isOwned) {
             vm.unownedResults.push(result);
           }
         });
@@ -232,17 +240,6 @@ export default {
         vm.sortAndFilter();
         vm.isLoading = false;
       });
-    },
-
-    // Checks if movie is owned; if so, returns its full details
-    getOwnedMovie(id) {
-      let movie = null;
-      this.ownedMovies.forEach(function (ownedMovie) {
-        if (id === ownedMovie.id) {
-          movie = ownedMovie;
-        }
-      });
-      return movie;
     },
 
     // TODO: Implement fully

@@ -32,18 +32,20 @@
 </template>
 
 <script>
+import Constants from "../assets/Constants.js";
+
 export default {
   data: () => ({
     input: 0,
     sortItems: [
-      [{ title: "Alphabetical", index: 0 }],
+      [{ title: "Alphabetical", index: Constants.FILTER_ALPHA }],
       [
-        { title: "Shortest", index: 1 },
-        { title: "Longest", index: 2 },
+        { title: "Shortest", index: Constants.FILTER_SHORT },
+        { title: "Longest", index: Constants.FILTER_LONG },
       ],
       [
-        { title: "Newest", index: 3 },
-        { title: "Oldest", index: 4 },
+        { title: "Newest", index: Constants.FILTER_NEW },
+        { title: "Oldest", index: Constants.FILTER_OLD },
       ],
     ],
   }),
