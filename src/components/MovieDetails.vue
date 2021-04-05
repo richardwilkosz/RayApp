@@ -22,11 +22,13 @@
 
       <v-img v-if="imagePath" :src="imagePath"></v-img>
       <v-card-text class="mt-5">
-        <v-chip v-for="genre in movie.genres" :key="genre.id" class="mr-2 mb-2">
-          {{ genre.name }}
-        </v-chip>
-        <br />
-        <div class="mt-3">{{ movie.overview ? movie.overview : "" }}</div>
+        <p class="primary--text font-weight-bold">
+          <span v-for="(genre, index) in movie.genres" :key="genre.id">
+            <span v-if="index !== movie.genres.length - 1">{{ genre.name }}, </span>
+            <span v-else>{{ genre.name }}</span>
+          </span>
+        </p>
+        <div>{{ movie.overview ? movie.overview : "" }}</div>
       </v-card-text>
     </v-card>
   </v-dialog>
