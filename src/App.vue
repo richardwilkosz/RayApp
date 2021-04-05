@@ -104,32 +104,32 @@ export default {
 
     sort(sortBy) {
       switch (sortBy) {
-        case 0: // Alphabetical
+        case Constants.FILTER_ALPHA:
           this.sortAlphabetical([
             this.ownedResults,
             this.unownedResults,
             this.ownedMovies,
           ]);
           break;
-        case 1: // Shortest
+        case Constants.FILTER_SHORT:
           this.sortByRuntime(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "desc"
           );
           break;
-        case 2: // Longest
+        case Constants.FILTER_LONG:
           this.sortByRuntime(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "asc"
           );
           break;
-        case 3: // Newest
+        case Constants.FILTER_NEW:
           this.sortByReleaseYear(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "asc"
           );
           break;
-        case 4: // Oldest
+        case Constants.FILTER_OLD:
           this.sortByReleaseYear(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "desc"

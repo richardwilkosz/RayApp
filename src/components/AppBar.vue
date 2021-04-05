@@ -1,7 +1,6 @@
 <template>
-  <div>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <!-- TODO: Add Ray title or logo to put in corner for desktop viewports -->
       <v-spacer />
       <SearchBar @update-search="updateSearch" />
       <v-spacer />
@@ -9,40 +8,10 @@
         <SortMenu @update-sort="updateSort" />
         <FilterMenu :genres="genres" @update-filter="updateFilter" class="ml-3" />
       </div>
+      <v-btn outlined color="primary" class="d-sm-none ml-3">
+          <v-icon>mdi-tune</v-icon>
+      </v-btn>
     </v-app-bar>
-
-    <v-navigation-drawer v-model="drawer" absolute temporary app>
-      <v-list-item>
-        <v-row dense>
-          <v-col cols="auto">
-            <v-list-item-title class="title pt-1"> Menu</v-list-item-title>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="auto">
-            <v-icon @click.stop="drawer = !drawer" class="mt-1">
-              mdi-close
-            </v-icon>
-          </v-col>
-        </v-row>
-      </v-list-item>
-      <v-divider></v-divider>
-      <v-list nav dense>
-        <v-list-item
-          v-for="item in navItems"
-          :key="item.title"
-          @click="performItemAction(item.emission)"
-          link
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-  </div>
 </template>
 
 <script>
@@ -64,23 +33,6 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
-    navItems: [
-      {
-        icon: "mdi-home",
-        title: "Home",
-        emission: "menu-home",
-      },
-      {
-        icon: "mdi-format-list-bulleted",
-        title: "View All Owned Movies",
-        emission: "menu-view-all",
-      },
-      {
-        icon: "mdi-help",
-        title: "Surprise Me",
-        emission: "surprise",
-      },
-    ],
   }),
 
   watch: {
@@ -98,11 +50,6 @@ export default {
     },
     updateFilter: function (e) {
       this.$emit("update-filter", e);
-    },
-
-    performItemAction: function (emission) {
-      this.$emit(emission);
-      this.drawer = false;
     },
   },
 };
