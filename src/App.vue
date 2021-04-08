@@ -250,7 +250,19 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+/* Custom font */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+$body-font-family: "Open Sans";
+$title-font: "Open Sans";
+.v-application {
+  font-family: $body-font-family, sans-serif !important;
+  .title {
+    // To pin point specific classes of some components
+    font-family: $title-font, sans-serif !important;
+  }
+}
+
 /* Used for mobile browsers' scroll bouncing */
 html {
   background-color: #272727;

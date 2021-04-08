@@ -1,6 +1,8 @@
 <template>
     <v-app-bar app>
       <!-- TODO: Add Ray title or logo to put in corner for desktop viewports -->
+      <v-img src="../assets/logo.png" max-height="30" max-width="30"></v-img>
+      <v-toolbar-title class="ml-3">Ray</v-toolbar-title>
       <v-spacer />
       <SearchBar @update-search="updateSearch" />
       <v-spacer />
