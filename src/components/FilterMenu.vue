@@ -2,8 +2,9 @@
   <div class="text-center">
     <v-menu bottom offset-y v-bind:close-on-content-click="false">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn outlined color="primary" dark v-bind="attrs" v-on="on">
-          Genres
+        <v-btn text v-bind="attrs" v-on="on">
+          <v-icon left class="d-none d-md-flex">mdi-filter</v-icon>
+          Filter Genres
         </v-btn>
       </template>
       <v-sheet dark class="px-2">
