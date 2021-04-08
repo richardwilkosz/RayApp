@@ -2,9 +2,10 @@
   <div class="text-center">
     <v-menu bottom offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn outlined color="primary" dark v-bind="attrs" v-on="on">
+        <v-btn text v-bind="attrs" v-on="on">
+          <v-icon left class="d-none d-md-flex">mdi-sort</v-icon>
           Sort By
-        </v-btn>
+          </v-btn>
       </template>
       <v-list>
         <v-list-item-group
