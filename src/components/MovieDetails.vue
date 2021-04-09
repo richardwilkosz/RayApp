@@ -6,9 +6,9 @@
     overlay-opacity="0.75"
   >
     <v-card>
-      <div >
-                  <v-icon class="float-right mt-4 mr-3" @click.stop="closeDialog()">mdi-close</v-icon>
-      </div>
+      <v-icon class="float-right mt-4 mr-3" @click.stop="closeDialog()"
+        >mdi-close</v-icon
+      >
       <v-card-title class="mb-2">
         {{ movie.title ? movie.title : "" }}
       </v-card-title>

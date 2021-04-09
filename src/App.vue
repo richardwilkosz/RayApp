@@ -104,32 +104,32 @@ export default {
 
     sort(sortBy) {
       switch (sortBy) {
-        case Constants.FILTER_ALPHA:
+        case Constants.SORT_ALPHA:
           this.sortAlphabetical([
             this.ownedResults,
             this.unownedResults,
             this.ownedMovies,
           ]);
           break;
-        case Constants.FILTER_SHORT:
+        case Constants.SORT_SHORT:
           this.sortByRuntime(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "desc"
           );
           break;
-        case Constants.FILTER_LONG:
+        case Constants.SORT_LONG:
           this.sortByRuntime(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "asc"
           );
           break;
-        case Constants.FILTER_NEW:
+        case Constants.SORT_NEW:
           this.sortByReleaseYear(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "asc"
           );
           break;
-        case Constants.FILTER_OLD:
+        case Constants.SORT_OLD:
           this.sortByReleaseYear(
             [this.ownedResults, this.unownedResults, this.ownedMovies],
             "desc"
@@ -147,9 +147,9 @@ export default {
     sortAlphabetical(movieArrays) {
       movieArrays.forEach(function (array) {
         array.sort(function (a, b) {
-          a.title = a.title.replace("The ", "").toUpperCase();
-          b.title = b.title.replace("The ", "").toUpperCase();
-          return a.title > b.title ? 1 : b.title > a.title ? -1 : 0;
+          let titleA = a.title.replace("The ", "").toUpperCase();
+          let titleB = b.title.replace("The ", "").toUpperCase();
+          return titleA > titleB ? 1 : titleB > titleA ? -1 : 0;
         });
       });
     },
