@@ -13,6 +13,7 @@
         :unownedMovies="unownedResults"
         :genres="genres"
         :isLoading="isLoading"
+        :sortByYear="sortBy"
         @update-sort="sort"
         @update-filter="filter"
       />
@@ -35,13 +36,13 @@ export default {
   data: () => ({
     input: "",
     filterOn: [],
+    sortBy: "",
 
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
 
     genres: [],
-
     isLoading: true,
   }),
 
@@ -103,6 +104,8 @@ export default {
     },
 
     sort(sortBy) {
+      this.sortBy = (sortBy === Constants.SORT_NEW || sortBy === Constants.SORT_OLD);
+
       switch (sortBy) {
         case Constants.SORT_ALPHA:
           this.sortAlphabetical([

@@ -41,6 +41,7 @@
               :src="getPosterImage(movie)"
               :releaseYear="getReleaseYear(movie)"
               :runtime="getRuntimeInHours(movie)"
+              :sortByYear="sortByYear"
               v-ripple="{ class: 'primary--text' }"
             />
           </v-col>
@@ -119,6 +120,7 @@ export default {
     unownedMovies: Array,
     genres: Array,
     isLoading: Boolean,
+    sortByYear: Boolean,
   },
 
   data: () => ({
