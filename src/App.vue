@@ -6,6 +6,7 @@
       @update-filter="filter"
       @menu-view-all="queryAllOwned"
       :genres="genres"
+      :ownedMovieTitles="getOwnedMovieTitles()"
     />
     <v-main>
       <MovieList
@@ -13,6 +14,7 @@
         :unownedMovies="unownedResults"
         :genres="genres"
         :isLoading="isLoading"
+        :isSortingByYear="isSortingByYear"
         @update-sort="sort"
         @update-filter="filter"
       />
@@ -35,13 +37,13 @@ export default {
   data: () => ({
     input: "",
     filterOn: [],
+    isSortingByYear: false,
 
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
 
     genres: [],
-
     isLoading: true,
   }),
 
@@ -103,6 +105,8 @@ export default {
     },
 
     sort(sortBy) {
+      this.isSortingByYear = (sortBy === Constants.SORT_NEW || sortBy === Constants.SORT_OLD);
+
       switch (sortBy) {
         case Constants.SORT_ALPHA:
           this.sortAlphabetical([
@@ -213,7 +217,7 @@ export default {
 
       // Query list of owned movies created at init
       vm.ownedMovies.forEach(function (ownedMovie) {
-        if (ownedMovie.title.includes(query.toUpperCase())) {
+        if (ownedMovie.title.toUpperCase().includes(query.toUpperCase())) {
           // TODO: Figure out why duplicates sometimes get added
           vm.ownedResults.push(ownedMovie);
         }
@@ -240,6 +244,16 @@ export default {
         vm.sortAndFilter();
         vm.isLoading = false;
       });
+    },
+
+    getOwnedMovieTitles() {
+      let titles = new Array();
+
+      this.ownedMovies.forEach(function (ownedMovie) {
+        titles.push(ownedMovie.title);
+      })
+
+      return titles;
     },
 
     // TODO: Implement fully

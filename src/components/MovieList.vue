@@ -25,7 +25,9 @@
             <v-spacer />
           </v-col>
           <v-col cols="12" class="py-0">
-            <v-subheader>OWNED ({{ getOwnedMoviesCount() }})</v-subheader>
+            <v-subheader
+              >OWNED MOVIES ({{ getOwnedMoviesCount() }})</v-subheader
+            >
           </v-col>
           <v-col
             v-for="movie in ownedMovies"
@@ -41,17 +43,23 @@
               :src="getPosterImage(movie)"
               :releaseYear="getReleaseYear(movie)"
               :runtime="getRuntimeInHours(movie)"
+              :isSortingByYear="isSortingByYear"
               v-ripple="{ class: 'primary--text' }"
             />
           </v-col>
         </v-row>
+      </template>
+      <template v-else-if="getUnownedMoviesCount() > 0">
+        <v-container>
+          <v-alert class="mb-0">I don't seem to own what you're searching for.</v-alert>
+        </v-container>
       </template>
 
       <!-- Unowned Movie Results -->
       <template v-if="getUnownedMoviesCount() > 0">
         <v-row dense class="my-1">
           <v-col cols="12" class="py-0">
-            <v-subheader>NOT OWNED... YET</v-subheader>
+            <v-subheader>MOVIES I DON'T OWN... YET</v-subheader>
           </v-col>
           <v-col
             v-for="movie in unownedMovies"
@@ -80,7 +88,7 @@
       >
         <v-container>
           <v-alert
-            >No results found. Try searching or filtering differently.</v-alert
+            >No movies found. Try searching or filtering differently.</v-alert
           >
         </v-container>
       </template>
@@ -119,6 +127,7 @@ export default {
     unownedMovies: Array,
     genres: Array,
     isLoading: Boolean,
+    isSortingByYear: Boolean,
   },
 
   data: () => ({
