@@ -51,7 +51,7 @@
       </template>
       <template v-else-if="getUnownedMoviesCount() > 0">
         <v-container>
-          <v-alert>I don't seem to own what you're searching for.</v-alert>
+          <v-alert class="mb-0">I don't seem to own what you're searching for.</v-alert>
         </v-container>
       </template>
 
@@ -59,7 +59,8 @@
       <template v-if="getUnownedMoviesCount() > 0">
         <v-row dense class="my-1">
           <v-col cols="12" class="py-0">
-            <v-subheader>MOVIES NOT OWNED... YET</v-subheader>
+            <v-subheader v-if="getOwnedMoviesCount() > 0">MOVIES I DON'T OWN... YET</v-subheader>
+            <v-subheader v-else>YOU MAY BE LOOKING FOR</v-subheader>
           </v-col>
           <v-col
             v-for="movie in unownedMovies"
