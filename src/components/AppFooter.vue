@@ -3,22 +3,21 @@
     <v-container>
       <v-row dense justify="center">
           <v-col v-for="item in techStack" :key="item.id" cols="auto" class="d-flex child-flex">
-            <v-tooltip top>
+            <v-tooltip top close-delay="1000">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn text dark v-bind="attrs" v-on="on">
                   <v-img
                     :src="require('../assets/' + item.imgSrc)"
+                    contain
                     height="32"
                     :width="item.width ? item.width : 32"
-                    contain
                     v-bind="attrs"
                     v-on="on"
                   ></v-img>
                 </v-btn>
               </template>
-              <span class="text-center"
-                >{{ item.role }}:<br />{{ item.tech }}</span
-              >
+              <!-- <span>{{ item.role }}</span> -->
+              <span v-html="item.tech"></span>
             </v-tooltip>
           </v-col>
       </v-row>
@@ -65,8 +64,15 @@ export default {
         role: "Data Source API",
         tech: "The Movie Database",
       },
-            {
+      {
+        // This object breaks format due to source's attribution rules
         id: 3,
+        imgSrc: "logo-flaticon.png",
+        role: "",
+        tech: '<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>',
+      },
+      {
+        id: 4,
         imgSrc: "logo-firebase.svg",
         role: "Backend as a Service",
         tech: "Google Firebase",

@@ -23,7 +23,7 @@ export default {
     src: String,
     releaseYear: String,
     runtime: String,
-    sortByYear: Boolean, // On mobile, where only runtime or release year can fit, default to runtime unless sorting on release year
+    sortByYear: Boolean, // On mobile, where only runtime or release year can fit, show runtime unless sorting on release year
   },
 };
 </script>
