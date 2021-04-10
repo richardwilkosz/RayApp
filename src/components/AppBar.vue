@@ -2,9 +2,9 @@
   <v-app-bar app>
     <AppLogo />
     <v-spacer />
-    <SearchBar @update-search="updateSearch" />
+    <SearchBar @update-search="updateSearch" :ownedMovieTitles="ownedMovieTitles" />
     <v-spacer />
-    <div class="d-sm-none ml-1">
+    <div class="d-sm-none ml-2">
       <v-btn icon>
         <v-icon>mdi-tune</v-icon>
       </v-btn>
@@ -32,17 +32,12 @@ export default {
 
   props: {
     genres: Array,
+    ownedMovieTitles: Array,
   },
 
   data: () => ({
     isSearchingMobile: false,
   }),
-
-  watch: {
-    group() {
-      this.drawer = false;
-    },
-  },
 
   methods: {
     updateSearch: function (e) {
