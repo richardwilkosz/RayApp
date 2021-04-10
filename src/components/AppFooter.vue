@@ -2,37 +2,35 @@
   <v-footer>
     <v-container>
       <v-row dense justify="center">
-          <v-col v-for="item in techStack" :key="item.id" cols="auto" class="d-flex child-flex">
-            <v-tooltip top close-delay="1000">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn text dark v-bind="attrs" v-on="on">
-                  <v-img
-                    :src="require('../assets/' + item.imgSrc)"
-                    contain
-                    height="32"
-                    :width="item.width ? item.width : 32"
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-img>
-                </v-btn>
-              </template>
-              <!-- <span>{{ item.role }}</span> -->
-              <span v-html="item.tech"></span>
-            </v-tooltip>
-          </v-col>
+        <v-col
+          v-for="item in techStack"
+          :key="item.id"
+          cols="auto"
+          class="d-flex child-flex"
+        >
+          <v-menu top offset-y class="text-center">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn text dark v-bind="attrs" v-on="on">
+                <v-img
+                  :src="require('../assets/' + item.imgSrc)"
+                  contain
+                  height="32"
+                  :width="item.width ? item.width : 32"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-img>
+              </v-btn>
+            </template>
+            <v-sheet color="grey darken-3" class="py-2 px-3 text-center">
+              <span v-html="item.label"></span>
+            </v-sheet>
+          </v-menu>
+        </v-col>
       </v-row>
       <v-row dense>
-        <v-col class="text-center text--disabled" cols="12">
-          <div>
-            Manta ray icon made by
-            <a href="https://www.flaticon.com/authors/freepik" title="Freepik"
-              >Freepik</a
-            >
-            from
-            <a href="https://www.flaticon.com/" title="Flaticon"
-              >www.flaticon.com</a
-            >
-          </div>
+        <v-col class="text-center text--disabled pt-3" cols="12">
+          This product uses the TMDb API but is not endorsed or certified by
+          TMDb.
         </v-col>
         <v-col class="text-center text--disabled" cols="12">
           Web Application © {{ new Date().getFullYear() }} Richard Wilkosz
@@ -49,34 +47,33 @@ export default {
       {
         id: 0,
         imgSrc: "logo-vue.png",
-        role: "Front End Framework",
-        tech: "Vue.js",
+        label:
+          'JavaScript Framework:<br /><a href="https://vuejs.org/" target="_blank">Vue.js</a>',
       },
       {
         id: 1,
         imgSrc: "logo-vuetify.svg",
-        role: "CSS Framework",
-        tech: "Vuetify",
+        label:
+          'Vue UI Library:<br /><a href="https://vuetifyjs.com/" target="_blank">Vuetify</a>',
       },
       {
         id: 2,
-        imgSrc: "logo-tmdb.svg",
-        role: "Data Source API",
-        tech: "The Movie Database",
+        imgSrc: "logo-freepik.png",
+        label:
+          '<div>Manta Ray and Flaticon Brand icon<br />made by <a href="https://www.flaticon.com/authors/freepik" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" target="_blank" title="Flaticon">www.flaticon.com</a></div>',
       },
       {
-        // This object breaks format due to source's attribution rules
         id: 3,
-        imgSrc: "logo-flaticon.png",
-        role: "",
-        tech: '<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>',
+        imgSrc: "logo-tmdb.svg",
+        label:
+          'Data Source API:<br /><a href="https://www.themoviedb.org/" target="_blank">The Movie Database</a>',
       },
       {
         id: 4,
-        imgSrc: "logo-firebase.svg",
-        role: "Backend as a Service",
-        tech: "Google Firebase",
-        width: "64",
+        imgSrc: "logo-firebase.png",
+        label:
+          'Backend as a Service:<br /><a href="https://firebase.google.com/" target="_blank">Google Firebase</a>',
+        width: 95,
       },
     ],
   }),
