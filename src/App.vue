@@ -216,7 +216,7 @@ export default {
 
       // Query list of owned movies created at init
       vm.ownedMovies.forEach(function (ownedMovie) {
-        if (ownedMovie.title.includes(query.toUpperCase())) {
+        if (ownedMovie.title.toUpperCase().includes(query.toUpperCase())) {
           // TODO: Figure out why duplicates sometimes get added
           vm.ownedResults.push(ownedMovie);
         }
