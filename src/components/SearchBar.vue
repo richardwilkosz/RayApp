@@ -1,21 +1,20 @@
 <template>
-  <v-combobox
-    solo
-    flat
-    dense
-    clearable
-    full-width
-    placeholder="Search movies"
-    prepend-inner-icon="mdi-magnify"
-    class="mt-6"
-    v-model="input"
-    :items="ownedMovieTitles"
-    @change="updateSearch(input)"
-    @click:prepend-inner="endSearch(input)"
-    @click:append="endSearch(input)"
-    @keydown.enter="endSearch(input)"
-    @click:clear="clearSearch"
-  ></v-combobox>
+    <v-combobox
+      solo
+      flat
+      dense
+      clearable
+      id="searchBar"
+      class="mt-6"
+      placeholder="Search movies"
+      append-icon="mdi-magnify"
+      v-model="input"
+      :items="ownedMovieTitles"
+      @change="updateSearch(input)"
+      @click:append="endSearch(input)"
+      @keydown.enter="endSearch(input)"
+      @click:clear="clearSearch"
+    ></v-combobox>
 </template>
 
 <script>
@@ -31,6 +30,8 @@ export default {
   },
 
   methods: {
+    // getSuggestedSearches: function (input)
+
     updateSearch: function (input) {
       this.$emit("update-search", input ? input : "*");
     },
@@ -51,3 +52,9 @@ export default {
   },
 };
 </script>
+
+<style>
+#searchBar ~ .v-input__append-inner .v-input__icon--append .v-icon {
+  transform: none;
+}
+</style>
