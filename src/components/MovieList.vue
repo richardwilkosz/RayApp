@@ -51,7 +51,7 @@
       </template>
       <template v-else-if="getUnownedMoviesCount() > 0">
         <v-container>
-          <v-alert class="mb-0">I don't seem to own what you're searching for.</v-alert>
+          <v-alert class="mb-0">Sorry, I don't seem to own what you're searching for.</v-alert>
         </v-container>
       </template>
 
@@ -145,7 +145,7 @@ export default {
     },
 
     getPosterImage: function (movie) {
-      return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "";
+      return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "../assets/movie-placeholder.jpg";
     },
     getReleaseYear: function (movie) {
       return movie.release_date ? movie.release_date.substring(0, 4) : "";

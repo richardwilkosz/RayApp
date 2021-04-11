@@ -4,26 +4,42 @@
     flat
     dense
     clearable
-    full-width
-    placeholder="Search movies"
-    prepend-inner-icon="mdi-magnify"
+    id="searchBar"
     class="mt-6"
-    v-model="input"
-    :items="ownedMovieTitles"
-    @change="updateSearch(input)"
-    @click:prepend-inner="endSearch(input)"
-    @click:append="endSearch(input)"
-    @keydown.enter="endSearch(input)"
-    @click:clear="clearSearch"
-  ></v-combobox>
+    placeholder="Search movies"
+    append-icon=""
+    :search-input.sync="searchInput"
+    :items="suggestedMovieTitles"
+    @keydown.enter="endSearch()"
+    @click:clear="clearSearch()"
+    @update:search-input="updateSearch()"
+  >
+    <!-- <template v-slot:append-outer>
+      <v-btn
+        depressed
+        height="38"
+        min-width="38"
+        width="46"
+        color="grey darken-3"
+        @click="endSearch()"
+      >
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+    </template> -->
+    <template v-slot:prepend-item>
+      <v-subheader>SUGGESTED SEARCHES</v-subheader>
+    </template>
+  </v-combobox>
 </template>
 
 <script>
-// import _ from "lodash";
+import _ from "lodash";
 
 export default {
   data: () => ({
-    input: "",
+    // input: "",
+    searchInput: "",
+    suggestedMovieTitles: new Array(),
   }),
 
   props: {
@@ -31,14 +47,15 @@ export default {
   },
 
   methods: {
-    updateSearch: function (input) {
-      this.$emit("update-search", input ? input : "*");
+    updateSearch: function() {
+      // Only show suggestions when there's actual input
+      this.suggestedMovieTitles = this.searchInput ? this.ownedMovieTitles : new Array();
+      this.emitSearch();
     },
 
-    // Commented out instead of deleted as an example if debouncing ends up used elsewhere
-    // updateSearch: _.debounce(function (input) {
-    //   this.$emit("update-search", input ? input : "*");
-    // }, 500),
+    emitSearch: _.debounce(function () {
+      this.$emit("update-search", this.searchInput ? this.searchInput : "*");
+    }, 750),
 
     // Workaround since comboboxes don't close on enter
     endSearch: function () {
@@ -51,3 +68,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#searchBar ~ .v-input__append-inner .v-input__icon--append .v-icon {
+  transform: none;
+}
+
+.v-input__append-outer {
+  margin: 0 !important;
+}
+</style>

@@ -16,9 +16,19 @@
 
 <script>
 export default {
+  data: () => ({
+    placeholderSrc: require("../assets/movie-placeholder.jpg"),
+  }),
+
   props: {
     title: String,
     src: String,
   },
 };
 </script>
+
+<style>
+  .placeholder-image {
+     background-image: url("../assets/movie-placeholder.jpg");
+  }
+</style>
