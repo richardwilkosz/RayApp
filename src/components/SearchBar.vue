@@ -7,10 +7,12 @@
     id="searchBar"
     class="mt-6"
     placeholder="Search movies"
+    prepend-inner-icon="mdi-magnify"
     append-icon=""
     :search-input.sync="searchInput"
     :items="suggestedMovieTitles"
     @keydown.enter="endSearch()"
+    @click:prepend-inner="endSearch()"
     @click:clear="clearSearch()"
     @update:search-input="updateSearch()"
   >
