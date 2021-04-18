@@ -9,25 +9,25 @@
         <v-icon>mdi-tune</v-icon>
       </v-btn>
     </div>
-    <div class="d-none d-sm-flex mr-3">
+    <!-- <div class="d-none d-sm-flex mr-3">
       <SortMenu @update-sort="updateSort" />
       <FilterMenu :genres="genres" @update-filter="updateFilter" />
-    </div>
+    </div> -->
   </v-app-bar>
 </template>
 
 <script>
 import AppLogo from "./AppLogo";
 import SearchBar from "./SearchBar";
-import SortMenu from "./SortMenu";
-import FilterMenu from "./FilterMenu";
+// import SortMenu from "./SortMenu";
+// import FilterMenu from "./FilterMenu";
 
 export default {
   components: {
     AppLogo,
     SearchBar,
-    SortMenu,
-    FilterMenu,
+    // SortMenu,
+    // FilterMenu,
   },
 
   props: {

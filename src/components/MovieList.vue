@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <div>
     <template v-if="isLoading">
       <div class="text-center">
         <v-progress-circular
@@ -35,7 +35,6 @@
             cols="6"
             sm="4"
             md="3"
-            lg="2"
             @click.stop="openDialog(movie.id)"
           >
             <OwnedMovie
@@ -51,7 +50,9 @@
       </template>
       <template v-else-if="getUnownedMoviesCount() > 0">
         <v-container>
-          <v-alert class="mb-0">Sorry, I don't seem to own what you're searching for.</v-alert>
+          <v-alert class="mb-0"
+            >Sorry, I don't seem to own what you're searching for.</v-alert
+          >
         </v-container>
       </template>
 
@@ -100,7 +101,7 @@
         @close-dialog="dialogOpen = false"
       />
     </template>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -145,7 +146,9 @@ export default {
     },
 
     getPosterImage: function (movie) {
-      return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "../assets/movie-placeholder.jpg";
+      return movie.poster_path
+        ? Constants.IMAGE_QUERY + movie.poster_path
+        : "../assets/movie-placeholder.jpg";
     },
     getReleaseYear: function (movie) {
       return movie.release_date ? movie.release_date.substring(0, 4) : "";

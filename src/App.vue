@@ -9,15 +9,25 @@
       :ownedMovieTitles="getOwnedMovieTitles()"
     />
     <v-main>
-      <MovieList
-        :ownedMovies="ownedResults"
-        :unownedMovies="unownedResults"
-        :genres="genres"
-        :isLoading="isLoading"
-        :isSortingByYear="isSortingByYear"
-        @update-sort="sort"
-        @update-filter="filter"
-      />
+      <v-container fluid>
+        <v-row>
+          <v-col lg="2" class="d-none d-lg-flex">
+            <SortFilterMenu :genres="genres" @update-sort="sort" @update-filter="filter"></SortFilterMenu>
+            <v-divider vertical></v-divider>
+          </v-col>
+          <v-col cols="12" lg="10">
+            <MovieList
+              :ownedMovies="ownedResults"
+              :unownedMovies="unownedResults"
+              :genres="genres"
+              :isLoading="isLoading"
+              :isSortingByYear="isSortingByYear"
+              @update-sort="sort"
+              @update-filter="filter"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
     <AppFooter />
   </v-app>
@@ -28,6 +38,7 @@ import axios from "axios";
 import Constants from "./assets/Constants.js";
 
 import AppBar from "./components/AppBar";
+import SortFilterMenu from "./components/SortFilterMenu";
 import MovieList from "./components/MovieList";
 import AppFooter from "./components/AppFooter";
 
@@ -49,6 +60,7 @@ export default {
 
   components: {
     AppBar,
+    SortFilterMenu,
     MovieList,
     AppFooter,
   },
@@ -105,7 +117,8 @@ export default {
     },
 
     sort(sortBy) {
-      this.isSortingByYear = (sortBy === Constants.SORT_NEW || sortBy === Constants.SORT_OLD);
+      this.isSortingByYear =
+        sortBy === Constants.SORT_NEW || sortBy === Constants.SORT_OLD;
 
       switch (sortBy) {
         case Constants.SORT_ALPHA:
@@ -251,7 +264,7 @@ export default {
 
       this.ownedMovies.forEach(function (ownedMovie) {
         titles.push(ownedMovie.title);
-      })
+      });
 
       return titles;
     },
