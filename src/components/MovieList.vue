@@ -25,9 +25,9 @@
             <v-spacer></v-spacer>
           </v-col>
           <v-col cols="12" class="py-0">
-            <v-subheader
-              >OWNED MOVIES ({{ getOwnedMoviesCount() }})</v-subheader
-            >
+            <h3 class="font-weight-regular my-2">
+              OWNED MOVIES ({{ getOwnedMoviesCount() }})
+            </h3>
           </v-col>
           <v-col
             v-for="movie in ownedMovies"
@@ -61,7 +61,7 @@
       <template v-if="getUnownedMoviesCount() > 0">
         <v-row dense class="my-1">
           <v-col cols="12" class="py-0">
-            <v-subheader>MOVIES I DON'T OWN... YET</v-subheader>
+            <h3 class="font-weight-regular my-3">MOVIES I DON'T OWN... YET</h3>
           </v-col>
           <v-col
             v-for="movie in unownedMovies"
