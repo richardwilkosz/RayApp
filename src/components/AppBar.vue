@@ -1,12 +1,12 @@
 <template>
   <v-app-bar app>
     <AppLogo />
-    <v-spacer />
+    <v-spacer></v-spacer>
     <SearchBar
       @update-search="updateSearch"
       :ownedMovieTitles="ownedMovieTitles"
     />
-    <v-spacer />
+    <v-spacer></v-spacer>
     <div class="d-sm-none ml-2">
       <v-btn icon>
         <v-icon>mdi-tune</v-icon>

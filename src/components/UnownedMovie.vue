@@ -6,7 +6,7 @@
           <v-img :src="src" height="75" width="50"></v-img>
         </v-col>
         <v-col class="pa-0">
-          <span v-text="title" class="pr-5" />
+          <span v-text="title" class="pr-5"></span>
         </v-col>
       </v-row>
     </v-sheet>
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style>
-  .placeholder-image {
-     background-image: url("../assets/movie-placeholder.jpg");
-  }
+.placeholder-image {
+  background-image: url("../assets/movie-placeholder.jpg");
+}
 </style>

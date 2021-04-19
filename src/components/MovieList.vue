@@ -15,14 +15,14 @@
       <template v-if="getOwnedMoviesCount() > 0">
         <v-row dense>
           <v-col cols="12" class="d-flex d-sm-none">
-            <v-spacer />
+            <v-spacer></v-spacer>
             <SortMenu @update-sort="updateSort" />
             <FilterMenu
               :genres="genres"
               @update-filter="updateFilter"
               class="ml-3"
             />
-            <v-spacer />
+            <v-spacer></v-spacer>
           </v-col>
           <v-col cols="12" class="py-0">
             <v-subheader

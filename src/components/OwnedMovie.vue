@@ -13,7 +13,7 @@
           :class="{ 'd-none d-sm-flex d-lg-none d-xl-flex': !isSortingByYear }"
         >
           <v-icon small>mdi-calendar</v-icon>
-          <span v-text="releaseYear" class="pl-2" />
+          <span v-text="releaseYear" class="pl-2"></span>
         </v-col>
         <v-col
           cols="12"
@@ -25,7 +25,7 @@
           :class="{ 'd-none d-sm-flex d-lg-none d-xl-flex': isSortingByYear }"
         >
           <v-icon small>mdi-clock</v-icon>
-          <span v-text="runtime" class="pl-2" />
+          <span v-text="runtime" class="pl-2"></span>
         </v-col>
       </v-row>
     </v-card-text>
