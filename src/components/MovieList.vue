@@ -14,16 +14,6 @@
       <!-- Owned Movie Results -->
       <template v-if="getOwnedMoviesCount() > 0">
         <v-row dense>
-          <v-col cols="12" class="d-flex d-sm-none">
-            <v-spacer></v-spacer>
-            <SortMenu @update-sort="updateSort" />
-            <FilterMenu
-              :genres="genres"
-              @update-filter="updateFilter"
-              class="ml-3"
-            />
-            <v-spacer></v-spacer>
-          </v-col>
           <v-col cols="12" class="py-0">
             <h3 class="font-weight-regular my-2">
               OWNED MOVIES ({{ getOwnedMoviesCount() }})
@@ -112,16 +102,12 @@ import Constants from "../assets/Constants.js";
 import OwnedMovie from "./OwnedMovie";
 import UnownedMovie from "./UnownedMovie";
 import MovieDetails from "./MovieDetails";
-import SortMenu from "./SortMenu";
-import FilterMenu from "./FilterMenu";
 
 export default {
   components: {
     OwnedMovie,
     UnownedMovie,
     MovieDetails,
-    SortMenu,
-    FilterMenu,
   },
 
   props: {
@@ -139,13 +125,6 @@ export default {
   }),
 
   methods: {
-    updateSort: function (e) {
-      this.$emit("update-sort", e);
-    },
-    updateFilter: function (e) {
-      this.$emit("update-filter", e);
-    },
-
     getPosterImage: function (movie) {
       return movie.poster_path
         ? Constants.IMAGE_QUERY + movie.poster_path

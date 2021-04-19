@@ -7,16 +7,29 @@
       :ownedMovieTitles="ownedMovieTitles"
     />
     <v-spacer></v-spacer>
-    <div class="d-sm-none ml-2">
-      <v-btn icon>
-        <v-icon>mdi-tune</v-icon>
-      </v-btn>
-    </div>
-    <div class="d-none d-sm-flex d-lg-none ml-2">
-      <v-btn text>
-        <v-icon left class="mr-3">mdi-tune</v-icon>
-        Sort &amp; Filter
-      </v-btn>
+    <div class="d-lg-none ml-2">
+      <v-menu bottom offset-y v-bind:close-on-content-click="false">
+        <template v-slot:activator="{ on, attrs }">
+          <div class="d-sm-none">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-tune</v-icon>
+            </v-btn>
+          </div>
+          <div class="d-none d-sm-flex">
+            <v-btn text v-bind="attrs" v-on="on">
+              <v-icon left class="mr-3">mdi-tune</v-icon>
+              Sort &amp; Filter
+            </v-btn>
+          </div>
+        </template>
+        <v-sheet dark class="px-2">
+          <SortFilterMenu
+            :genres="genres"
+            @update-sort="updateSort"
+            @update-filter="updateFilter"
+          />
+        </v-sheet>
+      </v-menu>
     </div>
   </v-app-bar>
 </template>
@@ -26,11 +39,13 @@ import AppLogo from "./AppLogo";
 import SearchBar from "./SearchBar";
 // import SortMenu from "./SortMenu";
 // import FilterMenu from "./FilterMenu";
+import SortFilterMenu from "./SortFilterMenu";
 
 export default {
   components: {
     AppLogo,
     SearchBar,
+    SortFilterMenu,
     // SortMenu,
     // FilterMenu,
   },

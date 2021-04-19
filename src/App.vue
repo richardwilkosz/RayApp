@@ -12,8 +12,11 @@
       <v-container fluid>
         <v-row>
           <v-col lg="2" class="d-none d-lg-flex">
-            <SortFilterMenu :genres="genres" @update-sort="sort" @update-filter="filter"></SortFilterMenu>
-            <v-divider vertical></v-divider>
+            <SortFilterMenu
+              :genres="genres"
+              @update-sort="sort"
+              @update-filter="filter"
+            />
           </v-col>
           <v-col cols="12" lg="10">
             <MovieList
