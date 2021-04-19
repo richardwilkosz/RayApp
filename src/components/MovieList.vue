@@ -35,6 +35,7 @@
             cols="6"
             sm="4"
             md="3"
+            lg="2"
             @click.stop="openDialog(movie.id)"
           >
             <OwnedMovie

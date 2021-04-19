@@ -2,17 +2,22 @@
   <v-app-bar app>
     <AppLogo />
     <v-spacer />
-    <SearchBar @update-search="updateSearch" :ownedMovieTitles="ownedMovieTitles" />
+    <SearchBar
+      @update-search="updateSearch"
+      :ownedMovieTitles="ownedMovieTitles"
+    />
     <v-spacer />
     <div class="d-sm-none ml-2">
       <v-btn icon>
         <v-icon>mdi-tune</v-icon>
       </v-btn>
     </div>
-    <!-- <div class="d-none d-sm-flex mr-3">
-      <SortMenu @update-sort="updateSort" />
-      <FilterMenu :genres="genres" @update-filter="updateFilter" />
-    </div> -->
+    <div class="d-none d-sm-flex d-lg-none ml-2">
+      <v-btn text>
+        <v-icon left class="mr-3">mdi-tune</v-icon>
+        Sort &amp; Filter
+      </v-btn>
+    </div>
   </v-app-bar>
 </template>
 
