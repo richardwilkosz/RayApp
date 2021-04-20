@@ -49,7 +49,7 @@ export default {
   name: "Ray",
 
   data: () => ({
-    input: "",
+    searchInput: "",
     filterOn: [],
     isSortingByYear: false,
 
@@ -104,8 +104,8 @@ export default {
   methods: {
     search(e) {
       // Prevent duplicate searches
-      if (e !== this.input) {
-        this.input = e;
+      if (e !== this.searchInput) {
+        this.searchInput = e;
 
         // Clear previous results
         this.ownedResults = new Array();
