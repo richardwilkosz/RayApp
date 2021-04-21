@@ -1,3 +1,4 @@
+<!--
 <template>
   <div class="text-center">
     <v-menu bottom offset-y v-bind:close-on-content-click="false">
@@ -69,3 +70,4 @@ export default {
   },
 };
 </script>
+-->

@@ -1,4 +1,5 @@
-<template>
+<!--
+ <template>
   <div class="text-center">
     <v-menu bottom offset-y>
       <template v-slot:activator="{ on, attrs }">
@@ -64,3 +65,4 @@ export default {
   visibility: hidden;
 }
 </style>
+-->
