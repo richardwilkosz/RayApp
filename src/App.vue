@@ -125,42 +125,34 @@ export default {
 
       switch (sortBy) {
         case Constants.SORT_ALPHA:
-          this.sortAlphabetical([
-            this.ownedResults,
-            this.unownedResults,
-            this.ownedMovies,
-          ]);
+          this.sortAlphabetical([this.ownedResults, this.unownedResults]);
           break;
         case Constants.SORT_SHORT:
           this.sortByRuntime(
-            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            [this.ownedResults, this.unownedResults],
             "desc"
           );
           break;
         case Constants.SORT_LONG:
           this.sortByRuntime(
-            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            [this.ownedResults, this.unownedResults],
             "asc"
           );
           break;
         case Constants.SORT_NEW:
           this.sortByReleaseYear(
-            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            [this.ownedResults, this.unownedResults],
             "asc"
           );
           break;
         case Constants.SORT_OLD:
           this.sortByReleaseYear(
-            [this.ownedResults, this.unownedResults, this.ownedMovies],
+            [this.ownedResults, this.unownedResults],
             "desc"
           );
           break;
         default:
-          this.sortAlphabetical([
-            this.ownedResults,
-            this.unownedResults,
-            this.ownedMovies,
-          ]);
+          this.sortAlphabetical([this.ownedResults, this.unownedResults]);
       }
     },
 
