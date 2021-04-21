@@ -58,7 +58,7 @@ export default {
 
     sortBy: Constants.SORT_ALPHA,
     isSortingByYear: false,
-    filterGenres: [],
+    filterGenreIds: [],
     genres: [],
   }),
 
@@ -210,18 +210,19 @@ export default {
       });
     },
 
-    filter(filterGenres) {
+    filter(filterGenreIds) {
       // Default to last filter criteria, unless fired by change to filter menu
-      this.filterGenres = filterGenres ? filterGenres : this.filterGenres;
+      this.filterGenreIds = filterGenreIds ? filterGenreIds : this.filterGenreIds;
 
-      console.log(this.filterGenres);
-      // this.filterOn = filterGenres;
-      this.ownedResults = this.ownedResults.filter(movie => movie.genres.filter(genre => this.filterGenres.includes(genre)));
-      // let arraysToFilter = [this.ownedResults, this.unownedResults];
+      this.ownedResults = this.getFilteredArray(this.ownedResults);
+      this.unownedResults = this.getFilteredArray(this.unownedResults);
+    },
 
-      // arraysToFilter.forEach(function (arr) {
-      //   arr.filter(movie => movie.genres.filter(genre => filterGenres.includes(genre)));
-      // });
+    getFilteredArray(array) {
+      let vm = this;
+      return array.filter(function (movie) {
+         return movie.genres.filter(genre => vm.filterGenreIds.includes(genre.id)).length > 0;
+      });
     },
 
     getOwnedDetails(id) {
