@@ -50,15 +50,16 @@ export default {
 
   data: () => ({
     searchInput: "",
-    filterOn: [],
-    isSortingByYear: false,
+    isLoading: true,
 
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
 
+    sortBy: Constants.SORT_ALPHA,
+    isSortingByYear: false,
+    filterGenres: [],
     genres: [],
-    isLoading: true,
   }),
 
   components: {
@@ -120,10 +121,13 @@ export default {
     },
 
     sort(sortBy) {
-      this.isSortingByYear =
-        sortBy === Constants.SORT_NEW || sortBy === Constants.SORT_OLD;
+      // Default to last sort criterion, unless fired by change to sort menu
+      this.sortBy = sortBy ? sortBy : this.sortBy;
 
-      switch (sortBy) {
+      this.isSortingByYear =
+        this.sortBy === Constants.SORT_NEW || this.sortBy === Constants.SORT_OLD;
+
+      switch (this.sortBy) {
         case Constants.SORT_ALPHA:
           this.sortAlphabetical([this.ownedResults, this.unownedResults]);
           break;
@@ -206,8 +210,18 @@ export default {
       });
     },
 
-    filter(e) {
-      this.filterOn = e;
+    filter(filterGenres) {
+      // Default to last filter criteria, unless fired by change to filter menu
+      this.filterGenres = filterGenres ? filterGenres : this.filterGenres;
+
+      console.log(this.filterGenres);
+      // this.filterOn = filterGenres;
+      this.ownedResults = this.ownedResults.filter(movie => movie.genres.filter(genre => this.filterGenres.includes(genre)));
+      // let arraysToFilter = [this.ownedResults, this.unownedResults];
+
+      // arraysToFilter.forEach(function (arr) {
+      //   arr.filter(movie => movie.genres.filter(genre => filterGenres.includes(genre)));
+      // });
     },
 
     getOwnedDetails(id) {
@@ -215,8 +229,8 @@ export default {
     },
 
     queryAllOwned() {
-      this.sortAndFilter();
       this.ownedResults = this.ownedMovies;
+      this.sortAndFilter();
     },
 
     queryFromString(query) {
