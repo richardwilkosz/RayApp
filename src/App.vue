@@ -2,22 +2,33 @@
   <v-app dark>
     <AppBar
       @update-search="search"
-      @update-sort="sort"
-      @update-filter="filter"
+      @update-sort="updateSortBy"
+      @update-filter="updateFilterGenres"
       @menu-view-all="queryAllOwned"
       :genres="genres"
       :ownedMovieTitles="getOwnedMovieTitles()"
     />
     <v-main>
-      <MovieList
-        :ownedMovies="ownedResults"
-        :unownedMovies="unownedResults"
-        :genres="genres"
-        :isLoading="isLoading"
-        :isSortingByYear="isSortingByYear"
-        @update-sort="sort"
-        @update-filter="filter"
-      />
+      <v-container fluid>
+        <v-row>
+          <v-col lg="2" class="d-none d-lg-flex">
+            <SortFilterMenu
+              :genres="genres"
+              @update-sort="updateSortBy"
+              @update-filter="updateFilterGenres"
+            />
+          </v-col>
+          <v-col cols="12" lg="10">
+            <MovieList
+              :ownedMovies="sortFilterResults(ownedResults)"
+              :unownedMovies="sortFilterResults(unownedResults)"
+              :genres="genres"
+              :isLoading="isLoading"
+              :isSortingByYear="isSortingByYear"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
     <AppFooter />
   </v-app>
@@ -28,6 +39,7 @@ import axios from "axios";
 import Constants from "./assets/Constants.js";
 
 import AppBar from "./components/AppBar";
+import SortFilterMenu from "./components/SortFilterMenu";
 import MovieList from "./components/MovieList";
 import AppFooter from "./components/AppFooter";
 
@@ -35,20 +47,25 @@ export default {
   name: "Ray",
 
   data: () => ({
-    input: "",
-    filterOn: [],
-    isSortingByYear: false,
+    // Search
+    searchInput: "",
+    isLoading: true,
 
+    // API consumption
     ownedMovies: [],
     ownedResults: [],
     unownedResults: [],
 
+    // Sort/filter
+    sortBy: Constants.SORT_ALPHA,
+    isSortingByYear: false,
+    filterGenreIds: [Constants.FILTER_DEFAULT],
     genres: [],
-    isLoading: true,
   }),
 
   components: {
     AppBar,
+    SortFilterMenu,
     MovieList,
     AppFooter,
   },
@@ -89,14 +106,14 @@ export default {
   methods: {
     search(e) {
       // Prevent duplicate searches
-      if (e !== this.input) {
-        this.input = e;
+      if (e !== this.searchInput) {
+        this.searchInput = e;
 
         // Clear previous results
         this.ownedResults = new Array();
         this.unownedResults = new Array();
 
-        if (e === "*") {
+        if (e === Constants.SEARCH_ALL) {
           this.queryAllOwned();
         } else {
           this.queryFromString(e);
@@ -104,64 +121,34 @@ export default {
       }
     },
 
-    sort(sortBy) {
-      this.isSortingByYear = (sortBy === Constants.SORT_NEW || sortBy === Constants.SORT_OLD);
+    updateSortBy(sortBy) {
+      // Default to last sort criterion, unless fired by change to sort menu
+      this.sortBy = sortBy ? sortBy : this.sortBy;
 
-      switch (sortBy) {
-        case Constants.SORT_ALPHA:
-          this.sortAlphabetical([
-            this.ownedResults,
-            this.unownedResults,
-            this.ownedMovies,
-          ]);
-          break;
-        case Constants.SORT_SHORT:
-          this.sortByRuntime(
-            [this.ownedResults, this.unownedResults, this.ownedMovies],
-            "desc"
-          );
-          break;
-        case Constants.SORT_LONG:
-          this.sortByRuntime(
-            [this.ownedResults, this.unownedResults, this.ownedMovies],
-            "asc"
-          );
-          break;
-        case Constants.SORT_NEW:
-          this.sortByReleaseYear(
-            [this.ownedResults, this.unownedResults, this.ownedMovies],
-            "asc"
-          );
-          break;
-        case Constants.SORT_OLD:
-          this.sortByReleaseYear(
-            [this.ownedResults, this.unownedResults, this.ownedMovies],
-            "desc"
-          );
-          break;
-        default:
-          this.sortAlphabetical([
-            this.ownedResults,
-            this.unownedResults,
-            this.ownedMovies,
-          ]);
-      }
+      this.isSortingByYear =
+        this.sortBy === Constants.SORT_NEW ||
+        this.sortBy === Constants.SORT_OLD;
     },
 
-    sortAlphabetical(movieArrays) {
-      movieArrays.forEach(function (array) {
-        array.sort(function (a, b) {
-          let titleA = a.title.replace("The ", "").toUpperCase();
-          let titleB = b.title.replace("The ", "").toUpperCase();
-          return titleA > titleB ? 1 : titleB > titleA ? -1 : 0;
-        });
+    updateFilterGenres(filterGenreIds) {
+      // Default to last filter criteria, unless fired by change to filter menu
+      this.filterGenreIds = filterGenreIds
+        ? filterGenreIds
+        : this.filterGenreIds;
+    },
+
+    sortAlphabetical(movieArray) {
+      movieArray.sort(function (a, b) {
+        let titleA = a.title.replace("The ", "").toUpperCase();
+        let titleB = b.title.replace("The ", "").toUpperCase();
+        return titleA > titleB ? 1 : titleB > titleA ? -1 : 0;
       });
     },
 
-    sortByRuntime(movieArrays, ascOrDesc) {
+    sortByRuntime(movieArray, ascOrDesc) {
       let sortMethod;
 
-      if (ascOrDesc === "asc") {
+      if (ascOrDesc === Constants.SORT_ASC) {
         sortMethod = function (arr) {
           arr.sort((a, b) => b.runtime - a.runtime);
         };
@@ -171,15 +158,13 @@ export default {
         };
       }
 
-      movieArrays.forEach(function (array) {
-        sortMethod(array);
-      });
+      sortMethod(movieArray);
     },
 
-    sortByReleaseYear(movieArrays, ascOrDesc) {
+    sortByReleaseYear(movieArray, ascOrDesc) {
       let sortMethod;
 
-      if (ascOrDesc === "asc") {
+      if (ascOrDesc === Constants.SORT_ASC) {
         sortMethod = function (arr) {
           arr.sort(
             (a, b) => new Date(b.release_date) - new Date(a.release_date)
@@ -193,13 +178,60 @@ export default {
         };
       }
 
-      movieArrays.forEach(function (array) {
-        sortMethod(array);
-      });
+      sortMethod(movieArray);
     },
 
-    filter(e) {
-      this.filterOn = e;
+    sortFilterResults: function (resultsArray) {
+      // Make copy by value, not by reference
+      let sortedFilteredArray = resultsArray.slice();
+
+      sortedFilteredArray = this.filterResults(sortedFilteredArray);
+      this.sortResults(sortedFilteredArray);
+      return sortedFilteredArray;
+    },
+
+    sortResults: function (resultsArray) {
+      switch (this.sortBy) {
+        case Constants.SORT_ALPHA:
+          return this.sortAlphabetical(resultsArray);
+        case Constants.SORT_SHORT:
+          return this.sortByRuntime(resultsArray, Constants.SORT_DESC);
+        case Constants.SORT_LONG:
+          return this.sortByRuntime(resultsArray, Constants.SORT_ASC);
+        case Constants.SORT_NEW:
+          return this.sortByReleaseYear(resultsArray, Constants.SORT_ASC);
+        case Constants.SORT_OLD:
+          return this.sortByReleaseYear(resultsArray, Constants.SORT_DESC);
+        default:
+          return this.sortAlphabetical(resultsArray);
+      }
+    },
+
+    filterResults: function (resultsArray) {
+      let vm = this;
+      if (vm.filterGenreIds.includes(Constants.FILTER_DEFAULT)) {
+        return resultsArray;
+      } else {
+        return resultsArray.filter(function (movie) {
+          // Account for the fact that TMDB sets genres to different property names based on query
+          // Owned movies: Array<object> genres
+          if (movie.genres) {
+            return (
+              movie.genres.filter((genre) =>
+                vm.filterGenreIds.includes(genre.id)
+              ).length > 0
+            );
+          }
+          // Unowned movies: Array<number> genre_ids
+          else {
+            return (
+              movie.genre_ids.filter((genreId) =>
+                vm.filterGenreIds.includes(genreId)
+              ).length > 0
+            );
+          }
+        });
+      }
     },
 
     getOwnedDetails(id) {
@@ -207,7 +239,6 @@ export default {
     },
 
     queryAllOwned() {
-      this.sortAndFilter();
       this.ownedResults = this.ownedMovies;
     },
 
@@ -241,7 +272,6 @@ export default {
           }
         });
 
-        vm.sortAndFilter();
         vm.isLoading = false;
       });
     },
@@ -251,14 +281,14 @@ export default {
 
       this.ownedMovies.forEach(function (ownedMovie) {
         titles.push(ownedMovie.title);
-      })
+      });
 
       return titles;
     },
 
     // TODO: Implement fully
     sortAndFilter() {
-      this.sort();
+      //this.sort();
     },
   },
 };

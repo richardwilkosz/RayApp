@@ -7,10 +7,12 @@
     id="searchBar"
     class="mt-6"
     placeholder="Search movies"
+    prepend-inner-icon="mdi-magnify"
     append-icon=""
     :search-input.sync="searchInput"
     :items="suggestedMovieTitles"
     @keydown.enter="endSearch()"
+    @click:prepend-inner="endSearch()"
     @click:clear="clearSearch()"
     @update:search-input="updateSearch()"
   >
@@ -34,6 +36,7 @@
 
 <script>
 import _ from "lodash";
+import Constants from "../assets/Constants.js";
 
 export default {
   data: () => ({
@@ -54,7 +57,7 @@ export default {
     },
 
     emitSearch: _.debounce(function () {
-      this.$emit("update-search", this.searchInput ? this.searchInput : "*");
+      this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
     }, 750),
 
     // Workaround since comboboxes don't close on enter
@@ -63,7 +66,7 @@ export default {
     },
 
     clearSearch: function () {
-      this.$emit("update-search", "*");
+      this.$emit("update-search", Constants.SEARCH_ALL);
     },
   },
 };

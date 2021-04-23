@@ -48,31 +48,31 @@ export default {
         id: 0,
         imgSrc: "logo-vue.png",
         label:
-          'JavaScript Framework:<br /><a href="https://vuejs.org/" target="_blank">Vue.js</a>',
+          'JavaScript Framework:<br><a href="https://vuejs.org/" target="_blank">Vue.js</a>',
       },
       {
         id: 1,
         imgSrc: "logo-vuetify.svg",
         label:
-          'Vue UI Library:<br /><a href="https://vuetifyjs.com/" target="_blank">Vuetify</a>',
+          'Vue UI Library:<br><a href="https://vuetifyjs.com/" target="_blank">Vuetify</a>',
       },
       {
         id: 2,
         imgSrc: "logo-freepik.png",
         label:
-          '<div>Manta Ray and Flaticon Brand icon<br />made by <a href="https://www.flaticon.com/authors/freepik" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" target="_blank" title="Flaticon">www.flaticon.com</a></div>',
+          '<div>Manta Ray and Flaticon Brand icon<br>made by <a href="https://www.flaticon.com/authors/freepik" target="_blank" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" target="_blank" title="Flaticon">www.flaticon.com</a></div>',
       },
       {
         id: 3,
         imgSrc: "logo-tmdb.svg",
         label:
-          'Data Source API:<br /><a href="https://www.themoviedb.org/" target="_blank">The Movie Database</a>',
+          'Data Source API:<br><a href="https://www.themoviedb.org/" target="_blank">The Movie Database</a>',
       },
       {
         id: 4,
         imgSrc: "logo-firebase.png",
         label:
-          'Backend as a Service:<br /><a href="https://firebase.google.com/" target="_blank">Google Firebase</a>',
+          'Backend as a Service:<br><a href="https://firebase.google.com/" target="_blank">Google Firebase</a>',
         width: 95,
       },
     ],

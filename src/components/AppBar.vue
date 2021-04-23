@@ -1,17 +1,35 @@
 <template>
   <v-app-bar app>
     <AppLogo />
-    <v-spacer />
-    <SearchBar @update-search="updateSearch" :ownedMovieTitles="ownedMovieTitles" />
-    <v-spacer />
-    <div class="d-sm-none ml-2">
-      <v-btn icon>
-        <v-icon>mdi-tune</v-icon>
-      </v-btn>
-    </div>
-    <div class="d-none d-sm-flex mr-3">
-      <SortMenu @update-sort="updateSort" />
-      <FilterMenu :genres="genres" @update-filter="updateFilter" />
+    <v-spacer></v-spacer>
+    <SearchBar
+      @update-search="updateSearch"
+      :ownedMovieTitles="ownedMovieTitles"
+    />
+    <v-spacer></v-spacer>
+    <div class="d-lg-none ml-2">
+      <v-menu bottom offset-y v-bind:close-on-content-click="false">
+        <template v-slot:activator="{ on, attrs }">
+          <div class="d-sm-none">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-tune</v-icon>
+            </v-btn>
+          </div>
+          <div class="d-none d-sm-flex">
+            <v-btn text v-bind="attrs" v-on="on">
+              <v-icon left class="mr-3">mdi-tune</v-icon>
+              Sort &amp; Filter
+            </v-btn>
+          </div>
+        </template>
+        <v-sheet dark class="px-2">
+          <SortFilterMenu
+            :genres="genres"
+            @update-sort="updateSort"
+            @update-filter="updateFilter"
+          />
+        </v-sheet>
+      </v-menu>
     </div>
   </v-app-bar>
 </template>
@@ -19,15 +37,17 @@
 <script>
 import AppLogo from "./AppLogo";
 import SearchBar from "./SearchBar";
-import SortMenu from "./SortMenu";
-import FilterMenu from "./FilterMenu";
+// import SortMenu from "./SortMenu";
+// import FilterMenu from "./FilterMenu";
+import SortFilterMenu from "./SortFilterMenu";
 
 export default {
   components: {
     AppLogo,
     SearchBar,
-    SortMenu,
-    FilterMenu,
+    SortFilterMenu,
+    // SortMenu,
+    // FilterMenu,
   },
 
   props: {

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <div>
     <template v-if="isLoading">
       <div class="text-center">
         <v-progress-circular
@@ -14,20 +14,10 @@
       <!-- Owned Movie Results -->
       <template v-if="getOwnedMoviesCount() > 0">
         <v-row dense>
-          <v-col cols="12" class="d-flex d-sm-none">
-            <v-spacer />
-            <SortMenu @update-sort="updateSort" />
-            <FilterMenu
-              :genres="genres"
-              @update-filter="updateFilter"
-              class="ml-3"
-            />
-            <v-spacer />
-          </v-col>
           <v-col cols="12" class="py-0">
-            <v-subheader
-              >OWNED MOVIES ({{ getOwnedMoviesCount() }})</v-subheader
-            >
+            <h3 class="font-weight-regular my-2">
+              OWNED MOVIES ({{ getOwnedMoviesCount() }})
+            </h3>
           </v-col>
           <v-col
             v-for="movie in ownedMovies"
@@ -51,7 +41,9 @@
       </template>
       <template v-else-if="getUnownedMoviesCount() > 0">
         <v-container>
-          <v-alert class="mb-0">Sorry, I don't seem to own what you're searching for.</v-alert>
+          <v-alert class="mb-0"
+            >Sorry, I don't seem to own what you're searching for.</v-alert
+          >
         </v-container>
       </template>
 
@@ -59,7 +51,7 @@
       <template v-if="getUnownedMoviesCount() > 0">
         <v-row dense class="my-1">
           <v-col cols="12" class="py-0">
-            <v-subheader>MOVIES I DON'T OWN... YET</v-subheader>
+            <h3 class="font-weight-regular my-3">MOVIES I DON'T OWN... YET</h3>
           </v-col>
           <v-col
             v-for="movie in unownedMovies"
@@ -100,7 +92,7 @@
         @close-dialog="dialogOpen = false"
       />
     </template>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -110,16 +102,12 @@ import Constants from "../assets/Constants.js";
 import OwnedMovie from "./OwnedMovie";
 import UnownedMovie from "./UnownedMovie";
 import MovieDetails from "./MovieDetails";
-import SortMenu from "./SortMenu";
-import FilterMenu from "./FilterMenu";
 
 export default {
   components: {
     OwnedMovie,
     UnownedMovie,
     MovieDetails,
-    SortMenu,
-    FilterMenu,
   },
 
   props: {
@@ -137,15 +125,10 @@ export default {
   }),
 
   methods: {
-    updateSort: function (e) {
-      this.$emit("update-sort", e);
-    },
-    updateFilter: function (e) {
-      this.$emit("update-filter", e);
-    },
-
     getPosterImage: function (movie) {
-      return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "../assets/movie-placeholder.jpg";
+      return movie.poster_path
+        ? Constants.IMAGE_QUERY + movie.poster_path
+        : "../assets/movie-placeholder.jpg";
     },
     getReleaseYear: function (movie) {
       return movie.release_date ? movie.release_date.substring(0, 4) : "";
