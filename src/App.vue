@@ -20,8 +20,8 @@
           </v-col>
           <v-col cols="12" lg="10">
             <MovieList
-              :ownedMovies="ownedResults"
-              :unownedMovies="unownedResults"
+              :ownedMovies="filterResults(ownedResults)"
+              :unownedMovies="filterResults(unownedResults)"
               :genres="genres"
               :isLoading="isLoading"
               :isSortingByYear="isSortingByYear"
@@ -58,7 +58,7 @@ export default {
 
     sortBy: Constants.SORT_ALPHA,
     isSortingByYear: false,
-    filterGenreIds: [],
+    filterGenreIds: [Constants.FILTER_DEFAULT],
     genres: [],
   }),
 
@@ -125,23 +125,18 @@ export default {
       this.sortBy = sortBy ? sortBy : this.sortBy;
 
       this.isSortingByYear =
-        this.sortBy === Constants.SORT_NEW || this.sortBy === Constants.SORT_OLD;
+        this.sortBy === Constants.SORT_NEW ||
+        this.sortBy === Constants.SORT_OLD;
 
       switch (this.sortBy) {
         case Constants.SORT_ALPHA:
           this.sortAlphabetical([this.ownedResults, this.unownedResults]);
           break;
         case Constants.SORT_SHORT:
-          this.sortByRuntime(
-            [this.ownedResults, this.unownedResults],
-            "desc"
-          );
+          this.sortByRuntime([this.ownedResults, this.unownedResults], "desc");
           break;
         case Constants.SORT_LONG:
-          this.sortByRuntime(
-            [this.ownedResults, this.unownedResults],
-            "asc"
-          );
+          this.sortByRuntime([this.ownedResults, this.unownedResults], "asc");
           break;
         case Constants.SORT_NEW:
           this.sortByReleaseYear(
@@ -212,17 +207,23 @@ export default {
 
     filter(filterGenreIds) {
       // Default to last filter criteria, unless fired by change to filter menu
-      this.filterGenreIds = filterGenreIds ? filterGenreIds : this.filterGenreIds;
-
-      this.ownedResults = this.getFilteredArray(this.ownedResults);
-      this.unownedResults = this.getFilteredArray(this.unownedResults);
+      this.filterGenreIds = filterGenreIds
+        ? filterGenreIds
+        : this.filterGenreIds;
     },
 
-    getFilteredArray(array) {
+    filterResults: function (resultsArray) {
       let vm = this;
-      return array.filter(function (movie) {
-         return movie.genres.filter(genre => vm.filterGenreIds.includes(genre.id)).length > 0;
-      });
+      if (vm.filterGenreIds.includes(0)) {
+        return resultsArray;
+      } else {
+        return resultsArray.filter(function (movie) {
+          return (
+            movie.genres.filter((genre) => vm.filterGenreIds.includes(genre.id))
+              .length > 0
+          );
+        });
+      }
     },
 
     getOwnedDetails(id) {

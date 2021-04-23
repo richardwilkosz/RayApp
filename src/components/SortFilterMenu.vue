@@ -35,9 +35,9 @@ export default {
   },
 
   data: () => ({
-    allGenreIndex: 0,
+    allGenreIndex: Constants.FILTER_DEFAULT,
     allGenreName: "Include All Genres",
-    genresSelected: [0],
+    genresSelected: [Constants.FILTER_DEFAULT],
 
     sortSelect: { text: "Alphabetical", value: Constants.SORT_ALPHA },
     sortItems: [

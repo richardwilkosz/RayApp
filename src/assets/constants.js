@@ -13,6 +13,8 @@ const SORT_LONG = 2;
 const SORT_NEW = 3;
 const SORT_OLD = 4;
 
+const FILTER_DEFAULT = 0;
+
 export default {
     API_KEY: API_KEY,
     API_READ_ACCESS_TOKEN: API_READ_ACCESS_TOKEN,
@@ -28,4 +30,6 @@ export default {
     SORT_LONG: SORT_LONG,
     SORT_NEW: SORT_NEW,
     SORT_OLD: SORT_OLD,
+
+    FILTER_DEFAULT: FILTER_DEFAULT,
 }
