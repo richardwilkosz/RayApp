@@ -36,6 +36,7 @@
 
 <script>
 import _ from "lodash";
+import Constants from "../assets/Constants.js";
 
 export default {
   data: () => ({
@@ -56,7 +57,7 @@ export default {
     },
 
     emitSearch: _.debounce(function () {
-      this.$emit("update-search", this.searchInput ? this.searchInput : "*");
+      this.$emit("update-search", this.searchInput ? this.searchInput : Constants.SEARCH_ALL);
     }, 750),
 
     // Workaround since comboboxes don't close on enter
@@ -65,7 +66,7 @@ export default {
     },
 
     clearSearch: function () {
-      this.$emit("update-search", "*");
+      this.$emit("update-search", Constants.SEARCH_ALL);
     },
   },
 };

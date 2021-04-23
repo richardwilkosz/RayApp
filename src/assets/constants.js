@@ -7,11 +7,15 @@ const DETAILS_QUERY = 'https://api.themoviedb.org/3/movie/';
 const BACKDROP_PATH = 'https://image.tmdb.org/t/p/w500';
 const GENRES_QUERY = 'https://api.themoviedb.org/3/genre/movie/list?api_key=' + API_KEY + '&language=en-US';
 
+const SEARCH_ALL = '*';
+
 const SORT_ALPHA = 0;
 const SORT_SHORT = 1;
 const SORT_LONG = 2;
 const SORT_NEW = 3;
 const SORT_OLD = 4;
+const SORT_ASC = 'asc';
+const SORT_DESC = 'desc';
 
 const FILTER_DEFAULT = 0;
 
@@ -25,11 +29,15 @@ export default {
     BACKDROP_PATH: BACKDROP_PATH,
     GENRES_QUERY: GENRES_QUERY,
 
+    SEARCH_ALL: SEARCH_ALL,
+
     SORT_ALPHA: SORT_ALPHA,
     SORT_SHORT: SORT_SHORT,
     SORT_LONG: SORT_LONG,
     SORT_NEW: SORT_NEW,
     SORT_OLD: SORT_OLD,
+    SORT_ASC: SORT_ASC,
+    SORT_DESC: SORT_DESC,
 
     FILTER_DEFAULT: FILTER_DEFAULT,
 }
