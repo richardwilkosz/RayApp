@@ -42,7 +42,7 @@
       <template v-else-if="getUnownedMoviesCount() > 0">
         <v-container>
           <v-alert class="mb-0"
-            >Sorry, I don't seem to own what you're searching for.</v-alert
+            >Sorry, I don't seem to own what you're searching for. You might also want to try filtering differently.</v-alert
           >
         </v-container>
       </template>

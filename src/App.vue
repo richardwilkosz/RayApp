@@ -104,6 +104,9 @@ export default {
   },
 
   methods: {
+    /*
+      Search methods
+    */
     search(e) {
       // Prevent duplicate searches
       if (e !== this.searchInput) {
@@ -119,6 +122,70 @@ export default {
           this.queryFromString(e);
         }
       }
+    },
+
+    queryAllOwned() {
+      this.ownedResults = this.ownedMovies;
+    },
+
+    queryFromString(query) {
+      let vm = this;
+      vm.isLoading = true;
+
+      // Query list of owned movies created at init
+      vm.ownedMovies.forEach(function (ownedMovie) {
+        if (ownedMovie.title.toUpperCase().includes(query.toUpperCase())) {
+          // TODO: Figure out why duplicates sometimes get added
+          vm.ownedResults.push(ownedMovie);
+        }
+      });
+
+      // Query API for unowned movies that match too
+      axios.get(Constants.SEARCH_QUERY + query).then((response) => {
+        let allResults = response.data.results;
+
+        allResults.forEach(function (result) {
+          let isOwned = false;
+
+          vm.ownedMovies.forEach(function (ownedMovie) {
+            if (ownedMovie.id === result.id) {
+              isOwned = true;
+            }
+          });
+
+          if (!isOwned) {
+            vm.unownedResults.push(result);
+          }
+        });
+
+        vm.isLoading = false;
+      });
+    },
+
+    getOwnedMovieTitles() {
+      let titles = new Array();
+
+      this.ownedMovies.forEach(function (ownedMovie) {
+        titles.push(ownedMovie.title);
+      });
+
+      return titles;
+    },
+
+    getOwnedDetails(id) {
+      return axios.get(Constants.DETAILS_QUERY(id));
+    },
+
+    /*
+      Sort/Filter methods
+    */
+    sortFilterResults: function (resultsArray) {
+      // Make copy by value, not by reference
+      let sortedFilteredArray = resultsArray.slice();
+
+      sortedFilteredArray = this.filterResults(sortedFilteredArray);
+      this.sortResults(sortedFilteredArray);
+      return sortedFilteredArray;
     },
 
     updateSortBy(sortBy) {
@@ -177,15 +244,6 @@ export default {
       sortMethod(movieArray);
     },
 
-    sortFilterResults: function (resultsArray) {
-      // Make copy by value, not by reference
-      let sortedFilteredArray = resultsArray.slice();
-
-      sortedFilteredArray = this.filterResults(sortedFilteredArray);
-      this.sortResults(sortedFilteredArray);
-      return sortedFilteredArray;
-    },
-
     sortResults: function (resultsArray) {
       switch (this.sortBy) {
         case Constants.SORT_ALPHA:
@@ -228,63 +286,6 @@ export default {
           }
         });
       }
-    },
-
-    getOwnedDetails(id) {
-      return axios.get(Constants.DETAILS_QUERY(id));
-    },
-
-    queryAllOwned() {
-      this.ownedResults = this.ownedMovies;
-    },
-
-    queryFromString(query) {
-      let vm = this;
-      vm.isLoading = true;
-
-      // Query list of owned movies created at init
-      vm.ownedMovies.forEach(function (ownedMovie) {
-        if (ownedMovie.title.toUpperCase().includes(query.toUpperCase())) {
-          // TODO: Figure out why duplicates sometimes get added
-          vm.ownedResults.push(ownedMovie);
-        }
-      });
-
-      // Query API for unowned movies that match too
-      axios.get(Constants.SEARCH_QUERY + query).then((response) => {
-        let allResults = response.data.results;
-
-        allResults.forEach(function (result) {
-          let isOwned = false;
-
-          vm.ownedMovies.forEach(function (ownedMovie) {
-            if (ownedMovie.id === result.id) {
-              isOwned = true;
-            }
-          });
-
-          if (!isOwned) {
-            vm.unownedResults.push(result);
-          }
-        });
-
-        vm.isLoading = false;
-      });
-    },
-
-    getOwnedMovieTitles() {
-      let titles = new Array();
-
-      this.ownedMovies.forEach(function (ownedMovie) {
-        titles.push(ownedMovie.title);
-      });
-
-      return titles;
-    },
-
-    // TODO: Implement fully
-    sortAndFilter() {
-      //this.sort();
     },
   },
 };
