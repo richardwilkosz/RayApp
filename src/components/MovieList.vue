@@ -128,7 +128,7 @@ export default {
     getPosterImage: function (movie) {
       return movie.poster_path
         ? Constants.IMAGE_QUERY + movie.poster_path
-        : "../assets/movie-placeholder.jpg";
+        : "";
     },
     getReleaseYear: function (movie) {
       return movie.release_date ? movie.release_date.substring(0, 4) : "";
