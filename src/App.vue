@@ -122,8 +122,7 @@ export default {
     },
 
     updateSortBy(sortBy) {
-      // Default to last sort criterion, unless fired by change to sort menu
-      this.sortBy = sortBy ? sortBy : this.sortBy;
+      this.sortBy = sortBy;
 
       this.isSortingByYear =
         this.sortBy === Constants.SORT_NEW ||
@@ -131,10 +130,7 @@ export default {
     },
 
     updateFilterGenres(filterGenreIds) {
-      // Default to last filter criteria, unless fired by change to filter menu
-      this.filterGenreIds = filterGenreIds
-        ? filterGenreIds
-        : this.filterGenreIds;
+      this.filterGenreIds = filterGenreIds;
     },
 
     sortAlphabetical(movieArray) {
