@@ -11,7 +11,7 @@
       </div>
     </template>
     <template v-else>
-      
+
       <!-- Owned Movie Results -->
       <template v-if="getOwnedMoviesCount() > 0">
         <v-row dense>
@@ -100,7 +100,7 @@
 <script>
 import axios from "axios";
 
-import Constants from "../assets/Constants.js";
+import Constants from "../../assets/Constants.js";
 import OwnedMovie from "./OwnedMovie";
 import UnownedMovie from "./UnownedMovie";
 import MovieDetails from "./MovieDetails";

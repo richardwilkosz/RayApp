@@ -17,7 +17,7 @@
 <script>
 export default {
   data: () => ({
-    placeholderSrc: require("../assets/movie-placeholder.jpg"),
+    placeholderSrc: require("../../assets/movie-placeholder.jpg"),
   }),
 
   props: {

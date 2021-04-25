@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <v-img
-      src="../assets/logo-ray.png"
+      src="../../assets/logo-ray.png"
       max-height="32"
       max-width="32"
     ></v-img>

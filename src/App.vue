@@ -14,7 +14,7 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
 #AppWithFooter {
   display: flex;
   flex-direction: column;

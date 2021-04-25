@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Constants from "../assets/Constants.js";
+import Constants from "../../assets/Constants.js";
 
 export default {
   props: {

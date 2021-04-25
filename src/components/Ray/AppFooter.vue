@@ -12,7 +12,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn text dark v-bind="attrs" v-on="on">
                 <v-img
-                  :src="require('../assets/' + item.imgSrc)"
+                  :src="require('../../assets/' + item.imgSrc)"
                   contain
                   height="32"
                   :width="item.width ? item.width : 32"

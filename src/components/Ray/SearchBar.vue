@@ -24,7 +24,7 @@
 
 <script>
 import _ from "lodash";
-import Constants from "../assets/Constants.js";
+import Constants from "../../assets/Constants.js";
 
 export default {
   data: () => ({
