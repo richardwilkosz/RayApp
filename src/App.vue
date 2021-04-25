@@ -143,31 +143,17 @@ export default {
       vm.isLoading = true;
 
       // Query list of owned movies created at init
-      vm.ownedMovies.forEach(function (ownedMovie) {
-        if (
-          ownedMovie.title.toUpperCase().includes(searchInput.toUpperCase())
-        ) {
-          vm.ownedResults.push(ownedMovie);
-        }
-      });
+      vm.ownedResults = vm.ownedMovies.filter((ownedMovie) =>
+        ownedMovie.title.toUpperCase().includes(searchInput.toUpperCase())
+      );
 
-      // Query API for unowned movies that match too
+      // Query API for unowned movies that match too, preventing duplicates
       axios.get(Constants.SEARCH_QUERY + searchInput).then((response) => {
         let allResults = response.data.results;
-
-        allResults.forEach(function (result) {
-          let isOwned = false;
-
-          vm.ownedMovies.forEach(function (ownedMovie) {
-            if (ownedMovie.id === result.id) {
-              isOwned = true;
-            }
-          });
-
-          if (!isOwned) {
-            vm.unownedResults.push(result);
-          }
-        });
+        vm.unownedResults = allResults.filter(
+          (result) =>
+            !vm.ownedResults.find((ownedResult) => ownedResult.id === result.id)
+        );
 
         vm.isLoading = false;
       });
