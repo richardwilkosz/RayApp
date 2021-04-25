@@ -166,11 +166,7 @@ export default {
 
     getOwnedMovieTitles() {
       let titles = new Array();
-
-      this.ownedMovies.forEach(function (ownedMovie) {
-        titles.push(ownedMovie.title);
-      });
-
+      this.ownedMovies.forEach((ownedMovie) => titles.push(ownedMovie.title));
       return titles;
     },
 
