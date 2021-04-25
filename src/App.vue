@@ -1,16 +1,12 @@
 <template>
   <v-app dark>
-    <RayApp></RayApp>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import RayApp from "./components/Ray/RayApp";
-
 export default { 
-  components: {
-    RayApp,
-  },
+  name: "RichardResume",
 }
 </script>
 
