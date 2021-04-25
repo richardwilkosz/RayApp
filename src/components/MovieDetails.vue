@@ -16,9 +16,6 @@
         {{ getReleaseYear(movie) }}{{ getRuntimeInHours(movie) }}
       </v-card-subtitle>
       <v-img v-if="imagePath" :src="imagePath">
-        <!-- <v-btn class="btn-modal-close float-right px-0">
-          <v-icon @click.stop="closeDialog()">mdi-close</v-icon>
-        </v-btn> -->
       </v-img>
       <v-card-text>
         <div class="primary--text font-weight-bold mt-3 mb-2">

@@ -26,9 +26,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.placeholder-image {
-  background-image: url("../assets/movie-placeholder.jpg");
-}
-</style>

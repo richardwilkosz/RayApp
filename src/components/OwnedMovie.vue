@@ -39,12 +39,15 @@ export default {
     src: String,
     releaseYear: String,
     runtime: String,
-    isSortingByYear: Boolean, // With certain viewports, where only runtime or release year can fit, show runtime unless sorting on release year
+
+    // With certain viewports, where only runtime or release year can fit,
+    // show runtime unless sorting on release year
+    isSortingByYear: Boolean,
   },
 
   computed: {
     lazySrc: function() {
-      return this.src.replace('/w500/', '/w200/')
+      return this.src.replace('/w500/', '/w200/');
     }
   }
 };

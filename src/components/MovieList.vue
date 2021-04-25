@@ -11,6 +11,7 @@
       </div>
     </template>
     <template v-else>
+      
       <!-- Owned Movie Results -->
       <template v-if="getOwnedMoviesCount() > 0">
         <v-row dense>
@@ -42,7 +43,8 @@
       <template v-else-if="getUnownedMoviesCount() > 0">
         <v-container>
           <v-alert class="mb-0"
-            >Sorry, I don't seem to own what you're searching for. You might also want to try filtering differently.</v-alert
+            >Sorry, I don't seem to own what you're searching for. You might
+            also want to try filtering differently.</v-alert
           >
         </v-container>
       </template>
@@ -126,9 +128,7 @@ export default {
 
   methods: {
     getPosterImage: function (movie) {
-      return movie.poster_path
-        ? Constants.IMAGE_QUERY + movie.poster_path
-        : "";
+      return movie.poster_path ? Constants.IMAGE_QUERY + movie.poster_path : "";
     },
     getReleaseYear: function (movie) {
       return movie.release_date ? movie.release_date.substring(0, 4) : "";

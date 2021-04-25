@@ -16,18 +16,6 @@
     @click:clear="clearSearch()"
     @update:search-input="updateSearch()"
   >
-    <!-- <template v-slot:append-outer>
-      <v-btn
-        depressed
-        height="38"
-        min-width="38"
-        width="46"
-        color="grey darken-3"
-        @click="endSearch()"
-      >
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-    </template> -->
     <template v-slot:prepend-item>
       <v-subheader>SUGGESTED SEARCHES</v-subheader>
     </template>
@@ -40,7 +28,6 @@ import Constants from "../assets/Constants.js";
 
 export default {
   data: () => ({
-    // input: "",
     searchInput: "",
     suggestedMovieTitles: new Array(),
   }),

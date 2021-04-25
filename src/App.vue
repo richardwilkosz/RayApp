@@ -6,7 +6,7 @@
       @update-filter="updateFilterGenres"
       @menu-view-all="queryAllOwned"
       :genres="genres"
-      :ownedMovieTitles="getOwnedMovieTitles()"
+      :ownedMovieTitles="getOwnedMovieTitles"
     />
     <v-main>
       <v-container fluid>
@@ -89,7 +89,7 @@ export default {
       axios.get(Constants.GENRES_QUERY).then((response) => {
         vm.genres = response.data.genres;
         vm.genres.unshift({
-          id: 0,
+          id: Constants.FILTER_DEFAULT,
           name: "Include All Genres",
         });
       });
@@ -103,6 +103,14 @@ export default {
         vm.isLoading = false;
       });
     });
+  },
+
+  computed: {
+    getOwnedMovieTitles() {
+      let titles = new Array();
+      this.ownedMovies.forEach((ownedMovie) => titles.push(ownedMovie.title));
+      return titles;
+    },
   },
 
   methods: {
@@ -130,20 +138,21 @@ export default {
       this.ownedResults = this.ownedMovies;
     },
 
-    queryFromString(query) {
+    queryFromString(searchInput) {
       let vm = this;
       vm.isLoading = true;
 
       // Query list of owned movies created at init
       vm.ownedMovies.forEach(function (ownedMovie) {
-        if (ownedMovie.title.toUpperCase().includes(query.toUpperCase())) {
-          // TODO: Figure out why duplicates sometimes get added
+        if (
+          ownedMovie.title.toUpperCase().includes(searchInput.toUpperCase())
+        ) {
           vm.ownedResults.push(ownedMovie);
         }
       });
 
       // Query API for unowned movies that match too
-      axios.get(Constants.SEARCH_QUERY + query).then((response) => {
+      axios.get(Constants.SEARCH_QUERY + searchInput).then((response) => {
         let allResults = response.data.results;
 
         allResults.forEach(function (result) {
@@ -164,12 +173,6 @@ export default {
       });
     },
 
-    getOwnedMovieTitles() {
-      let titles = new Array();
-      this.ownedMovies.forEach((ownedMovie) => titles.push(ownedMovie.title));
-      return titles;
-    },
-
     getOwnedDetails(id) {
       return axios.get(Constants.DETAILS_QUERY(id));
     },
@@ -178,9 +181,7 @@ export default {
       Sort/Filter methods
     */
     sortFilterResults: function (resultsArray) {
-      // Make copy by value, not by reference
-      let sortedFilteredArray = resultsArray.slice();
-
+      let sortedFilteredArray = resultsArray.slice(); // Copy by value, not by reference
       sortedFilteredArray = this.filterResults(sortedFilteredArray);
       this.sortResults(sortedFilteredArray);
       return sortedFilteredArray;
