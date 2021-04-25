@@ -81,9 +81,9 @@ export default {
       let ownedDetailPromises = [];
 
       // Get extra details of each owned movie, e.g. runtime
-      ownedResults.forEach(function (result) {
-        ownedDetailPromises.push(vm.getOwnedDetails(result.id));
-      });
+      ownedResults.forEach((result) =>
+        ownedDetailPromises.push(vm.getOwnedDetails(result.id))
+      );
 
       // Get list of genres
       axios.get(Constants.GENRES_QUERY).then((response) => {
@@ -96,9 +96,7 @@ export default {
 
       // Finalize list after API calls are complete
       Promise.all(ownedDetailPromises).then(function (results) {
-        results.forEach(function (result) {
-          vm.ownedMovies.push(result.data);
-        });
+        results.forEach((result) => vm.ownedMovies.push(result.data));
         vm.queryAllOwned();
         vm.isLoading = false;
       });
