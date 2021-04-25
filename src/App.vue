@@ -37,6 +37,8 @@
 <script>
 import axios from "axios";
 import Constants from "./assets/Constants.js";
+import SortService from "./services/SortService.js";
+import FilterService from "./services/FilterService.js";
 
 import AppBar from "./components/AppBar";
 import SortFilterMenu from "./components/SortFilterMenu";
@@ -107,19 +109,19 @@ export default {
     /*
       Search methods
     */
-    search(e) {
+    search(searchInput) {
       // Prevent duplicate searches
-      if (e !== this.searchInput) {
-        this.searchInput = e;
+      if (searchInput !== this.searchInput) {
+        this.searchInput = searchInput;
 
         // Clear previous results
         this.ownedResults = new Array();
         this.unownedResults = new Array();
 
-        if (e === Constants.SEARCH_ALL) {
+        if (searchInput === Constants.SEARCH_ALL) {
           this.queryAllOwned();
         } else {
-          this.queryFromString(e);
+          this.queryFromString(searchInput);
         }
       }
     },
@@ -200,92 +202,12 @@ export default {
       this.filterGenreIds = filterGenreIds;
     },
 
-    sortAlphabetical(movieArray) {
-      movieArray.sort(function (a, b) {
-        let titleA = a.title.replace("The ", "").toUpperCase();
-        let titleB = b.title.replace("The ", "").toUpperCase();
-        return titleA > titleB ? 1 : titleB > titleA ? -1 : 0;
-      });
-    },
-
-    sortByRuntime(movieArray, ascOrDesc) {
-      let sortMethod;
-
-      if (ascOrDesc === Constants.SORT_ASC) {
-        sortMethod = function (arr) {
-          arr.sort((a, b) => b.runtime - a.runtime);
-        };
-      } else {
-        sortMethod = function (arr) {
-          arr.sort((a, b) => a.runtime - b.runtime);
-        };
-      }
-
-      sortMethod(movieArray);
-    },
-
-    sortByReleaseYear(movieArray, ascOrDesc) {
-      let sortMethod;
-
-      if (ascOrDesc === Constants.SORT_ASC) {
-        sortMethod = function (arr) {
-          arr.sort(
-            (a, b) => new Date(b.release_date) - new Date(a.release_date)
-          );
-        };
-      } else {
-        sortMethod = function (arr) {
-          arr.sort(
-            (a, b) => new Date(a.release_date) - new Date(b.release_date)
-          );
-        };
-      }
-
-      sortMethod(movieArray);
-    },
-
     sortResults: function (resultsArray) {
-      switch (this.sortBy) {
-        case Constants.SORT_ALPHA:
-          return this.sortAlphabetical(resultsArray);
-        case Constants.SORT_SHORT:
-          return this.sortByRuntime(resultsArray, Constants.SORT_DESC);
-        case Constants.SORT_LONG:
-          return this.sortByRuntime(resultsArray, Constants.SORT_ASC);
-        case Constants.SORT_NEW:
-          return this.sortByReleaseYear(resultsArray, Constants.SORT_ASC);
-        case Constants.SORT_OLD:
-          return this.sortByReleaseYear(resultsArray, Constants.SORT_DESC);
-        default:
-          return this.sortAlphabetical(resultsArray);
-      }
+      return SortService.sortMovieArray(resultsArray, this.sortBy);
     },
 
     filterResults: function (resultsArray) {
-      let vm = this;
-      if (vm.filterGenreIds.includes(Constants.FILTER_DEFAULT)) {
-        return resultsArray;
-      } else {
-        return resultsArray.filter(function (movie) {
-          // Account for the fact that TMDB sets genres to different property names based on query
-          // Owned movies: Array<object> genres
-          if (movie.genres) {
-            return (
-              movie.genres.filter((genre) =>
-                vm.filterGenreIds.includes(genre.id)
-              ).length > 0
-            );
-          }
-          // Unowned movies: Array<number> genre_ids
-          else {
-            return (
-              movie.genre_ids.filter((genreId) =>
-                vm.filterGenreIds.includes(genreId)
-              ).length > 0
-            );
-          }
-        });
-      }
+      return FilterService.filterMovieArray(resultsArray, this.filterGenreIds);
     },
   },
 };
