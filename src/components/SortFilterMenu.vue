@@ -35,7 +35,6 @@ export default {
   },
 
   data: () => ({
-    allGenreIndex: Constants.FILTER_DEFAULT,
     allGenreName: "Include All Genres",
     genresSelected: [Constants.FILTER_DEFAULT],
 
@@ -58,29 +57,29 @@ export default {
       let vm = this;
       let filters = new Array();
       this.setIncludeAll();
-      this.genresSelected.forEach(function (index) {
-        filters.push(vm.genres[index].id);
-      });
+      this.genresSelected.forEach((index) => filters.push(vm.genres[index].id));
       vm.$emit("update-filter", filters);
     },
 
     setIncludeAll: function () {
-      // Either "Include All" is selected, or some subset of genres
-      let lastSelectedIndex = this.genresSelected[
-        this.genresSelected.length - 1
-      ];
-      if (lastSelectedIndex === this.allGenreIndex) {
-        this.genresSelected = this.genresSelected.filter(
-          (index) => index === this.allGenreIndex
-        );
-      } else {
-        this.genresSelected = this.genresSelected.filter(
-          (index) => index !== this.allGenreIndex
-        );
-      }
+      const isAll = (index) => index === Constants.FILTER_DEFAULT;
+      const setToAll = () => (this.genresSelected = [Constants.FILTER_DEFAULT]);
+
       // In the case of no filters, default back to All
-      if (!this.genresSelected.length) {
-        this.genresSelected.push(this.allGenreIndex);
+      if (!this.genresSelected || this.genresSelected.length === 0) {
+        setToAll();
+      } else {
+        let lastSelectedIndex = this.genresSelected.slice(-1)[0];
+
+        // Either "Include All" is selected, or some subset of genres
+        if (isAll(lastSelectedIndex)) {
+          setToAll();
+        }
+        else {
+          this.genresSelected = this.genresSelected.filter(
+            (index) => !isAll(index)
+          );
+        }
       }
     },
   },
