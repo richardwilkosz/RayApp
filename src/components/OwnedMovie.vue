@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-img :src="src"></v-img>
+    <v-img :src="src" :lazy-src="lazySrc"></v-img>
     <v-card-text class="py-2">
       <v-row dense>
         <v-col
@@ -39,7 +39,16 @@ export default {
     src: String,
     releaseYear: String,
     runtime: String,
-    isSortingByYear: Boolean, // With certain viewports, where only runtime or release year can fit, show runtime unless sorting on release year
+
+    // With certain viewports, where only runtime or release year can fit,
+    // show runtime unless sorting on release year
+    isSortingByYear: Boolean,
   },
+
+  computed: {
+    lazySrc: function() {
+      return this.src.replace('/w500/', '/w200/');
+    }
+  }
 };
 </script>

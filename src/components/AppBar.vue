@@ -37,8 +37,6 @@
 <script>
 import AppLogo from "./AppLogo";
 import SearchBar from "./SearchBar";
-// import SortMenu from "./SortMenu";
-// import FilterMenu from "./FilterMenu";
 import SortFilterMenu from "./SortFilterMenu";
 
 export default {
@@ -46,8 +44,6 @@ export default {
     AppLogo,
     SearchBar,
     SortFilterMenu,
-    // SortMenu,
-    // FilterMenu,
   },
 
   props: {
@@ -68,10 +64,6 @@ export default {
     },
     updateFilter: function (e) {
       this.$emit("update-filter", e);
-    },
-
-    toggleMobileSearch: function () {
-      this.isSearchingMobile = !this.isSearchingMobile;
     },
   },
 };

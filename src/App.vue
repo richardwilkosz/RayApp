@@ -6,7 +6,7 @@
       @update-filter="updateFilterGenres"
       @menu-view-all="queryAllOwned"
       :genres="genres"
-      :ownedMovieTitles="getOwnedMovieTitles()"
+      :ownedMovieTitles="getOwnedMovieTitles"
     />
     <v-main>
       <v-container fluid>
@@ -37,6 +37,8 @@
 <script>
 import axios from "axios";
 import Constants from "./assets/Constants.js";
+import SortService from "./services/SortService.js";
+import FilterService from "./services/FilterService.js";
 
 import AppBar from "./components/AppBar";
 import SortFilterMenu from "./components/SortFilterMenu";
@@ -79,51 +81,98 @@ export default {
       let ownedDetailPromises = [];
 
       // Get extra details of each owned movie, e.g. runtime
-      ownedResults.forEach(function (result) {
-        ownedDetailPromises.push(vm.getOwnedDetails(result.id));
-      });
+      ownedResults.forEach((result) =>
+        ownedDetailPromises.push(vm.getOwnedDetails(result.id))
+      );
 
       // Get list of genres
       axios.get(Constants.GENRES_QUERY).then((response) => {
         vm.genres = response.data.genres;
         vm.genres.unshift({
-          id: 0,
+          id: Constants.FILTER_DEFAULT,
           name: "Include All Genres",
         });
       });
 
       // Finalize list after API calls are complete
       Promise.all(ownedDetailPromises).then(function (results) {
-        results.forEach(function (result) {
-          vm.ownedMovies.push(result.data);
-        });
+        results.forEach((result) => vm.ownedMovies.push(result.data));
         vm.queryAllOwned();
         vm.isLoading = false;
       });
     });
   },
 
+  computed: {
+    getOwnedMovieTitles() {
+      let titles = new Array();
+      this.ownedMovies.forEach((ownedMovie) => titles.push(ownedMovie.title));
+      return titles;
+    },
+  },
+
   methods: {
-    search(e) {
+    /*
+      Search methods
+    */
+    search(searchInput) {
       // Prevent duplicate searches
-      if (e !== this.searchInput) {
-        this.searchInput = e;
+      if (searchInput !== this.searchInput) {
+        this.searchInput = searchInput;
 
         // Clear previous results
         this.ownedResults = new Array();
         this.unownedResults = new Array();
 
-        if (e === Constants.SEARCH_ALL) {
+        if (searchInput === Constants.SEARCH_ALL) {
           this.queryAllOwned();
         } else {
-          this.queryFromString(e);
+          this.queryFromString(searchInput);
         }
       }
     },
 
+    queryAllOwned() {
+      this.ownedResults = this.ownedMovies;
+    },
+
+    queryFromString(searchInput) {
+      let vm = this;
+      vm.isLoading = true;
+
+      // Query list of owned movies created at init
+      vm.ownedResults = vm.ownedMovies.filter((ownedMovie) =>
+        ownedMovie.title.toUpperCase().includes(searchInput.toUpperCase())
+      );
+
+      // Query API for unowned movies that match too, preventing duplicates
+      axios.get(Constants.SEARCH_QUERY + searchInput).then((response) => {
+        let allResults = response.data.results;
+        vm.unownedResults = allResults.filter(
+          (result) =>
+            !vm.ownedResults.find((ownedResult) => ownedResult.id === result.id)
+        );
+
+        vm.isLoading = false;
+      });
+    },
+
+    getOwnedDetails(id) {
+      return axios.get(Constants.DETAILS_QUERY(id));
+    },
+
+    /*
+      Sort/Filter methods
+    */
+    sortFilterResults: function (resultsArray) {
+      let sortedFilteredArray = resultsArray.slice(); // Copy by value, not by reference
+      sortedFilteredArray = this.filterResults(sortedFilteredArray);
+      this.sortResults(sortedFilteredArray);
+      return sortedFilteredArray;
+    },
+
     updateSortBy(sortBy) {
-      // Default to last sort criterion, unless fired by change to sort menu
-      this.sortBy = sortBy ? sortBy : this.sortBy;
+      this.sortBy = sortBy;
 
       this.isSortingByYear =
         this.sortBy === Constants.SORT_NEW ||
@@ -131,164 +180,15 @@ export default {
     },
 
     updateFilterGenres(filterGenreIds) {
-      // Default to last filter criteria, unless fired by change to filter menu
-      this.filterGenreIds = filterGenreIds
-        ? filterGenreIds
-        : this.filterGenreIds;
-    },
-
-    sortAlphabetical(movieArray) {
-      movieArray.sort(function (a, b) {
-        let titleA = a.title.replace("The ", "").toUpperCase();
-        let titleB = b.title.replace("The ", "").toUpperCase();
-        return titleA > titleB ? 1 : titleB > titleA ? -1 : 0;
-      });
-    },
-
-    sortByRuntime(movieArray, ascOrDesc) {
-      let sortMethod;
-
-      if (ascOrDesc === Constants.SORT_ASC) {
-        sortMethod = function (arr) {
-          arr.sort((a, b) => b.runtime - a.runtime);
-        };
-      } else {
-        sortMethod = function (arr) {
-          arr.sort((a, b) => a.runtime - b.runtime);
-        };
-      }
-
-      sortMethod(movieArray);
-    },
-
-    sortByReleaseYear(movieArray, ascOrDesc) {
-      let sortMethod;
-
-      if (ascOrDesc === Constants.SORT_ASC) {
-        sortMethod = function (arr) {
-          arr.sort(
-            (a, b) => new Date(b.release_date) - new Date(a.release_date)
-          );
-        };
-      } else {
-        sortMethod = function (arr) {
-          arr.sort(
-            (a, b) => new Date(a.release_date) - new Date(b.release_date)
-          );
-        };
-      }
-
-      sortMethod(movieArray);
-    },
-
-    sortFilterResults: function (resultsArray) {
-      // Make copy by value, not by reference
-      let sortedFilteredArray = resultsArray.slice();
-
-      sortedFilteredArray = this.filterResults(sortedFilteredArray);
-      this.sortResults(sortedFilteredArray);
-      return sortedFilteredArray;
+      this.filterGenreIds = filterGenreIds;
     },
 
     sortResults: function (resultsArray) {
-      switch (this.sortBy) {
-        case Constants.SORT_ALPHA:
-          return this.sortAlphabetical(resultsArray);
-        case Constants.SORT_SHORT:
-          return this.sortByRuntime(resultsArray, Constants.SORT_DESC);
-        case Constants.SORT_LONG:
-          return this.sortByRuntime(resultsArray, Constants.SORT_ASC);
-        case Constants.SORT_NEW:
-          return this.sortByReleaseYear(resultsArray, Constants.SORT_ASC);
-        case Constants.SORT_OLD:
-          return this.sortByReleaseYear(resultsArray, Constants.SORT_DESC);
-        default:
-          return this.sortAlphabetical(resultsArray);
-      }
+      return SortService.sortMovieArray(resultsArray, this.sortBy);
     },
 
     filterResults: function (resultsArray) {
-      let vm = this;
-      if (vm.filterGenreIds.includes(Constants.FILTER_DEFAULT)) {
-        return resultsArray;
-      } else {
-        return resultsArray.filter(function (movie) {
-          // Account for the fact that TMDB sets genres to different property names based on query
-          // Owned movies: Array<object> genres
-          if (movie.genres) {
-            return (
-              movie.genres.filter((genre) =>
-                vm.filterGenreIds.includes(genre.id)
-              ).length > 0
-            );
-          }
-          // Unowned movies: Array<number> genre_ids
-          else {
-            return (
-              movie.genre_ids.filter((genreId) =>
-                vm.filterGenreIds.includes(genreId)
-              ).length > 0
-            );
-          }
-        });
-      }
-    },
-
-    getOwnedDetails(id) {
-      return axios.get(Constants.DETAILS_QUERY(id));
-    },
-
-    queryAllOwned() {
-      this.ownedResults = this.ownedMovies;
-    },
-
-    queryFromString(query) {
-      let vm = this;
-      vm.isLoading = true;
-
-      // Query list of owned movies created at init
-      vm.ownedMovies.forEach(function (ownedMovie) {
-        if (ownedMovie.title.toUpperCase().includes(query.toUpperCase())) {
-          // TODO: Figure out why duplicates sometimes get added
-          vm.ownedResults.push(ownedMovie);
-        }
-      });
-
-      // Query API for unowned movies that match too
-      axios.get(Constants.SEARCH_QUERY + query).then((response) => {
-        let allResults = response.data.results;
-
-        allResults.forEach(function (result) {
-          let isOwned = false;
-
-          vm.ownedMovies.forEach(function (ownedMovie) {
-            if (ownedMovie.id === result.id) {
-              isOwned = true;
-            }
-          });
-
-          if (!isOwned) {
-            vm.unownedResults.push(result);
-          }
-        });
-
-        vm.isLoading = false;
-      });
-    },
-
-    getOwnedMovieTitles() {
-      let titles = new Array();
-
-      this.ownedMovies.forEach(function (ownedMovie) {
-        titles.push(ownedMovie.title);
-      });
-
-      return titles;
-    },
-
-    // TODO: Implement fully
-    sortAndFilter() {
-      //this.sort();
+      return FilterService.filterMovieArray(resultsArray, this.filterGenreIds);
     },
   },
 };
