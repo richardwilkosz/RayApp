@@ -74,6 +74,7 @@ export default {
 
   created() {
     let vm = this;
+    vm.$vuetify.theme.dark = true;
 
     // Get list of owned movies
     axios.get(Constants.OWNED_LIST_QUERY).then((response) => {
