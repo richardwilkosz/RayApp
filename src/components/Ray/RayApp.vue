@@ -1,5 +1,5 @@
 <template>
-  <div id="AppWithFooter">
+  <div id="RayApp" class="AppWithFooter">
     <AppBar
       @update-search="search"
       @update-sort="updateSortBy"
@@ -11,12 +11,14 @@
     <v-main>
       <v-container fluid>
         <v-row>
-          <v-col lg="2" class="d-none d-lg-flex">
-            <SortFilterMenu
-              :genres="genres"
-              @update-sort="updateSortBy"
-              @update-filter="updateFilterGenres"
-            />
+          <v-col lg="2" class="d-none d-lg-block">
+            <div class="StickyColContent">
+              <SortFilterMenu
+                :genres="genres"
+                @update-sort="updateSortBy"
+                @update-filter="updateFilterGenres"
+              />
+            </div>
           </v-col>
           <v-col cols="12" lg="10">
             <MovieList
@@ -46,6 +48,7 @@ import MovieList from "./MovieList";
 import AppFooter from "./AppFooter";
 
 export default {
+  id: "HelloWorld",
   data: () => ({
     // Search
     searchInput: "",
@@ -192,22 +195,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-/* Custom font */
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-$body-font-family: "Open Sans";
-$title-font: "Open Sans";
-.v-application {
-  font-family: $body-font-family, sans-serif !important;
-  .title {
-    // To pin point specific classes of some components
-    font-family: $title-font, sans-serif !important;
-  }
-}
-
-/* Used for mobile browsers' scroll bouncing */
-html {
-  background-color: #272727;
-}
-</style>
