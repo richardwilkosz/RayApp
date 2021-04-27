@@ -1,17 +1,31 @@
 <template>
-  <v-app-bar app color="#43a047" dark shrink-on-scroll scroll-threshold="500" prominent ref="AppBar">
+  <v-app-bar
+    app
+    color="#43a047"
+    dark
+    shrink-on-scroll
+    scroll-threshold="500"
+    prominent
+    ref="AppBar"
+  >
     <template v-slot:img="{ props }">
       <v-img
         v-bind="props"
         gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"
       ></v-img>
     </template>
-    <v-avatar :size="appBarHeight - 8">
+    <v-avatar :size="appBarHeight - 8" class="mr-3">
       <v-img src="../../assets/resume-portrait.png"></v-img>
     </v-avatar>
-    <template v-slot:extension="{ }">
+    <v-toolbar-title>Richard Wilkosz</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-btn icon><v-icon>mdi-email</v-icon></v-btn>
+    <v-btn icon><v-icon>mdi-linkedin</v-icon></v-btn>
+    <v-btn icon><v-icon>mdi-github-circle</v-icon></v-btn>
+
+    <!-- <template v-slot:extension="{ }">
       Hello world
-    </template>
+    </template> -->
     <!-- <template v-if="isExpanded">
     <v-avatar size="120px">
       <v-img src="../../assets/resume-portrait.png"></v-img>
@@ -64,8 +78,8 @@ export default {
       "$refs.AppBar.computedHeight",
       (newValue) => {
         // if (newValue === 0 || newValue === 1) {
-          // this.isExpanded = newValue === 1;
-          this.appBarHeight = newValue;
+        // this.isExpanded = newValue === 1;
+        this.appBarHeight = newValue;
         // }
       }
     );
