@@ -1,5 +1,6 @@
 <template>
   <div id="ResumeApp" class="AppWithFooter">
+    <AppBar></AppBar>
     <v-main>
       <v-container>
         <v-row>
@@ -106,10 +107,12 @@
 </template>
 
 <script>
+import AppBar from "./AppBar";
 import ContactMe from "./ContactMe";
 
 export default {
   components: {
+    AppBar,
     ContactMe,
   },
 
