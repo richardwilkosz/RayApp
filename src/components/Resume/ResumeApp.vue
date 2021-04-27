@@ -5,34 +5,7 @@
         <v-row>
           <v-col cols="12" md="3" lg="2">
             <div class="StickyColContent pt-6">
-              <v-card>
-                <v-row>
-                  <v-col
-                    cols="auto"
-                    sm="auto"
-                    md="12"
-                    class="text-center pt-4 pr-0 pb-0 pl-7 pl-md-0"
-                  >
-                    <v-avatar :size="viewportIsXs ? '50px' : '100px'">
-                      <v-img src="../../assets/resume-portrait.png"></v-img>
-                    </v-avatar>
-                  </v-col>
-                  <v-col
-                    cols="auto"
-                    sm=""
-                    lg="12"
-                    class="pt-0 pt-lg-0 pb-0 pl-0 pl-md-3"
-                  >
-                    <v-card-title>Richard Wilkosz</v-card-title>
-                    <v-card-subtitle>Software Engineer</v-card-subtitle>
-                  </v-col>
-                  <v-col cols="12" class="pt-0">
-                    <v-card-text class="pt-0"
-                      ><v-icon>mdi-github-circle</v-icon></v-card-text
-                    >
-                  </v-col>
-                </v-row>
-              </v-card>
+              <ContactMe></ContactMe>
             </div>
           </v-col>
           <v-col cols="12" md="9" lg="10">
@@ -133,15 +106,15 @@
 </template>
 
 <script>
+import ContactMe from "./ContactMe";
+
 export default {
-  created: function () {
-    //this.$vuetify.theme.dark = true;
+  components: {
+    ContactMe,
   },
 
-  computed: {
-    viewportIsXs: function () {
-      return this.$vuetify.breakpoint.name === "xs";
-    },
+  created: function () {
+    //this.$vuetify.theme.dark = true;
   },
 };
 </script>
