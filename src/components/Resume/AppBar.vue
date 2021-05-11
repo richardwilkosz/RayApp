@@ -33,7 +33,6 @@
       </v-btn>
       <v-menu
         offset-y
-        :close-on-content-click="false"
         transition="slide-y-transition"
       >
         <template v-slot:activator="{ on, attrs }">
@@ -121,7 +120,7 @@ export default {
         href: "https://www.linkedin.com/in/richard-wilkosz-026b4715a/",
       },
       {
-        icon: "mdi-github-circle",
+        icon: "mdi-github-box",
         title: "GitHub",
         href: "https://github.com/richardwilkosz",
       },
