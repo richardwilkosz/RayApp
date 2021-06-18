@@ -4,49 +4,95 @@
       <AppBar></AppBar>
     </div>
     <v-main>
-      <v-container>
+      <v-container fluid>
         <v-row>
-          <v-col cols="12" sm="auto">
-            <div class="StickyColContent pt-3">
-              <ContactMe></ContactMe>
+          <v-col cols="12" sm="6" class="mx-0 mt-0 px-0 pt-0">
+            <v-img
+              v-if="viewportIsXl"
+              src="../../assets/resume-portrait-wide.jpg"
+            ></v-img>
+            <v-img v-else src="../../assets/resume-portrait.jpg"></v-img>
+          </v-col>
+          <v-col cols="12" sm="6" class="my-auto">
+            <div class="mx-auto" style="max-width: 500px">
+              <h1 class="title-font mb-3">Richard Wilkosz</h1>
+              <p class="text-left">
+                <strong
+                  >Software Engineer with {{ yearsOfExperience }}+ years of
+                  experience</strong
+                >
+                writing production-level code. Specializes in user-centered
+                front ends, but delivers clean, reusable code throughout the
+                full stack. In the past year, has demonstrated leadership and
+                communication skills by serving as team Scrum Master and
+                mentoring 5 interns.
+              </p>
+              <v-btn
+              large
+                color="primary"
+                rounded
+                href="/Resume_Richard_Wilkosz.pdf"
+                target="_blank"
+              >
+                GET RESUME
+              </v-btn>
             </div>
           </v-col>
-          <v-col>
-            <v-card>
-              <v-row>
-                <v-col cols="12" lg="6">
-                  <v-card-title class="title-font">
-                    SUMMARY
-                  </v-card-title>
-                  <v-card-text>
-                    Software Engineer with over 3 years of experience writing
-                    production-level code. Specializes in user-centered front
-                    ends, but delivers clean, reusable code throughout the full
-                    stack. In the past year, has demonstrated leadership and
-                    communication skills by serving as team Scrum Master and
-                    mentoring 5 interns.
-                  </v-card-text>
-                  <v-card-title class="title-font">
-                    WORK EXPERIENCE
-                  </v-card-title>
-                  <v-card-text>
-                  </v-card-text>
-                </v-col>
-                <v-col cols="12" lg="6">
-                  <v-card-title class="title-font">
-                    SAMPLE PROJECT
-                  </v-card-title>
-                  <v-card-text>
-                    Check out <strong>Ray</strong>, my database of movies I own on Blu-ray! It features Vue.js, REST API consumption, and responsive design: <router-link to="/ray">richardwilkosz.com/ray</router-link>
-                  </v-card-text>
-                  <v-card-title class="title-font">
-                    TECHNICAL SKILLS
-                  </v-card-title>
-                  <v-card-text>
-                  </v-card-text>
-                </v-col>
-              </v-row>
-            </v-card>
+        </v-row>
+        <v-row>
+          <template v-if="viewportIsXs">
+            <v-col cols="12" sm="6" class="mx-0 mt-0 px-0 pt-0">
+              <v-img
+                v-if="viewportIsXl"
+                src="../../assets/resume-sample-wide.jpg"
+              ></v-img>
+              <v-img v-else src="../../assets/resume-sample.jpg"></v-img>
+            </v-col>
+          </template>
+          <v-col cols="12" sm="6" class="my-auto">
+            <div class="mx-auto" style="max-width: 500px">
+              <h1 class="title-font mb-3">Sample Project</h1>
+              <p class="text-left">
+                Check out <strong>Ray</strong>, my database of movies I own on
+                Blu-ray! It features Vue.js, REST API consumption, and
+                responsive design:
+                <router-link to="/ray">richardwilkosz.com/ray</router-link>
+              </p>
+            </div>
+          </v-col>
+          <template v-if="!viewportIsXs">
+            <v-col cols="12" sm="6" class="mx-0 mt-0 px-0 pt-0">
+              <v-img
+                v-if="viewportIsXl"
+                src="../../assets/resume-sample-wide.jpg"
+              ></v-img>
+              <v-img v-else src="../../assets/resume-sample.jpg"></v-img>
+            </v-col>
+          </template>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" class="mx-0 mt-0 px-0 pt-0 pb-0">
+            <v-img
+              v-if="viewportIsXl"
+              src="../../assets/resume-contact-wide.jpg"
+            ></v-img>
+            <v-img v-else src="../../assets/resume-contact.jpg"></v-img>
+          </v-col>
+          <v-col cols="12" sm="6" class="my-auto">
+            <div class="mx-auto" style="max-width: 500px">
+              <h1 class="title-font mb-3">Contact Me</h1>
+              <p class="text-left">
+                <strong
+                  >Software Engineer with {{ yearsOfExperience }}+ years of
+                  experience</strong
+                >
+                writing production-level code. Specializes in user-centered
+                front ends, but delivers clean, reusable code throughout the
+                full stack. In the past year, has demonstrated leadership and
+                communication skills by serving as team Scrum Master and
+                mentoring 5 interns.
+              </p>
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -56,16 +102,55 @@
 
 <script>
 import AppBar from "./AppBar";
-import ContactMe from "./ContactMe";
 
 export default {
   components: {
     AppBar,
-    ContactMe,
   },
 
-  created: function () {
-    //this.$vuetify.theme.dark = true;
+  computed: {
+    yearsOfExperience: function () {
+      let startDate = new Date(2018, 4, 1);
+      return Math.floor((new Date() - startDate) / (1000 * 3600 * 24 * 365));
+    },
+    viewportIsXs: function () {
+      return this.$vuetify.breakpoint.name === "xs";
+    },
+    viewportIsXl: function () {
+      return this.$vuetify.breakpoint.name === "xl";
+    },
+  },
+
+  methods: {
+    getAvatarSize: function () {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return 300;
+        case "sm":
+          return 200;
+        // case "md":
+        //   return 300;
+        // case "lg":
+        //   return 500;
+        // case "xl":
+        //   return 500;
+        default:
+          return 300;
+      }
+    },
+
+    // viewportIsXs: function () {
+    //   return this.$vuetify.breakpoint.name === "xs";
+    // },
+
+    // viewportIsXl: function () {
+    //   return this.$vuetify.breakpoint.name === "xl";
+    // },
+
+    viewportIsDesktop: function () {
+      let vw = this.$vuetify.breakpoint.name;
+      return vw === "lg" || vw === "xl";
+    },
   },
 };
 </script>
@@ -87,9 +172,9 @@ $title-font: "Montserrat ExtraBold";
 }
 
 // Override Vuetify's prevention of background images
-#ResumeApp {
-  background: LightGray url("../../assets/resume-texture.jpg") repeat !important;
-}
+// #ResumeApp {
+//   background: LightGray url("../../assets/resume-texture.jpg") repeat !important;
+// }
 
 .v-card {
   margin-bottom: 12px;
@@ -103,5 +188,9 @@ $title-font: "Montserrat ExtraBold";
   font-size: 1rem !important;
   letter-spacing: 0.03125em !important;
   line-height: 1.5rem !important;
+}
+
+.windowHeight {
+  height: 100vh !important;
 }
 </style>
