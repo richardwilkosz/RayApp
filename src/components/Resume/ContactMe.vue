@@ -1,18 +1,18 @@
 <template>
-  <v-card width="275" class="mx-auto">
+  <v-card width="300" class="mx-auto">
     <v-row>
       <v-col cols="12" class="text-center pb-0">
         <v-avatar size="100" class="ml-lg-4">
-          <v-img src="../../assets/resume-portrait.png"></v-img>
+          <v-img src="../../assets/resume-portrait.jpg"></v-img>
         </v-avatar>
       </v-col>
       <v-col cols="12" class="py-0">
         <div class="text-center">
-          <v-card-title>Richard Wilkosz</v-card-title>
-          <v-card-subtitle class="pb-0">Software Engineer</v-card-subtitle>
+          <h2 class="title-font primary--text mt-2 pb-0">Richard Wilkosz</h2>
+          <h4 class="title-font pb-0">Software Engineer</h4>
         </div>
-        <v-card-text>
-          <p><strong>Email: </strong>me at richardwilkosz dot com</p>
+        <v-card-text class="text-center">
+          <p><strong>Email: </strong>richard.w.wilkosz at gmail.com</p>
           <div class="text-center">
             <v-btn
               v-for="link in iconLinks"
@@ -42,7 +42,7 @@ export default {
         id: 0,
         icon: "mdi-pdf-box",
         text: "Get Resume",
-        href: "https://github.com/richardwilkosz",
+        href: "/Resume_Richard_Wilkosz.pdf",
         isFilledIn: true,
       },
       {
@@ -60,10 +60,10 @@ export default {
     ],
   }),
 
-  computed: {
-    viewportIsXs: function () {
-      return this.$vuetify.breakpoint.name === "xs";
-    },
-  },
+  // computed: {
+  //   viewportIsXs: function () {
+  //     return this.$vuetify.breakpoint.name === "xs";
+  //   },
+  // },
 };
 </script>

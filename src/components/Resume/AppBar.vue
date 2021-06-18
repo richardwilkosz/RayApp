@@ -16,17 +16,16 @@
       <v-btn icon><v-icon>mdi-linkedin</v-icon></v-btn>
       <v-btn icon><v-icon>mdi-github-circle</v-icon></v-btn>
     </v-app-bar> -->
-    <v-app-bar app color="#43a047" dark inverted-scroll ref="AppBar">
+    <v-app-bar app color="primary" dark inverted-scroll ref="AppBar">
       <template v-slot:img="{ props }">
         <v-img
           v-bind="props"
-          gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"
         ></v-img>
       </template>
       <v-avatar :size="appBarHeight - 16" class="mr-3">
         <v-img src="../../assets/resume-portrait.png"></v-img>
       </v-avatar>
-      <v-toolbar-title>Richard Wilkosz</v-toolbar-title>
+      <v-toolbar-title class="title-font">Richard Wilkosz</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon href="/Resume_Richard_Wilkosz.pdf" target="_blank">
         <v-icon>mdi-pdf-box</v-icon>
