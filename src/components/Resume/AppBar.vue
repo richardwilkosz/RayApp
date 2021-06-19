@@ -17,28 +17,17 @@
       <v-btn icon><v-icon>mdi-github-circle</v-icon></v-btn>
     </v-app-bar> -->
     <v-app-bar app color="primary" dark inverted-scroll ref="AppBar">
-      <template v-slot:img="{ props }">
+      <!-- <template v-slot:img="{ props }">
         <v-img
           v-bind="props"
         ></v-img>
-      </template>
+      </template> -->
       <v-avatar :size="appBarHeight - 16" class="mr-3">
         <v-img src="../../assets/resume-portrait.png"></v-img>
       </v-avatar>
-      <v-toolbar-title class="title-font">Richard Wilkosz</v-toolbar-title>
+      <v-toolbar-title class="title-font">RICHARD WILKOSZ</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon href="/Resume_Richard_Wilkosz.pdf" target="_blank">
-        <v-icon>mdi-pdf-box</v-icon>
-      </v-btn>
-      <v-menu
-        offset-y
-        transition="slide-y-transition"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
+      <v-btn href="/Resume_Richard_Wilkosz.pdf" target="_blank">GET RESUME</v-btn>
         <!-- <v-list dense>
           <v-subheader>EMAIL ADDRESS</v-subheader>
           <v-list-item>
@@ -57,19 +46,6 @@
             </v-row>
           </v-list-item>
         </v-list> -->
-        <v-list>
-          <v-list-item
-            v-for="(link, index) in links"
-            :key="index"
-            :href="link.href"
-            target="_blank"
-            link
-          >
-            <v-icon class="mr-3">{{ link.icon }}</v-icon>
-            <v-list-item-title>{{ link.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
 
       <!-- <template v-slot:extension="{ }">
       Hello world
