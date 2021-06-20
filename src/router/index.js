@@ -14,7 +14,7 @@ export default new Router({
       component: ResumeApp
     },
     {
-      path: '/Ray',
+      path: '/ray',
       name: 'RayApp',
       component: RayApp
     },
