@@ -18,18 +18,9 @@
           <v-col cols="12" sm="6" class="my-auto px-10">
             <h1 class="title-font mt-3 mb-4">{{ s.title }}</h1>
             <p v-html="s.body"></p>
-            <v-btn
-              v-for="b in s.buttons"
-              :key="`btn-${b.id}`"
-              :color="b.color"
-              :href="b.href"
-              :target="b.target"
-              rounded
-              large
-              class="mr-3 mb-2"
-            >
-              <v-icon dark class="mr-2">{{ b.icon }}</v-icon>{{ b.label }}
-            </v-btn>
+            <span v-for="b in s.buttons" :key="`btn-${b.id}`">
+              <ButtonLink :data="b"></ButtonLink>
+            </span>
           </v-col>
         </v-row>
       </v-main>
@@ -41,11 +32,17 @@
 <script>
 import AppBar from "./AppBar";
 import AppFooter from "./AppFooter";
+import ButtonLink from "./ButtonLink";
 
 export default {
   components: {
     AppBar,
     AppFooter,
+    ButtonLink,
+  },
+
+  created() {
+    this.$vuetify.theme.dark = false;
   },
 
   data() {
@@ -88,6 +85,7 @@ export default {
               label: "OPEN RAY",
               color: "primary",
               href: "/ray",
+              isRouterLink: true,
             },
           ],
         },
@@ -102,7 +100,6 @@ export default {
               label: "LINKEDIN",
               color: "primary",
               href: "https://www.linkedin.com/in/richard-wilkosz-026b4715a/",
-              target: "_blank",
               icon: "mdi-linkedin-box",
             },
             {
@@ -110,7 +107,6 @@ export default {
               label: "GITHUB",
               color: "primary",
               href: "https://github.com/richardwilkosz",
-              target: "_blank",
               icon: "mdi-github-box",
             },
           ],
