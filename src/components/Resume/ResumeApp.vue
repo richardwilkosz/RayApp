@@ -23,8 +23,6 @@
                 <router-link :to="b.href" target="_blank" class="text-decoration-none">
                   <v-btn
                     :color="b.color"
-                    :href="b.href"
-                    target="_blank"
                     rounded
                     large
                     class="mr-3 mb-2"
