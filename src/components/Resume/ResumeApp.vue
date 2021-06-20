@@ -42,6 +42,8 @@ export default {
   },
 
   created() {
+    document.title = "Richard Wilkosz's Resume"
+    document.fav
     this.$vuetify.theme.dark = false;
   },
 
