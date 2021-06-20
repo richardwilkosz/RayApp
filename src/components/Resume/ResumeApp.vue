@@ -1,46 +1,51 @@
 <template>
-  <div id="ResumeApp" class="AppWithFooter">
-    <v-main>
-      <v-card flat tile color="primary" dark class="mb-0">
-        <v-window v-model="activeSlide">
-          <v-window-item v-for="s in slides" :key="`card-${s.id}`">
-            <v-card flat tile light style="height: calc(100vh - 52px)">
-              <Slide :slideData="s"> </Slide>
-            </v-card>
-          </v-window-item>
-        </v-window>
-
-        <v-card-actions class="justify-space-between">
-          <v-btn text @click="prev">
-            <v-icon>mdi-chevron-left</v-icon>
-          </v-btn>
-          <v-item-group v-model="activeSlide" class="text-center" mandatory>
-            <v-item
-              v-for="s in slides"
-              :key="`btn-${s.id}`"
-              v-slot="{ active, toggle }"
+  <div id="ResumeApp" v-resize="onResize">
+    <AppBar :viewportSize="viewportSize"></AppBar>
+    <v-container fluid class="py-0">
+      <v-main class="teal">
+        <v-row
+          v-for="(s, index) in sections"
+          :key="`section-${s.id}`"
+          class="my-0"
+          :class="index % 2 === 0 ? 'white' : 'flex-row-reverse teal lighten-4'"
+        >
+          <v-col cols="12" sm="6" class="pa-0">
+            <v-img
+              :src="require(`../../assets/${s.img}`)"
+              class="fill-height"
+            ></v-img>
+          </v-col>
+          <v-col cols="12" sm="6" class="my-auto px-10">
+            <h1 class="title-font mt-3 mb-4">{{ s.title }}</h1>
+            <p v-html="s.body"></p>
+            <v-btn
+              v-for="b in s.buttons"
+              :key="`btn-${b.id}`"
+              :color="b.color"
+              :href="b.href"
+              target="_blank"
+              rounded
+              large
+              class="mr-3 mb-2"
             >
-              <v-btn :input-value="active" text @click="toggle" class="mx-sm-2">
-                <v-icon class="mr-md-2">{{ s.icon }}</v-icon>
-                <span class="d-none d-md-flex">{{ s.label }}</span>
-              </v-btn>
-            </v-item>
-          </v-item-group>
-          <v-btn text @click="next">
-            <v-icon>mdi-chevron-right</v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-main>
+              <v-icon dark class="mr-2">{{ b.icon }}</v-icon>{{ b.label }}
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-main>
+    </v-container>
+    <AppFooter></AppFooter>
   </div>
 </template>
 
 <script>
-import Slide from "./Slide";
+import AppBar from "./AppBar";
+import AppFooter from "./AppFooter";
 
 export default {
   components: {
-    Slide,
+    AppBar,
+    AppFooter,
   },
 
   data() {
@@ -50,23 +55,17 @@ export default {
     );
 
     return {
-      activeSlide: 0,
-      slides: [
+      viewportSize: "",
+      sections: [
         {
           id: 0,
-          icon: "mdi-account",
-          label: "ABOUT ME",
-
-          img: "resume-portrait.jpg",
           title: "HI, I’M RICHARD.",
-          body: `Software Engineer with 
-                ${yearsExperience}+ years of experience writing production-level
-                code. Specializes in user-centered front ends, but 
-                delivers clean, reusable code throughout the full stack.
-                Has demonstrated leadership and
-                communication skills by serving as team Scrum Master and
-                mentoring 5 interns.`,
-          
+          img: "resume-portrait.jpg",
+          body: `<strong>Software Engineer with ${yearsExperience}+ years of 
+                experience</strong> writing production-level code. Specializes 
+                in user-centered front ends, but delivers clean and reusable 
+                full-stack code. Has demonstrated leadership and communication 
+                skills by serving as a team Scrum Master and mentoring 7+ interns.`,
           buttons: [
             {
               id: 0,
@@ -78,16 +77,11 @@ export default {
         },
         {
           id: 1,
-          icon: "mdi-wrench",
-          label: "SAMPLE PROJECT",
-
-          img: "resume-sample.jpg",
           title: "SAMPLE PROJECT",
-          body: `I decided to learn Vue.js the best way I know how:
-                building something. Check out Ray, a database of movies 
-                I own on Blu-ray! It features REST API consumption and
-                responsive design.`,
-
+          img: "resume-sample.jpg",
+          body: `I decided to learn Vue.js the best way I know how: building something. 
+                Check out <strong>Ray</strong>, a database of movies I own on Blu-ray! 
+                It features REST API consumption and responsive design.`,
           buttons: [
             {
               id: 0,
@@ -99,25 +93,23 @@ export default {
         },
         {
           id: 2,
-          icon: "mdi-email",
-          label: "CONTACT",
-
+          title: "CONTACT ME",
           img: "resume-contact.jpg",
-          title: "CONTACT",
-          body: "Email me at “richard.w.wilkosz at gmail.com” or find me on:",
-
+          body: "<strong>Email: </strong> richard.w.wilkosz at gmail.com<br><br>...Or find me on:",
           buttons: [
             {
               id: 0,
               label: "LINKEDIN",
               color: "primary",
               href: "https://www.linkedin.com/in/richard-wilkosz-026b4715a/",
+              icon: "mdi-linkedin-box",
             },
             {
               id: 2,
               label: "GITHUB",
               color: "primary",
               href: "https://github.com/richardwilkosz",
+              icon: "mdi-github-box",
             },
           ],
         },
@@ -125,20 +117,17 @@ export default {
     };
   },
 
+  mounted() {
+    this.onResize();
+  },
+
   methods: {
-    next() {
-      this.activeSlide =
-        this.activeSlide + 1 === this.length ? 0 : this.activeSlide + 1;
-    },
-    prev() {
-      this.activeSlide =
-        this.activeSlide - 1 < 0 ? this.length - 1 : this.activeSlide - 1;
+    onResize() {
+      this.viewportSize = this.$vuetify.breakpoint.name;
     },
   },
 };
 </script>
-
-
 
 <style lang="scss">
 // Custom font(s)
@@ -153,29 +142,7 @@ $title-font: "Montserrat ExtraBold";
   }
   .title-font {
     font-family: $title-font, sans-serif !important;
+    line-height: 1;
   }
-}
-
-// Override Vuetify's prevention of background images
-// #ResumeApp {
-//   background: LightGray url("../../assets/resume-texture.jpg") repeat !important;
-// }
-
-.v-card {
-  margin-bottom: 12px;
-}
-
-.v-card__title {
-  display: block !important;
-}
-
-.v-card__text {
-  font-size: 1rem !important;
-  letter-spacing: 0.03125em !important;
-  line-height: 1.5rem !important;
-}
-
-.windowHeight {
-  height: 100vh !important;
 }
 </style>
