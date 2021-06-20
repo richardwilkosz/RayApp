@@ -58,30 +58,68 @@ export default {
           label: "ABOUT ME",
 
           img: "resume-portrait.jpg",
-          title: "HI, I'M RICHARD.",
-          body: `Welcome to my virtual resume! I'm a Software Engineer with 
-                ${yearsExperience}+ years of experience writing production-
-                level code. Specializes in user-centered front ends, but 
+          title: "HI, I’M RICHARD.",
+          body: `Software Engineer with 
+                ${yearsExperience}+ years of experience writing production-level
+                code. Specializes in user-centered front ends, but 
                 delivers clean, reusable code throughout the full stack.
-                In the past year, has demonstrated leadership and
+                Has demonstrated leadership and
                 communication skills by serving as team Scrum Master and
                 mentoring 5 interns.`,
+          
+          buttons: [
+            {
+              id: 0,
+              label: "GET RESUME",
+              color: "primary",
+              href: "/Resume_Richard_Wilkosz.pdf",
+            },
+          ],
         },
         {
           id: 1,
           icon: "mdi-wrench",
           label: "SAMPLE PROJECT",
 
-          img: "../../assets/resume-sample.jpg",
+          img: "resume-sample.jpg",
           title: "SAMPLE PROJECT",
+          body: `I decided to learn Vue.js the best way I know how:
+                building something. Check out Ray, a database of movies 
+                I own on Blu-ray! It features REST API consumption and
+                responsive design.`,
+
+          buttons: [
+            {
+              id: 0,
+              label: "OPEN RAY",
+              color: "primary",
+              href: "/Ray",
+            },
+          ],
         },
         {
           id: 2,
           icon: "mdi-email",
           label: "CONTACT",
 
-          img: "../../assets/resume-contact.jpg",
+          img: "resume-contact.jpg",
           title: "CONTACT",
+          body: "Email me at “richard.w.wilkosz at gmail.com” or find me on:",
+
+          buttons: [
+            {
+              id: 0,
+              label: "LINKEDIN",
+              color: "primary",
+              href: "https://www.linkedin.com/in/richard-wilkosz-026b4715a/",
+            },
+            {
+              id: 2,
+              label: "GITHUB",
+              color: "primary",
+              href: "https://github.com/richardwilkosz",
+            },
+          ],
         },
       ],
     };
