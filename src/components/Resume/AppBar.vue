@@ -13,8 +13,10 @@
       rounded
       :small="viewportSize === 'xs'"
       :large="viewportSize === 'lg' || viewportSize === 'xl'"
-      >GET RESUME</v-btn
-    >
+      class="mr-2"
+      >
+        GET RESUME
+      </v-btn>
   </v-app-bar>
 </template>
 

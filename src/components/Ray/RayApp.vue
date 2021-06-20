@@ -74,6 +74,8 @@ export default {
   },
 
   created() {
+    document.title = "Ray"
+
     let vm = this;
     vm.$vuetify.theme.dark = true;
 
