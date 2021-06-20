@@ -18,18 +18,36 @@
           <v-col cols="12" sm="6" class="my-auto px-10">
             <h1 class="title-font mt-3 mb-4">{{ s.title }}</h1>
             <p v-html="s.body"></p>
-            <v-btn
-              v-for="b in s.buttons"
-              :key="`btn-${b.id}`"
-              :color="b.color"
-              :href="b.href"
-              target="_blank"
-              rounded
-              large
-              class="mr-3 mb-2"
-            >
-              <v-icon dark class="mr-2">{{ b.icon }}</v-icon>{{ b.label }}
-            </v-btn>
+            <span v-for="b in s.buttons" :key="`btn-${b.id}`">
+              <template v-if="b.isRouterLink">
+                <router-link :to="b.href" target="_blank" class="text-decoration-none">
+                  <v-btn
+                    :color="b.color"
+                    :href="b.href"
+                    target="_blank"
+                    rounded
+                    large
+                    class="mr-3 mb-2"
+                  >
+                    <v-icon dark class="mr-2">{{ b.icon }}</v-icon>
+                    {{ b.label }}
+                  </v-btn>
+                </router-link>
+              </template>
+              <template v-else>
+                <v-btn
+                  :color="b.color"
+                  :href="b.href"
+                  target="_blank"
+                  rounded
+                  large
+                  class="mr-3 mb-2"
+                >
+                  <v-icon dark class="mr-2">{{ b.icon }}</v-icon>
+                  {{ b.label }}
+                </v-btn>
+              </template>
+            </span>
           </v-col>
         </v-row>
       </v-main>
@@ -87,7 +105,8 @@ export default {
               id: 0,
               label: "OPEN RAY",
               color: "primary",
-              href: "/Ray",
+              href: "/ray",
+              isRouterLink: true,
             },
           ],
         },
