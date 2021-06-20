@@ -58,8 +58,7 @@ export default {
 </script>
 
 <style>
-.v-card__title,
-.v-card__title span {
+.v-card__title{
   word-break: normal !important;
   line-height: normal !important;
 }

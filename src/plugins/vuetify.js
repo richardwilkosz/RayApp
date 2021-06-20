@@ -8,8 +8,11 @@ Vue.use(Vuetify);
 
 export default new Vuetify({
   theme: {
-    dark: true,
+    // dark: true,
     themes: {
+      light: {
+        primary: colors.teal.darken2,
+      },
       dark: {
         primary: colors.lightBlue.lighten3,
         error: colors.red.lighten3,
